@@ -1,22 +1,8 @@
-// src/pages/ComingSoonContainer.tsx
-import { useState } from 'react'
-
 const socialLinks = [
-  { label: 'Instagram', icon: 'ti-brand-instagram', href: 'https://instagram.com/ansylajewels' },
-  { label: 'Facebook',  icon: 'ti-brand-facebook',  href: 'https://facebook.com/ansylajewels'  },
-  { label: 'TikTok',    icon: 'ti-brand-tiktok',    href: 'https://tiktok.com/@ansylajewels'   },
+  { label: 'Instagram', icon: 'ti-brand-instagram', href: 'https://www.instagram.com/ansylajewels' },
 ]
 
 function ComingSoonContainer() {
-  const [email, setEmail]       = useState('')
-  const [submitted, setSubmitted] = useState(false)
-
-  const handleNotify = () => {
-    if (!email) return
-    // TODO: wire to your backend / Firebase
-    setSubmitted(true)
-  }
-
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-6 py-16 bg-background">
 
