@@ -1,23 +1,11 @@
-import { useState } from "react";
+import type { FooterColumns } from "@/containers/landing-page/footer/Footer.helper";
 import { Link } from "react-router";
 
-const columns = [
-  {
-    title: "Shop",
-    links: ["Rings", "Necklaces", "Earrings", "Bracelets", "Watches", "Gifts"],
-  },
-  {
-    title: "Company",
-    links: ["About ANSYLA", "Contact Us", "FAQs", "ANSYLA Rewards"],
-  },
-  {
-    title: "Policies",
-    links: ["Shipping Policy", "Returns Policy", "Privacy Policy", "Terms & Conditions"],
-  },
-];
-
-
-function FooterContainer() {
+function Footer({
+    footerColumns
+}: {
+    footerColumns: FooterColumns[]
+}) {
     return (
         <footer className="border-t border-border bg-card">
             <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
@@ -28,15 +16,15 @@ function FooterContainer() {
                     </span>
                     <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
                         Timeless Beauty, Precious You. Exquisite fine jewelry crafted to celebrate
-                        your elegance, confidence, and individuality — proudly South African.
+                        your elegance, confidence, and individuality - proudly South African.
                     </p>
                 </div>
 
-                {columns.map((col) => (
-                    <div key={col.title}>
-                        <h4 className="text-xs uppercase tracking-luxe text-primary">{col.title}</h4>
+                {footerColumns.map((column) => (
+                    <div key={column.title}>
+                        <h4 className="text-xs uppercase tracking-luxe text-primary">{column.title}</h4>
                         <ul className="mt-4 space-y-3">
-                            {col.links.map((link) => (
+                            {column.links.map((link) => (
                                 <li key={link}>
                                     <Link
                                         to="/shop"
@@ -53,7 +41,9 @@ function FooterContainer() {
 
                 <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 sm:flex-row">
                 <p className="text-xs text-muted-foreground">
-                    © {new Date().getFullYear()} ANSYLA Jewels · ANSYLA.co.za · All rights reserved.
+                    © {new Date().getFullYear()} ANSYLA Jewels · All rights reserved.
+                    <br />
+                    Created by <a href="www.seegers.net.za">Hanno Seegers</a>
                 </p>
                 {/* <div className="flex gap-4 text-muted-foreground">
                     <a href="#" aria-label="Instagram" className="hover:text-primary">
@@ -69,7 +59,7 @@ function FooterContainer() {
                 </div>
             </div>
         </footer>
-  );
+    );
 }
 
-export default FooterContainer;
+export default Footer;

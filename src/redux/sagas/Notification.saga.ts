@@ -1,6 +1,6 @@
 import { delay, fork, put, takeEvery } from "redux-saga/effects";
 import type { Notification } from "../types/Notification.type";
-import { NOTIFICATION_ACTIONS, removeSystemNotification } from "../actions/Notification.actions";
+import { NOTIFICATION_ACTIONS, removeSystemNotification } from "../actions/Notification.action";
 
 
 function* autoRemoveSystemNotification(notification: Notification) {

@@ -1,5 +1,5 @@
 import type { Notification, NotificationState } from "../types/Notification.type";
-import { NOTIFICATION_ACTIONS } from "../actions/Notification.actions";
+import { NOTIFICATION_ACTIONS } from "../actions/Notification.action";
 
 const initialState: NotificationState = { notifications: [] }
 

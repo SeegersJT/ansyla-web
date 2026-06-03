@@ -18,12 +18,13 @@ import {
   serverTimestamp,
 } from 'firebase/firestore'
 import { db } from './config'
+import { Utils } from '@/utils/Utils'
 
 export const firestoreService = {
   /** Fetch a single document by ID */
   getById: async <T>(collectionName: string, id: string): Promise<T | null> => {
     const snap = await getDoc(doc(db, collectionName, id))
-    return snap.exists() ? ({ id: snap.id, ...snap.data() } as T) : null
+    return snap.exists() ? ({ id: snap.id, ...Utils.convertTimestamps(snap.data()) } as T) : null
   },
 
   /** Fetch all documents in a collection with optional constraints */
@@ -33,7 +34,7 @@ export const firestoreService = {
   ): Promise<T[]> => {
     const q = query(collection(db, collectionName), ...constraints)
     const snap = await getDocs(q)
-    return snap.docs.map(d => ({ id: d.id, ...d.data() } as T))
+    return snap.docs.map(d => ({ id: d.id, ...Utils.convertTimestamps(d.data()) } as T))
   },
 
   add: async <T extends DocumentData>(

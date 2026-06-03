@@ -28,7 +28,7 @@ function ComingSoonContainer() {
       </h1>
       <p className="text-sm font-light text-muted-foreground text-center max-w-sm leading-relaxed tracking-wide mb-12">
         We're putting the finishing touches on our new collection. Our site will
-        be ready soon — follow us to be the first to know when we launch.
+        be ready soon - follow us to be the first to know when we launch.
       </p>
 
       {/* Social */}

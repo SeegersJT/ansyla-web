@@ -1,17 +1,17 @@
-import { useState } from "react";
-import { Link } from "react-router";
+import type { HeaderNavLink } from "@/containers/landing-page/header/Header.helper";
 import * as Icon from "lucide-react";
+import { Link } from "react-router";
 
-const navLinks = [
-  { to: "/", label: "Home" },
-  { to: "/shop", label: "Shop" },
-] as const;
-
-function HeaderContainer() {
-    // const { count, setOpen } = useCart();
-    const [mobileOpen, setMobileOpen] = useState(false);
-
-    return (
+function Header({
+    headerNavLinks,
+    mobileOpen,
+    onMobileOpen,
+}: {
+    headerNavLinks: HeaderNavLink[];
+    mobileOpen: boolean;
+    onMobileOpen: (value: boolean) => void
+}) {
+     return (
         <header className="sticky top-0 z-40 border-b border-border/70 bg-background/85 backdrop-blur-md">
             <div className="border-b border-border/40 bg-gradient-gold py-2 text-center text-[11px] font-medium uppercase tracking-luxe text-primary-foreground">
                 Complimentary nationwide delivery on orders over R1000
@@ -19,14 +19,14 @@ function HeaderContainer() {
             <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
                 <button
                     className="md:hidden"
-                    onClick={() => setMobileOpen((v) => !v)}
+                    onClick={() => onMobileOpen(!mobileOpen)}
                     aria-label="Menu"
                 >
                     {mobileOpen ? <Icon.X className="h-5 w-5" /> : <Icon.Menu className="h-5 w-5" />}
                 </button>
 
                 <nav className="hidden items-center gap-7 md:flex">
-                    {navLinks.map((link, index) => (
+                    {headerNavLinks.map((link, index) => (
                         <Link
                             key={index}
                             to={link.to}
@@ -75,20 +75,20 @@ function HeaderContainer() {
 
             {mobileOpen && (
                 <nav className="flex flex-col gap-1 border-t border-border bg-card px-6 py-4 md:hidden">
-                    {navLinks.map((l, i) => (
+                    {headerNavLinks.map((link, index) => (
                         <Link
-                            key={i}
-                            to={l.to}
-                            onClick={() => setMobileOpen(false)}
+                            key={index}
+                            to={link.to}
+                            onClick={() => onMobileOpen(false)}
                             className="py-2 text-sm uppercase tracking-wider text-muted-foreground hover:text-primary"
                         >
-                            {l.label}
+                            {link.label}
                         </Link>
                     ))}
 
                     <Link
                         to="/account"
-                        onClick={() => setMobileOpen(false)}
+                        onClick={() => onMobileOpen(false)}
                         className="py-2 text-sm uppercase tracking-wider text-muted-foreground hover:text-primary"
                     >
                         Account
@@ -99,4 +99,4 @@ function HeaderContainer() {
     );
 }
 
-export default HeaderContainer;
+export default Header;

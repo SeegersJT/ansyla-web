@@ -1,4 +1,4 @@
-import { PRODUCT_ACTIONS } from "../actions/Product.actions";
+import { PRODUCT_ACTIONS } from "../actions/Product.action";
 import type { ProductItem, ProductState } from "../types/Product.type";
 
 const initialState: ProductState = {

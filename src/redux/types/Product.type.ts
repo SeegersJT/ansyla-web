@@ -4,19 +4,22 @@ export interface ProductMaterialState {
 }
 
 export interface ProductImagesItem {
-    url: string | null
+    url: string | undefined
 }
 
 export interface ProductItem {
+    id: string | null
     product_no: string | null
     product_sequence: number | null
-    name: string | null
+    name: string | undefined
     description: string | null
     category: string | null
     materials: ProductMaterialState | null
     images: ProductImagesItem[]
-    price: number | null
+    price: number
     stock: number | null
+    is_best_seller: boolean
+    is_new: boolean
     active: boolean
     created_by: string | null
     created_at: Date | null

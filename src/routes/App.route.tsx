@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import DashboardContainer from '../containers/dashboard/Dashboard.container'
-import LandingPageContainer from '@/containers/landingPage/LandingPage.container'
-import HomeContainer from '@/containers/landingPage/home/Home.container'
+import LandingPageContainer from '@/containers/landing-page/LandingPage.container'
+import HomeContainer from '@/containers/landing-page/home/Home.container'
+import DashboardContainer from '@/containers/landing-page/dashboard/Dashboard.container'
 import ComingSoonContainer from '@/containers/coming-soon/ComingSoon.container'
 
 // const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
@@ -27,16 +27,16 @@ import ComingSoonContainer from '@/containers/coming-soon/ComingSoon.container'
 export const AppRouter = () => (
   <BrowserRouter>
     <Routes>
-      <Route path={'/'} element={<Navigate to={'/coming-soon'} replace />} />
+      <Route path={'/'} element={<Navigate to={'/home'} replace />} />
 
       <Route path={'/coming-soon'} element={<ComingSoonContainer />} />
 
-      {/* <Route element={<LandingPageContainer />}>
+      <Route element={<LandingPageContainer />}>
         <Route path={'/home'} element={<HomeContainer />} />
         <Route path={'/shop'} element={<DashboardContainer />} />
 
         <Route path={'/dashboard'} element={<DashboardContainer />} />
-      </Route> */}
+      </Route>
 
       <Route path="*" element={<Navigate to={'/'} replace />} />
     </Routes>

@@ -1,8 +1,8 @@
 import { call, put, takeLatest } from 'redux-saga/effects'
 import { firestoreService } from '../../firebase/firestore.service'
 import type { ProductItem } from '../types/Product.type'
-import { PRODUCT_ACTIONS, requestProductItemsLoading, setProductItems } from '../actions/Product.actions'
-import { addSystemNotification } from '../actions/Notification.actions'
+import { PRODUCT_ACTIONS, requestProductItemsLoading, setProductItems } from '../actions/Product.action'
+import { addSystemNotification } from '../actions/Notification.action'
 
 function* handleProductItemsRequest() {
   yield put(requestProductItemsLoading(true))
