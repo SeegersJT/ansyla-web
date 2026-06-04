@@ -7,7 +7,7 @@ import { Toaster } from '../ui/sonner'
 
 function Notification() {
   const dispatch = useAppDispatch()
-  const notifications = useAppSelector(state => state.system.notifications.notifications)
+  const { notifications } = useAppSelector(state => state.system.notification)
 
   useEffect(() => {
     notifications.forEach(notification => {
@@ -26,7 +26,7 @@ function Notification() {
         case 'info': toast.info(notification.title, options); break
       }
     })
-  }, [notifications])
+  }, [dispatch, notifications])
 
   return (
     <Toaster position="bottom-right" richColors expand />

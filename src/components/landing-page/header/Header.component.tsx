@@ -14,7 +14,7 @@ function Header({
      return (
         <header className="sticky top-0 z-40 border-b border-border/70 bg-background/85 backdrop-blur-md">
             <div className="border-b border-border/40 bg-gradient-gold py-2 text-center text-[11px] font-medium uppercase tracking-luxe text-primary-foreground">
-                Complimentary nationwide delivery on orders over R1000
+                Complimentary nationwide delivery on orders over R500
             </div>
             <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
                 <button

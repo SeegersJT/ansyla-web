@@ -3,6 +3,7 @@ import LandingPageContainer from '@/containers/landing-page/LandingPage.containe
 import HomeContainer from '@/containers/landing-page/home/Home.container'
 import DashboardContainer from '@/containers/landing-page/dashboard/Dashboard.container'
 import ComingSoonContainer from '@/containers/coming-soon/ComingSoon.container'
+import ShopContainer from '@/containers/landing-page/shop/Shop.container'
 
 // const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
 //   const { user, initialized } = useAppSelector(state => state.auth)
@@ -33,7 +34,7 @@ export const AppRouter = () => (
 
       <Route element={<LandingPageContainer />}>
         <Route path={'/home'} element={<HomeContainer />} />
-        <Route path={'/shop'} element={<DashboardContainer />} />
+        <Route path={'/shop'} element={<ShopContainer />} />
 
         <Route path={'/dashboard'} element={<DashboardContainer />} />
       </Route>

@@ -1,21 +1,35 @@
 import { Link } from "react-router";
 import HeroImage from "@/assets/hero.jpg";
 import type { CategoryItem } from "@/redux/types/Category.type";
-import type { Reasons } from "@/containers/landing-page/home/Home.helper";
+import type { ReasonItem, TestimonialItem } from "@/containers/landing-page/home/Home.helper";
 import type { ProductItem } from "@/redux/types/Product.type";
 import type { Settings } from "@/redux/types/Settings.type";
 import ProductCard from "@/components/product-card/ProductCard.component";
+import { Loader2, Quote, Sparkles } from "lucide-react";
+import type { NewsletterState } from "@/redux/types/Newsletter.type";
 
 function Home({
 	category_data,
 	reasons,
 	bestSellers,
-	settings
+	newArrivals,
+	settings,
+	testimonials,
+	newsletterEmailAddress,
+	newsletter,
+	onSubscribeToNewsletter,
+	onNewsletterEmailChange,
 }: {
 	category_data: CategoryItem[]
-	reasons: Reasons[]
+	reasons: ReasonItem[]
 	bestSellers: ProductItem[]
+	newArrivals: ProductItem[]
 	settings: Settings
+	testimonials: TestimonialItem[]
+	newsletterEmailAddress: string
+	newsletter: NewsletterState
+	onSubscribeToNewsletter: (event: React.SubmitEvent) => void
+	onNewsletterEmailChange: (value: string) => void
 }) {
 	return (
 		<div>
@@ -134,7 +148,7 @@ function Home({
 			</section>
 
 			{/* New Arrivals */}
-			{/* <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
+			<section className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
 				<div className="mb-12 text-center">
 					<p className="text-xs uppercase tracking-luxe text-primary">
 						Just In
@@ -142,11 +156,15 @@ function Home({
 					<h2 className="mt-3 font-serif text-4xl">New Arrivals</h2>
 				</div>
 				<div className="grid grid-cols-2 gap-x-4 gap-y-10 lg:grid-cols-4">
-					{newArrivals.map((p) => (
-						<ProductCard key={p.id} product={p} />
+					{newArrivals.map((product) => (
+						<ProductCard
+							key={product.id}
+							currency={settings?.currency}
+							product={product}
+						/>
 					))}
 				</div>
-			</section> */}
+			</section>
 
 			{/* Why ANSYLA */}
 			<section className="border-y border-border bg-card/40 py-20">
@@ -177,7 +195,7 @@ function Home({
 			</section>
 
 			{/* Testimonials */}
-			{/* <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
+			<section className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
 				<div className="mb-12 text-center">
 					<p className="text-xs uppercase tracking-luxe text-primary">
 						Loved By
@@ -185,26 +203,26 @@ function Home({
 					<h2 className="mt-3 font-serif text-4xl">Words From Our Circle</h2>
 				</div>
 				<div className="grid gap-6 md:grid-cols-3">
-					{testimonials.map((t) => (
+					{testimonials.map((testimonial) => (
 						<div
-							key={t.name}
+							key={testimonial.name}
 							className="rounded-sm border border-primary/30 bg-card p-8 shadow-gold"
 						>
 							<Quote className="h-7 w-7 text-primary" />
 							<p className="mt-5 text-sm leading-relaxed text-foreground/90">
-								"{t.text}"
+								"{testimonial.text}"
 							</p>
-							<p className="mt-6 font-serif text-lg text-primary">{t.name}</p>
+							<p className="mt-6 font-serif text-lg text-primary">{testimonial.name}</p>
 							<p className="text-xs uppercase tracking-wider text-muted-foreground">
-								{t.city}
+								{testimonial.city}
 							</p>
 						</div>
 					))}
 				</div>
-			</section> */}
+			</section>
 
 			{/* Newsletter */}
-			{/* <section className="border-t border-border bg-gradient-to-b from-card to-background py-24">
+			<section className="border-t border-border bg-gradient-to-b from-card to-background py-24">
 				<div className="mx-auto max-w-2xl px-6 text-center">
 					<Sparkles className="mx-auto h-8 w-8 text-primary" />
 					<h2 className="mt-5 font-serif text-4xl">
@@ -214,22 +232,38 @@ function Home({
 						Exclusive offers, private previews, and first access to new
 						collections.
 					</p>
-					<form
-						onSubmit={(e) => e.preventDefault()}
-						className="mx-auto mt-8 flex max-w-md gap-2"
-					>
-						<input
-							type="email"
-							required
-							placeholder="Your email address"
-							className="flex-1 border border-border bg-background px-4 py-3 text-sm outline-none focus:border-primary"
-						/>
-						<button className="bg-gradient-gold px-6 text-xs font-medium uppercase tracking-luxe text-primary-foreground">
-							Join
-						</button>
-					</form>
+
+					{newsletter.isSubscribed ? (
+						<p className="mt-8 text-sm text-primary tracking-wider uppercase">
+							Welcome to the circle ✦
+						</p>
+					) : (
+						<form onSubmit={onSubscribeToNewsletter} className="mx-auto mt-8 flex max-w-md gap-2">
+							<input
+								type="email"
+								required
+								value={newsletterEmailAddress}
+								onChange={(e) => onNewsletterEmailChange(e.target.value)}
+								placeholder="Your email address"
+								disabled={newsletter.loading}
+								className="flex-1 border border-border bg-background px-4 py-3 text-sm outline-none focus:border-primary disabled:opacity-50"
+							/>
+							<button
+								type="submit"
+								disabled={newsletter.loading}
+								className="bg-gradient-gold px-6 text-xs font-medium uppercase tracking-luxe text-primary-foreground disabled:opacity-70 flex items-center justify-center min-w-[72px]"
+							>
+								{newsletter.loading ? (
+									<Loader2 className="h-6 w-6 animate-spin" />
+								) : (
+									"Join"
+								)}
+							</button>
+						</form>
+					)}
+
 				</div>
-			</section> */}
+			</section>
 		</div>
 	);
 }

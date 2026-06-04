@@ -13,11 +13,14 @@ export interface ProductItem {
     product_sequence: number | null
     name: string | undefined
     description: string | null
-    category: string | null
+    category_id: string | null
+    category_name: string | null
     materials: ProductMaterialState | null
     images: ProductImagesItem[]
     price: number
     stock: number | null
+    rating: number
+    reviews: number
     is_best_seller: boolean
     is_new: boolean
     active: boolean

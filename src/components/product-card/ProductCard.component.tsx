@@ -2,6 +2,7 @@ import type { ProductItem } from "@/redux/types/Product.type";
 import { Utils } from "@/utils/Utils";
 import { Eye, ShoppingBag } from "lucide-react";
 import { Link } from "react-router";
+import StarRating from "../star-rating/StarRating.component";
 
 function ProductCard({
     currency,
@@ -55,18 +56,18 @@ function ProductCard({
                 </div>
             </div>
 
+
             <div className="mt-4 space-y-1.5">
                 <p className="text-[11px] uppercase tracking-luxe text-primary/80">
-                    {product?.category}
+                    {product?.category_name}
                 </p>
                 <Link
                     to="/product/$id"
-                    // params={{ id: product?.id }}
                     className="block font-serif text-lg leading-tight transition-colors hover:text-primary"
                 >
                     {product?.name}
                 </Link>
-                {/* <StarRating rating={product?.rating} reviews={product?.reviews} /> */}
+                <StarRating rating={product?.rating} reviews={product?.reviews} /> 
                 <p className="pt-0.5 text-base text-foreground">{Utils.formatPrice(product?.price, currency)}</p>
             </div>
         </div>

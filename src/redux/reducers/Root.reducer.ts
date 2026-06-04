@@ -3,12 +3,14 @@ import { notificationReducer } from './Notification.reducer'
 import { ProductReducer } from './Product.reducer'
 import { CategoryReducer } from './Category.reducer'
 import { SettingsReducer } from './Settings.reducer'
+import { NewsLetterReducer } from './Newsletter.reduce'
 
 export const RootReducer = combineReducers({
   system: combineReducers({
-    notifications: notificationReducer
+    notification: notificationReducer
   }),
   settings: SettingsReducer,
+  newsletter: NewsLetterReducer,
   category: CategoryReducer,
   product: ProductReducer,
 })
