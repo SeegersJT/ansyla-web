@@ -5,9 +5,9 @@ import { useMemo, useState } from "react";
 import type { OrderByItem } from "./Shop.helper";
 
 function ShopContainer() {
-    const { settings_data } = useAppSelector((state) => state.settings);
-    const { category_data } = useAppSelector((state) => state.category);
-    const { product_data } = useAppSelector((state) => state.product);
+    const { settingsData } = useAppSelector((state) => state.settings);
+    const { categoryData } = useAppSelector((state) => state.category);
+    const { productData } = useAppSelector((state) => state.product);
 
     const [selectedCategory, setSelectedCategory] = useState<CategoryItem | null>(null)
     const [selectedMaxPrice, setSelectedMaxPrice] = useState(1000)
@@ -26,7 +26,7 @@ function ShopContainer() {
     }
 
     const filteredProducts = useMemo(() => {
-        let result = [...product_data]
+        let result = [...productData]
 
         if (selectedCategory) {
             result = result.filter((p) => p.category_id === selectedCategory.id)
@@ -52,16 +52,16 @@ function ShopContainer() {
         }
 
         return result
-    }, [product_data, selectedCategory, selectedMaxPrice, selectedOrderBy])
+    }, [productData, selectedCategory, selectedMaxPrice, selectedOrderBy])
 
     return (
         <Shop
-            category_data={category_data}
+            categoryData={categoryData}
             filteredProducts={filteredProducts}
             selectedCategory={selectedCategory}
             selectedMaxPrice={selectedMaxPrice}
             selectedOrderBy={selectedOrderBy}
-            settings={settings_data[0]}
+            settings={settingsData[0]}
             onSelectedCategoryChange={handleOnSelectedCategoryChange}
             onSelectedMaxPriceChange={handlOnSelectedMaxPriceChange}
             onSelectedOrderByChange={handleOnSelectedOrderByChange}

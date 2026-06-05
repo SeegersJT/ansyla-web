@@ -5,7 +5,7 @@ import type { ProductItem } from "@/redux/types/Product.type";
 import type { Settings } from "@/redux/types/Settings.type";
 
 function Shop({
-    category_data,
+    categoryData,
     filteredProducts,
     selectedCategory,
     selectedMaxPrice,
@@ -15,7 +15,7 @@ function Shop({
     onSelectedMaxPriceChange,
     onSelectedOrderByChange,
 }: {
-    category_data: CategoryItem[],
+    categoryData: CategoryItem[],
     filteredProducts: ProductItem[],
     selectedCategory: CategoryItem | null,
     selectedMaxPrice: number,
@@ -41,7 +41,7 @@ function Shop({
                         <FilterButton active={!selectedCategory} onClick={() => onSelectedCategoryChange(null)}>
                             All
                         </FilterButton>
-                        {category_data.map((category) => (
+                        {categoryData.map((category) => (
                             <FilterButton
                                 key={category.id}
                                 active={selectedCategory?.id === category.id}

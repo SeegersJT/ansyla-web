@@ -5,11 +5,11 @@ function StarRating({
     reviews,
     className = "",
 }: {
-    rating: number;
+    rating: number | undefined;
     reviews?: number;
     className?: string;
 }) {
-    const clampedRating = Math.min(5, Math.max(0, rating));
+    const clampedRating = Math.min(5, Math.max(0, rating ? rating : 0));
 
     const stars = Array.from({ length: 5 }).map((_, i) => {
         const full = i + 1 <= Math.floor(clampedRating);

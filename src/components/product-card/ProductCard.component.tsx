@@ -14,7 +14,7 @@ function ProductCard({
     return (
         <div className="group relative flex flex-col">
             <div className="relative aspect-square overflow-hidden rounded-sm border border-border bg-card">
-                {/* <Link to="/product/$id" params={{ id: product?.id }}>
+                <Link to={`/product/${product?.id}`}>
                     <img
                         src={product?.images[0].url}
                         alt={product?.name}
@@ -23,7 +23,7 @@ function ProductCard({
                         height={800}
                         className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                     />
-                </Link> */}
+                </Link>
 
                 <div className="absolute left-3 top-3 flex flex-col gap-1.5">
                     {product?.is_new && (
@@ -56,13 +56,12 @@ function ProductCard({
                 </div>
             </div>
 
-
             <div className="mt-4 space-y-1.5">
                 <p className="text-[11px] uppercase tracking-luxe text-primary/80">
                     {product?.category_name}
                 </p>
                 <Link
-                    to="/product/$id"
+                    to={`/product/${product?.id}`}
                     className="block font-serif text-lg leading-tight transition-colors hover:text-primary"
                 >
                     {product?.name}

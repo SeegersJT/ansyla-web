@@ -2,8 +2,10 @@ import { PRODUCT_ACTIONS } from "../actions/Product.action";
 import type { ProductItem, ProductState } from "../types/Product.type";
 
 const initialState: ProductState = {
-  product_data: [],
-  loading: false,
+  productData: [],
+  selectedProduct: null,
+  productDataloading: false,
+  selectedProductLoading: false,
 }
 
 type Action = { type: string; payload?: unknown }
@@ -13,13 +15,25 @@ export const ProductReducer = (state = initialState, action: Action): ProductSta
     case PRODUCT_ACTIONS.REQUEST_PRODUCT_ITEMS_LOADING:
       return {
         ...state,
-        loading: action.payload as boolean,
+        productDataloading: action.payload as boolean,
       }
 
     case PRODUCT_ACTIONS.SET_PRODUCT_ITEMS:
       return {
         ...state,
-        product_data: action.payload as ProductItem[],
+        productData: action.payload as ProductItem[],
+      }
+
+    case PRODUCT_ACTIONS.REQUEST_PRODUCT_BY_PRODUCT_NO_LOADING:
+      return {
+        ...state,
+        selectedProductLoading: action.payload as boolean,
+      }
+
+    case PRODUCT_ACTIONS.SET_PRODUCT_BY_PRODUCT_NO:
+      return {
+        ...state,
+        selectedProduct: action.payload as ProductItem,
       }
 
     default:

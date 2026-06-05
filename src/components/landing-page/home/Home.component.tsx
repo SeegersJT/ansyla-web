@@ -9,7 +9,7 @@ import { Loader2, Quote, Sparkles } from "lucide-react";
 import type { NewsletterState } from "@/redux/types/Newsletter.type";
 
 function Home({
-	category_data,
+	categoryData,
 	reasons,
 	bestSellers,
 	newArrivals,
@@ -20,7 +20,7 @@ function Home({
 	onSubscribeToNewsletter,
 	onNewsletterEmailChange,
 }: {
-	category_data: CategoryItem[]
+	categoryData: CategoryItem[]
 	reasons: ReasonItem[]
 	bestSellers: ProductItem[]
 	newArrivals: ProductItem[]
@@ -94,7 +94,7 @@ function Home({
 					<h2 className="mt-3 font-serif text-4xl">Featured Collections</h2>
 				</div>
 				<div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-					{category_data.map((category) => (
+					{categoryData.map((category) => (
 						<Link
 							key={category.name}
 							to="/shop"

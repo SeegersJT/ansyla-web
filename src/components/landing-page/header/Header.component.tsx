@@ -5,10 +5,12 @@ import { Link } from "react-router";
 function Header({
     headerNavLinks,
     mobileOpen,
+    cartDataCount,
     onMobileOpen,
 }: {
     headerNavLinks: HeaderNavLink[];
     mobileOpen: boolean;
+    cartDataCount: number
     onMobileOpen: (value: boolean) => void
 }) {
      return (
@@ -64,11 +66,11 @@ function Header({
                         aria-label="Cart"
                     >
                         <Icon.ShoppingBag className="h-5 w-5" />
-                        {/* {count > 0 && (
-                        <span className="absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-gradient-gold px-1 text-[10px] font-semibold text-primary-foreground">
-                            {count}
-                        </span>
-                        )} */}
+                        {cartDataCount > 0 && (
+                            <span className="absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-gradient-gold px-1 text-[10px] font-semibold text-primary-foreground">
+                                {cartDataCount}
+                            </span>
+                        )}
                     </button>
                 </div>
             </div>

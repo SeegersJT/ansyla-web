@@ -27,6 +27,6 @@ export interface Settings {
 }
 
 export interface SettingsState {
-    settings_data: Settings[]
-    loading: boolean
+    settingsData: Settings[]
+    settingsDataLoading: boolean
 }

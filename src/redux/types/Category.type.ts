@@ -11,6 +11,6 @@ export interface CategoryItem {
 }
 
 export interface CategoryState {
-    category_data: CategoryItem[]
-    loading: boolean
+    categoryData: CategoryItem[]
+    categoryDataLoading: boolean
 }

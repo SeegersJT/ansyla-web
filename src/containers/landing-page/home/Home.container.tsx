@@ -8,13 +8,13 @@ import { requestSubscribeToNewsletter } from "@/redux/actions/Newsletter.action"
 function HomeContainer() {
     const dispatch = useAppDispatch();
 
-    const { category_data } = useAppSelector((state) => state.category)
-    const { product_data } = useAppSelector((state) => state.product)
-    const { settings_data } = useAppSelector((state) => state.settings)
+    const { categoryData } = useAppSelector((state) => state.category)
+    const { productData } = useAppSelector((state) => state.product)
+    const { settingsData } = useAppSelector((state) => state.settings)
     const newsletter = useAppSelector((state) => state.newsletter)
 
-    const bestSellers = product_data.filter((product) => product.is_best_seller)
-    const newArrivals = product_data.filter((product) => product.is_new)
+    const bestSellers = productData.filter((product) => product.is_best_seller)
+    const newArrivals = productData.filter((product) => product.is_new)
 
     const [newsletterEmailAddress, setNewsletterEmailAddress] = useState('');
 
@@ -30,11 +30,11 @@ function HomeContainer() {
 
     return (
         <Home
-            category_data={category_data}
+            categoryData={categoryData}
             reasons={reasons}
             bestSellers={bestSellers}
             newArrivals={newArrivals}
-            settings={settings_data[0]}
+            settings={settingsData[0]}
             testimonials={testimonials}
             newsletterEmailAddress={newsletterEmailAddress}
             newsletter={newsletter}
