@@ -7,11 +7,13 @@ function Header({
     mobileOpen,
     cartDataCount,
     onMobileOpen,
+    onOpenCartDrawerClick,
 }: {
     headerNavLinks: HeaderNavLink[];
     mobileOpen: boolean;
     cartDataCount: number
     onMobileOpen: (value: boolean) => void
+    onOpenCartDrawerClick: (value: boolean) => void
 }) {
      return (
         <header className="sticky top-0 z-40 border-b border-border/70 bg-background/85 backdrop-blur-md">
@@ -61,7 +63,7 @@ function Header({
                     </Link>
 
                     <button
-                        // onClick={() => setOpen(true)}
+                        onClick={() => onOpenCartDrawerClick(true)}
                         className="relative hover:text-primary"
                         aria-label="Cart"
                     >

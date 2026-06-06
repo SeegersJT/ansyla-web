@@ -5,6 +5,7 @@ import DashboardContainer from '@/containers/landing-page/dashboard/Dashboard.co
 import ComingSoonContainer from '@/containers/coming-soon/ComingSoon.container'
 import ShopContainer from '@/containers/landing-page/shop/Shop.container'
 import ProductContainer from '@/containers/landing-page/product/Product.container'
+import CartDrawer from '@/components/cart-drawer/CartDrawer.component'
 
 // const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
 //   const { user, initialized } = useAppSelector(state => state.auth)
@@ -44,5 +45,6 @@ export const AppRouter = () => (
 
       <Route path="*" element={<Navigate to={'/'} replace />} />
     </Routes>
+    <CartDrawer />
   </BrowserRouter>
 )

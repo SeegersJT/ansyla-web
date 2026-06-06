@@ -8,7 +8,7 @@ export interface ProductImagesItem {
 }
 
 export interface ProductItem {
-    id: string | null,
+    id: string,
     product_no: string | null,
     product_sequence: number | null,
     name: string | undefined,
@@ -32,7 +32,7 @@ export interface ProductItem {
 
 export interface ProductState {
     productData: ProductItem[],
-    selectedProduct: ProductItem,
+    selectedProduct: ProductItem | null,
     productDataloading: boolean,
     selectedProductLoading: boolean
 }
