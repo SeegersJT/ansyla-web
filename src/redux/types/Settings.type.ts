@@ -23,7 +23,9 @@ export interface Settings {
     prefixes: SettingsPrefix
     sequences: SettingsSequence[]
     statuses: OrderStatus[]
-    store_name: string | null
+    store_name: string | null,
+    shipping_cost: number,
+    free_shipping_threshold: number
 }
 
 export interface SettingsState {

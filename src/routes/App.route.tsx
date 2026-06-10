@@ -7,6 +7,7 @@ import ShopContainer from '@/containers/landing-page/shop/Shop.container'
 import ProductContainer from '@/containers/landing-page/product/Product.container'
 import CartDrawer from '@/components/cart-drawer/CartDrawer.component'
 import CartContainer from '@/containers/landing-page/cart/Cart.container'
+import ScrollToTop from '@/components/scroll-to-top/ScrollToTop.component'
 
 // const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
 //   const { user, initialized } = useAppSelector(state => state.auth)
@@ -46,6 +47,9 @@ export const AppRouter = () => (
 
       <Route path="*" element={<Navigate to={'/'} replace />} />
     </Routes>
+
     <CartDrawer />
+    <ScrollToTop />
+    
   </BrowserRouter>
 )

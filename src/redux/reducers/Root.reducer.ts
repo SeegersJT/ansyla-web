@@ -5,6 +5,7 @@ import { CategoryReducer } from './Category.reducer'
 import { SettingsReducer } from './Settings.reducer'
 import { NewsLetterReducer } from './Newsletter.reduce'
 import { CartReducer } from './Cart.reducer'
+import { CouponReducer } from './Coupon.reducer'
 
 export const RootReducer = combineReducers({
   system: combineReducers({
@@ -14,5 +15,6 @@ export const RootReducer = combineReducers({
   newsletter: NewsLetterReducer,
   category: CategoryReducer,
   product: ProductReducer,
-  cart: CartReducer
+  cart: CartReducer,
+  coupon: CouponReducer
 })

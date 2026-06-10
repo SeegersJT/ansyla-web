@@ -3,10 +3,12 @@ import FooterContainer from "@/containers/landing-page/footer/Footer.container";
 import HeaderContainer from "@/containers/landing-page/header/Header.container";
 
 function LandingPage() {
-     return (
+    return (
         <>
             <HeaderContainer />
-            <Outlet />
+            <main className="min-h-screen">
+                <Outlet />
+            </main>
             <FooterContainer />
         </>
     )

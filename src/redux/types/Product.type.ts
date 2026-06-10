@@ -32,7 +32,7 @@ export interface ProductItem {
 
 export interface ProductState {
     productData: ProductItem[],
-    selectedProduct: ProductItem | null,
+    selectedProduct: ProductItem,
     productDataloading: boolean,
     selectedProductLoading: boolean
 }

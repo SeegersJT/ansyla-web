@@ -1,5 +1,6 @@
 import type { CartState } from "./Cart.type"
 import type { CategoryState } from "./Category.type"
+import type { CouponState } from "./Coupon.type"
 import type { NewsletterState } from "./Newsletter.type"
 import type { NotificationState } from "./Notification.type"
 import type { ProductState } from "./Product.type"
@@ -13,5 +14,6 @@ export interface RootState {
   settings: SettingsState,
   category: CategoryState,
   product: ProductState,
-  cart: CartState
+  cart: CartState,
+  coupon: CouponState
 }

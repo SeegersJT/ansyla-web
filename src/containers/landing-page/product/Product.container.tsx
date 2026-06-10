@@ -1,7 +1,7 @@
 import Product from "@/components/landing-page/product/Product.component";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useAppSelector } from "@/hooks/useAppSelector";
-import { addToCart } from "@/redux/actions/Cart.action";
+import { addToCart, setCartDrawerOpen } from "@/redux/actions/Cart.action";
 import { requestProductByProductNo } from "@/redux/actions/Product.action";
 import type { ProductItem } from "@/redux/types/Product.type";
 import { Utils } from "@/utils/Utils";
@@ -35,6 +35,7 @@ function ProductContainer() {
     }
 
     const handleOnAddToCartClick = (product: ProductItem, selectedQuantity: number) => {
+        dispatch(setCartDrawerOpen(true))
         dispatch(addToCart(product, selectedQuantity))
     }
 

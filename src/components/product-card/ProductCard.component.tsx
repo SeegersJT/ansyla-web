@@ -1,16 +1,25 @@
-import type { ProductItem } from "@/redux/types/Product.type";
-import { Utils } from "@/utils/Utils";
-import { Eye, ShoppingBag } from "lucide-react";
 import { Link } from "react-router";
+import { Eye, ShoppingBag } from "lucide-react";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { addToCart, setCartDrawerOpen } from "@/redux/actions/Cart.action";
+import type { ProductItem } from "@/redux/types/Product.type";
 import StarRating from "../star-rating/StarRating.component";
+import { Utils } from "@/utils/Utils";
 
 function ProductCard({
     currency,
-    product
+    product,
 }: {
     currency: string
-    product: ProductItem
+    product: ProductItem,
 }) {
+    const dispatch = useAppDispatch();
+
+    const handleOnAddCartItemClick = (product: ProductItem, quantity: number) => {
+        dispatch(setCartDrawerOpen(true))
+        dispatch(addToCart(product, quantity))
+    }
+
     return (
         <div className="group relative flex flex-col">
             <div className="relative aspect-square overflow-hidden rounded-sm border border-border bg-card">
@@ -40,14 +49,13 @@ function ProductCard({
 
                 <div className="absolute inset-x-3 bottom-3 flex translate-y-3 gap-2 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
                     <button
-                        // onClick={() => add(product)}
+                        onClick={() => handleOnAddCartItemClick(product, 1)}
                         className="flex flex-1 items-center justify-center gap-2 bg-gradient-gold py-2.5 text-xs font-medium uppercase tracking-wider text-primary-foreground transition-opacity hover:opacity-90"
                     >
                         <ShoppingBag className="h-3.5 w-3.5" /> Add
                     </button>
                     <Link
-                        to="/product/$id"
-                        // params={{ id: product?.id }}
+                        to={`/product/${product?.id}`}
                         className="flex items-center justify-center border border-primary/50 bg-background/70 px-3 text-primary backdrop-blur transition-colors hover:bg-primary hover:text-primary-foreground"
                         aria-label="Quick view"
                     >
