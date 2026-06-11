@@ -25,7 +25,7 @@ function ProductCard({
             <div className="relative aspect-square overflow-hidden rounded-sm border border-border bg-card">
                 <Link to={`/product/${product?.id}`}>
                     <img
-                        src={product?.images[0].url}
+                        src={`${product?.images[0]?.url}`}
                         alt={product?.name}
                         loading="lazy"
                         width={800}

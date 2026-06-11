@@ -1,6 +1,11 @@
 export interface ProductMaterialState {
-    gold: boolean
+    gold: boolean,
     stainless_Steel: boolean
+}
+
+export const defaultMaterialItem: ProductMaterialState = {
+     gold: false,
+    stainless_Steel: false
 }
 
 export interface ProductImagesItem {
@@ -28,6 +33,29 @@ export interface ProductItem {
     created_at: Date | null,
     updated_by: string | null,
     updated_at: Date | null,
+}
+
+export const defaultProductItem: ProductItem = {
+    id: '',
+    product_no: '',
+    product_sequence: 0,
+    name: '',
+    description: '',
+    category_id: '',
+    category_name: '',
+    materials: defaultMaterialItem,
+    images: [],
+    price: 0,
+    stock: 0,
+    rating: 0,
+    reviews: 0,
+    is_best_seller: false,
+    is_new: false,
+    active: false,
+    created_by: '',
+    created_at: new Date(),
+    updated_by: '',
+    updated_at: new Date(),
 }
 
 export interface ProductState {

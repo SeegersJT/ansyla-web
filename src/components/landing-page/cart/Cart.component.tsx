@@ -58,30 +58,30 @@ function Cart({
                 <div className="grid gap-12 lg:grid-cols-[1fr_360px]">
                     <div className="divide-y divide-border border-y border-border">
                         {cartData.map(({ product, quantity }) => (
-                            <div key={product.id} className="flex gap-5 py-6">
+                            <div key={product?.id} className="flex gap-5 py-6">
                                 <img
-                                    src={product.images[0].url}
-                                    alt={product.name}
+                                    src={product?.images[0]?.url}
+                                    alt={product?.name}
                                     loading="lazy"
                                     className="h-28 w-28 flex-shrink-0 rounded-sm border border-border object-cover"
                                 />
                                 <div className="flex flex-1 flex-col">
                                     <div className="flex justify-between gap-3">
                                         <Link
-                                            to="/product/$id"
+                                            to={`/product/${product?.id}`}
                                             className="font-serif text-xl hover:text-primary"
                                         >
-                                            {product.name}
+                                            {product?.name}
                                         </Link>
                                         <button onClick={() => onRemoveAllOfProductClick(product?.id)} aria-label="Remove">
                                             <Trash2 className="h-4 w-4 text-muted-foreground hover:text-destructive" />
                                         </button>
                                     </div>
-                                    {/* <p className="mt-1 text-sm text-muted-foreground">{product.material}</p> */}
+                                    {/* <p className="mt-1 text-sm text-muted-foreground">{product?.material}</p> */}
                                     <div className="mt-auto flex items-center justify-between">
                                         <div className="flex items-center border border-border">
                                             <button
-                                                onClick={() => onRemoveCartItemClick(product.id)}
+                                                onClick={() => onRemoveCartItemClick(product?.id)}
                                                 className="px-3 py-2 text-muted-foreground hover:text-primary"
                                                 aria-label="Decrease"
                                             >
@@ -97,7 +97,7 @@ function Cart({
                                             </button>
                                         </div>
                                         <p className="font-serif text-lg text-primary">
-                                            {Utils.formatPrice(product.price * quantity, settings.currency)}
+                                            {Utils.formatPrice(product?.price * quantity, settings.currency)}
                                         </p>
                                     </div>
                                 </div>
@@ -123,7 +123,7 @@ function Cart({
                             </button>
                         </div>
                         {isCouponApplied && (
-                            <p className="mt-2 text-xs text-primary">{`Coupon ${couponItem.coupon_code} applied - ${couponItem.discount_percentage}% off!`}</p>
+                            <p className="mt-2 text-xs text-primary">{`Coupon ${couponItem?.coupon_code} applied - ${couponItem?.discount_percentage}% off!`}</p>
                         )}
 
                         <div className="mt-6 space-y-3 border-t border-border pt-6 text-sm">

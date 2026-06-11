@@ -54,7 +54,7 @@ function ComingSoonContainer() {
         © {new Date().getFullYear()} Ansyla Jewels &nbsp;·&nbsp; Coming soon
       </p>
       <p className="mt-2 text-[11px] text-muted-foreground/60 tracking-wide">
-        Created by <a href="www.seegers.net.za">Hanno Seegers</a>
+        Created by <a target="_blank" href="https://seegers.net.za/" rel="noopener noreferrer">Hanno Seegers</a>
       </p>
 
        

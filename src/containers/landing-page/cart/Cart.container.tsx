@@ -17,7 +17,7 @@ function CartContainer() {
 
     const settings = settingsData[0];
 
-    const shippingCost = cartDataSubtotal >= (settings.free_shipping_threshold ?? Infinity)
+    const shippingCost = cartDataSubtotal >= (settings?.free_shipping_threshold ?? Infinity)
         ? 0
         : (settings?.shipping_cost ?? 0);
 

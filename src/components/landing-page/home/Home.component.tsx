@@ -101,8 +101,8 @@ function Home({
 							className="group relative aspect-[4/5] overflow-hidden rounded-sm border border-border"
 						>
 							<img
-								// src={category.image}
-								// alt={category.name}
+								src={category.image}
+								alt={category.name}
 								loading="lazy"
 								className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
 							/>
@@ -138,7 +138,7 @@ function Home({
 					<div className="grid grid-cols-2 gap-x-4 gap-y-10 lg:grid-cols-4">
 						{bestSellers.map((product) => (
 							<ProductCard
-								key={product.id}
+								key={product?.id}
 								currency={settings?.currency}
 								product={product}
 							/>
@@ -158,7 +158,7 @@ function Home({
 				<div className="grid grid-cols-2 gap-x-4 gap-y-10 lg:grid-cols-4">
 					{newArrivals.map((product) => (
 						<ProductCard
-							key={product.id}
+							key={product?.id}
 							currency={settings?.currency}
 							product={product}
 						/>

@@ -13,8 +13,8 @@ function HomeContainer() {
     const { settingsData } = useAppSelector((state) => state.settings)
     const newsletter = useAppSelector((state) => state.newsletter)
 
-    const bestSellers = productData.filter((product) => product.is_best_seller)
-    const newArrivals = productData.filter((product) => product.is_new)
+    const bestSellers = productData.filter((product) => product?.is_best_seller)
+    const newArrivals = productData.filter((product) => product?.is_new)
 
     const [newsletterEmailAddress, setNewsletterEmailAddress] = useState('');
 

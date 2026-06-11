@@ -77,7 +77,7 @@ function CartDrawer() {
                   <div className="flex flex-1 flex-col">
                     <div className="flex justify-between gap-2">
                       <Link
-                        to="/product/$id"
+                        to={`/product/${product?.id}`}
                         onClick={() => handleOnOpenCartDrawerClick(false)}
                         className="font-serif text-base leading-tight hover:text-primary"
                       >

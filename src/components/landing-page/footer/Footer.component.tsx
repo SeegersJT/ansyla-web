@@ -43,19 +43,12 @@ function Footer({
                 <p className="text-xs text-muted-foreground">
                     © {new Date().getFullYear()} ANSYLA Jewels · All rights reserved.
                     <br />
-                    Created by <a href="www.seegers.net.za">Hanno Seegers</a>
+                    Created by <a target="_blank" href="https://seegers.net.za/" rel="noopener noreferrer">Hanno Seegers</a>
                 </p>
-                {/* <div className="flex gap-4 text-muted-foreground">
+                <div className="flex gap-4 text-muted-foreground">
                     <a href="#" aria-label="Instagram" className="hover:text-primary">
-                    <Icon. className="h-5 w-5" />
                     </a>
-                    <a href="#" aria-label="Facebook" className="hover:text-primary">
-                    <Facebook className="h-5 w-5" />
-                    </a>
-                    <a href="#" aria-label="Twitter" className="hover:text-primary">
-                    <Twitter className="h-5 w-5" />
-                    </a>
-                </div> */}
+                </div>
                 </div>
             </div>
         </footer>

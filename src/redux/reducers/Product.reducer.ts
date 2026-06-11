@@ -1,9 +1,9 @@
 import { PRODUCT_ACTIONS } from "../actions/Product.action";
-import type { ProductItem, ProductState } from "../types/Product.type";
+import { defaultProductItem, type ProductItem, type ProductState } from "../types/Product.type";
 
 const initialState: ProductState = {
   productData: [],
-  selectedProduct: null,
+  selectedProduct: defaultProductItem,
   productDataloading: false,
   selectedProductLoading: false,
 }

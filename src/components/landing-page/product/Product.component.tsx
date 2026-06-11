@@ -50,7 +50,7 @@ function Product({
                     onMouseLeave={() => onZoomChange(false)}
                 >
                     <img
-                        src={product?.images[0].url}
+                        src={product?.images[0]?.url}
                         alt={product?.name}
                         className={`h-full w-full object-cover transition-transform duration-500 ${zoom ? "scale-150" : "scale-100"
                             }`}
