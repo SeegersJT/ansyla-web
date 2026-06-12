@@ -42,7 +42,11 @@ export const AppRouter = () => (
         <Route path={'/product/:context'} element={<ProductContainer />} />
         <Route path={'/cart'} element={<CartContainer />} />
 
-        <Route path={'/dashboard'} element={<DashboardContainer />} />
+        <Route path={'/dashboard'} element={<DashboardContainer />}>
+          <Route path={'/login'} element={<LoginContainer />} />
+          <Route path={'/customer'} element={<LoginContainer />} />
+          <Route path={'/admin'} element={<LoginContainer />} />
+        </Route>
       </Route>
 
       <Route path="*" element={<Navigate to={'/'} replace />} />
