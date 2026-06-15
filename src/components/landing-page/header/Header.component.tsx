@@ -58,7 +58,7 @@ function Header({
                         <Icon.Search className="h-5 w-5" />
                     </Link>
 
-                    <Link to="/account" aria-label="Account" className="hidden hover:text-primary sm:block">
+                    <Link to="/dashboard/account" aria-label="Account" className="hidden hover:text-primary sm:block">
                         <Icon.User className="h-5 w-5" />
                     </Link>
 
@@ -91,7 +91,7 @@ function Header({
                     ))}
 
                     <Link
-                        to="/account"
+                        to="/dashboard/account"
                         onClick={() => onMobileOpen(false)}
                         className="py-2 text-sm uppercase tracking-wider text-muted-foreground hover:text-primary"
                     >
