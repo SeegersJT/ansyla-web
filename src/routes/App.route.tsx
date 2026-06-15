@@ -43,9 +43,9 @@ export const AppRouter = () => (
         <Route path={'/cart'} element={<CartContainer />} />
 
         <Route path={'/dashboard'} element={<DashboardContainer />}>
-          <Route path={'/login'} element={<LoginContainer />} />
-          <Route path={'/customer'} element={<LoginContainer />} />
-          <Route path={'/admin'} element={<LoginContainer />} />
+          <Route path={'/account'} element={<AccountContainer />} />
+          {/* <Route path={'/customer'} element={<LoginContainer />} />
+          <Route path={'/admin'} element={<LoginContainer />} /> */}
         </Route>
       </Route>
 
