@@ -30,7 +30,7 @@ export default [
 			prettier,
 		},
 		rules: {
-			'prettier/prettier': ['warn', { endOfLine: 'crlf' }],
+			'prettier/prettier': ['error', { endOfLine: 'crlf' }],
 
 			'@typescript-eslint/no-unused-vars': 'warn',
 			'@typescript-eslint/no-explicit-any': 'warn',
