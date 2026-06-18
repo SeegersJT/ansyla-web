@@ -1,10 +1,7 @@
-import Dashboard from "@/components/landing-page/dashboard/Dashboard.component";
+import Dashboard from '@/components/landing-page/dashboard/Dashboard.component'
 
 function DashboardContainer() {
-
-    return (
-        <Dashboard />
-    )
+	return <Dashboard />
 }
 
-export default DashboardContainer;
+export default DashboardContainer

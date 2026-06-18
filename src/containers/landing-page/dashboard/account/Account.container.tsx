@@ -1,7 +1,7 @@
 import Account from '@/components/landing-page/dashboard/account/Account.component'
 import { useAppDispatch } from '@/hooks/useAppDispatch'
 import { requestFirebaseEmailLogin } from '@/redux/actions/auth.action'
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 function AccountContainer() {
 	const dispatch = useAppDispatch()

@@ -1,4 +1,4 @@
 export interface NewsletterState {
-    isSubscribed: boolean
-    loading: boolean
+	isSubscribed: boolean
+	loading: boolean
 }

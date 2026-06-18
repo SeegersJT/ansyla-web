@@ -1,14 +1,14 @@
-import type { ProductItem } from "./Product.type"
+import type { ProductItem } from './Product.type'
 
 export interface CartItem {
-    product: ProductItem
-    quantity: number
+	product: ProductItem
+	quantity: number
 }
 
 export interface CartState {
-    cartData: CartItem[]
-    cartDataCount: number
-    cartDataSubtotal: number
-    isCartDrawerOpen: boolean
-    cartDataLoading: boolean
+	cartData: CartItem[]
+	cartDataCount: number
+	cartDataSubtotal: number
+	isCartDrawerOpen: boolean
+	cartDataLoading: boolean
 }

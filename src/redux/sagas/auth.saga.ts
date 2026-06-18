@@ -48,7 +48,6 @@ function* handleFirebaseEmailLoginRequest(action: { type: string; payload: Login
 
 	try {
 		const user: User = yield call([authService, authService.login], action.payload)
-		console.log('user', user)
 		yield put(setAuthUser(convertToAuthUser(user)))
 	} catch (err) {
 		const message = err instanceof Error ? err.message : 'Login failed'

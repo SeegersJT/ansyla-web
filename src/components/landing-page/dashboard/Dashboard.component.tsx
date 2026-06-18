@@ -1,11 +1,11 @@
-import { Outlet } from "react-router";
+import { Outlet } from 'react-router'
 
 function Dashboard() {
-    return (
-        <>
-            <Outlet />
-        </>
-    )
+	return (
+		<>
+			<Outlet />
+		</>
+	)
 }
 
-export default Dashboard;
+export default Dashboard

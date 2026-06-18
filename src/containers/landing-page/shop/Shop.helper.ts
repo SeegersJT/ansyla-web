@@ -1,1 +1,1 @@
-export type OrderByItem = "featured" | "newest" | "price-asc" | "price-desc" | "popular";
+export type OrderByItem = 'featured' | 'newest' | 'price-asc' | 'price-desc' | 'popular'

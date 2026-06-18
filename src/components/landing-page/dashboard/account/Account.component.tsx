@@ -1,5 +1,6 @@
 import FieldLabel from '@/components/field-label/FieldLabel.component'
 import { Award, Heart, MapPin, Package, User } from 'lucide-react'
+import type React from 'react'
 
 function Account({
 	selectedMode,
@@ -57,7 +58,9 @@ function Account({
 				</div>
 
 				<form
-					onSubmit={mode === 'login' ? onLoginWithEmailClick : onSignUpWithEmailClick}
+					onSubmit={
+						selectedMode === 'login' ? onLoginWithEmailClick : onSignUpWithEmailClick
+					}
 					className="mt-6 space-y-4"
 				>
 					{selectedMode === 'signup' && (

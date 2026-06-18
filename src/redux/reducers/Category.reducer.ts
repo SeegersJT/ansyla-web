@@ -1,28 +1,28 @@
-import { CATEGORY_ACTIONS } from "../actions/Category.action";
-import type { CategoryItem, CategoryState } from "../types/Category.type";
+import { CATEGORY_ACTIONS } from '../actions/Category.action'
+import type { CategoryItem, CategoryState } from '../types/Category.type'
 
 const initialState: CategoryState = {
-  categoryData: [],
-  categoryDataLoading: false,
+	categoryData: [],
+	categoryDataLoading: false,
 }
 
 type Action = { type: string; payload?: unknown }
 
 export const CategoryReducer = (state = initialState, action: Action): CategoryState => {
-  switch (action.type) {
-    case CATEGORY_ACTIONS.REQUEST_CATEGORY_ITEMS_LOADING:
-      return {
-        ...state,
-        categoryDataLoading: action.payload as boolean,
-      }
+	switch (action.type) {
+		case CATEGORY_ACTIONS.REQUEST_CATEGORY_ITEMS_LOADING:
+			return {
+				...state,
+				categoryDataLoading: action.payload as boolean,
+			}
 
-    case CATEGORY_ACTIONS.SET_CATEGORY_ITEMS:
-      return {
-        ...state,
-        categoryData: action.payload as CategoryItem[],
-      }
+		case CATEGORY_ACTIONS.SET_CATEGORY_ITEMS:
+			return {
+				...state,
+				categoryData: action.payload as CategoryItem[],
+			}
 
-    default:
-      return state
-  }
+		default:
+			return state
+	}
 }

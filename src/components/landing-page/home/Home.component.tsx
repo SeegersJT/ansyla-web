@@ -1,12 +1,13 @@
-import { Link } from "react-router";
-import HeroImage from "@/assets/hero.jpg";
-import type { CategoryItem } from "@/redux/types/Category.type";
-import type { ReasonItem, TestimonialItem } from "@/containers/landing-page/home/Home.helper";
-import type { ProductItem } from "@/redux/types/Product.type";
-import type { Settings } from "@/redux/types/Settings.type";
-import ProductCard from "@/components/product-card/ProductCard.component";
-import { Loader2, Quote, Sparkles } from "lucide-react";
-import type { NewsletterState } from "@/redux/types/Newsletter.type";
+import { Link } from 'react-router'
+import HeroImage from '@/assets/hero.jpg'
+import type { CategoryItem } from '@/redux/types/Category.type'
+import type { ReasonItem, TestimonialItem } from '@/containers/landing-page/home/Home.helper'
+import type { ProductItem } from '@/redux/types/Product.type'
+import type { Settings } from '@/redux/types/Settings.type'
+import ProductCard from '@/components/product-card/ProductCard.component'
+import { Loader2, Quote, Sparkles } from 'lucide-react'
+import type { NewsletterState } from '@/redux/types/Newsletter.type'
+import type React from 'react'
 
 function Home({
 	categoryData,
@@ -55,7 +56,7 @@ function Home({
 								</p>
 
 								<h1 className="font-serif text-5xl leading-[1.05] sm:text-6xl lg:text-7xl">
-									Timeless Beauty,{" "}
+									Timeless Beauty,{' '}
 									<span className="text-gradient-gold">Precious You</span>
 								</h1>
 
@@ -88,13 +89,11 @@ function Home({
 			{/* Categories */}
 			<section className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
 				<div className="mb-12 text-center">
-					<p className="text-xs uppercase tracking-luxe text-primary">
-						Explore
-					</p>
+					<p className="text-xs uppercase tracking-luxe text-primary">Explore</p>
 					<h2 className="mt-3 font-serif text-4xl">Featured Collections</h2>
 				</div>
 				<div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-					{categoryData.map((category) => (
+					{categoryData.map(category => (
 						<Link
 							key={category.name}
 							to="/shop"
@@ -123,9 +122,7 @@ function Home({
 				<div className="mx-auto max-w-7xl px-4 sm:px-6">
 					<div className="mb-12 flex items-end justify-between">
 						<div>
-							<p className="text-xs uppercase tracking-luxe text-primary">
-								Adored
-							</p>
+							<p className="text-xs uppercase tracking-luxe text-primary">Adored</p>
 							<h2 className="mt-3 font-serif text-4xl">Best Sellers</h2>
 						</div>
 						<Link
@@ -136,7 +133,7 @@ function Home({
 						</Link>
 					</div>
 					<div className="grid grid-cols-2 gap-x-4 gap-y-10 lg:grid-cols-4">
-						{bestSellers.map((product) => (
+						{bestSellers.map(product => (
 							<ProductCard
 								key={product?.id}
 								currency={settings?.currency}
@@ -150,13 +147,11 @@ function Home({
 			{/* New Arrivals */}
 			<section className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
 				<div className="mb-12 text-center">
-					<p className="text-xs uppercase tracking-luxe text-primary">
-						Just In
-					</p>
+					<p className="text-xs uppercase tracking-luxe text-primary">Just In</p>
 					<h2 className="mt-3 font-serif text-4xl">New Arrivals</h2>
 				</div>
 				<div className="grid grid-cols-2 gap-x-4 gap-y-10 lg:grid-cols-4">
-					{newArrivals.map((product) => (
+					{newArrivals.map(product => (
 						<ProductCard
 							key={product?.id}
 							currency={settings?.currency}
@@ -173,12 +168,10 @@ function Home({
 						<p className="text-xs uppercase tracking-luxe text-primary">
 							The ANSYLA Promise
 						</p>
-						<h2 className="mt-3 font-serif text-4xl">
-							Why Choose ANSYLA Jewels
-						</h2>
+						<h2 className="mt-3 font-serif text-4xl">Why Choose ANSYLA Jewels</h2>
 					</div>
 					<div className="grid grid-cols-2 gap-8 md:grid-cols-5">
-						{reasons.map((reason) => (
+						{reasons.map(reason => (
 							<div
 								key={reason.title}
 								className="flex flex-col items-center text-center"
@@ -197,13 +190,11 @@ function Home({
 			{/* Testimonials */}
 			<section className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
 				<div className="mb-12 text-center">
-					<p className="text-xs uppercase tracking-luxe text-primary">
-						Loved By
-					</p>
+					<p className="text-xs uppercase tracking-luxe text-primary">Loved By</p>
 					<h2 className="mt-3 font-serif text-4xl">Words From Our Circle</h2>
 				</div>
 				<div className="grid gap-6 md:grid-cols-3">
-					{testimonials.map((testimonial) => (
+					{testimonials.map(testimonial => (
 						<div
 							key={testimonial.name}
 							className="rounded-sm border border-primary/30 bg-card p-8 shadow-gold"
@@ -212,7 +203,9 @@ function Home({
 							<p className="mt-5 text-sm leading-relaxed text-foreground/90">
 								"{testimonial.text}"
 							</p>
-							<p className="mt-6 font-serif text-lg text-primary">{testimonial.name}</p>
+							<p className="mt-6 font-serif text-lg text-primary">
+								{testimonial.name}
+							</p>
 							<p className="text-xs uppercase tracking-wider text-muted-foreground">
 								{testimonial.city}
 							</p>
@@ -225,12 +218,9 @@ function Home({
 			<section className="border-t border-border bg-gradient-to-b from-card to-background py-24">
 				<div className="mx-auto max-w-2xl px-6 text-center">
 					<Sparkles className="mx-auto h-8 w-8 text-primary" />
-					<h2 className="mt-5 font-serif text-4xl">
-						Become Part of the ANSYLA Circle
-					</h2>
+					<h2 className="mt-5 font-serif text-4xl">Become Part of the ANSYLA Circle</h2>
 					<p className="mt-4 text-muted-foreground">
-						Exclusive offers, private previews, and first access to new
-						collections.
+						Exclusive offers, private previews, and first access to new collections.
 					</p>
 
 					{newsletter.isSubscribed ? (
@@ -238,12 +228,15 @@ function Home({
 							Welcome to the circle ✦
 						</p>
 					) : (
-						<form onSubmit={onSubscribeToNewsletter} className="mx-auto mt-8 flex max-w-md gap-2">
+						<form
+							onSubmit={onSubscribeToNewsletter}
+							className="mx-auto mt-8 flex max-w-md gap-2"
+						>
 							<input
 								type="email"
 								required
 								value={newsletterEmailAddress}
-								onChange={(e) => onNewsletterEmailChange(e.target.value)}
+								onChange={e => onNewsletterEmailChange(e.target.value)}
 								placeholder="Your email address"
 								disabled={newsletter.loading}
 								className="flex-1 border border-border bg-background px-4 py-3 text-sm outline-none focus:border-primary disabled:opacity-50"
@@ -256,16 +249,15 @@ function Home({
 								{newsletter.loading ? (
 									<Loader2 className="h-6 w-6 animate-spin" />
 								) : (
-									"Join"
+									'Join'
 								)}
 							</button>
 						</form>
 					)}
-
 				</div>
 			</section>
 		</div>
-	);
+	)
 }
 
-export default Home;
+export default Home
