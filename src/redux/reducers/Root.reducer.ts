@@ -6,15 +6,17 @@ import { SettingsReducer } from './Settings.reducer'
 import { NewsLetterReducer } from './Newsletter.reduce'
 import { CartReducer } from './Cart.reducer'
 import { CouponReducer } from './Coupon.reducer'
+import { AuthReducer } from './auth.reducer'
 
 export const RootReducer = combineReducers({
-  system: combineReducers({
-    notification: notificationReducer
-  }),
-  settings: SettingsReducer,
-  newsletter: NewsLetterReducer,
-  category: CategoryReducer,
-  product: ProductReducer,
-  cart: CartReducer,
-  coupon: CouponReducer
+	system: combineReducers({
+		notification: notificationReducer,
+	}),
+	auth: AuthReducer,
+	settings: SettingsReducer,
+	newsletter: NewsLetterReducer,
+	category: CategoryReducer,
+	product: ProductReducer,
+	cart: CartReducer,
+	coupon: CouponReducer,
 })
