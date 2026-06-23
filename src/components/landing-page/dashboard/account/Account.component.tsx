@@ -1,167 +1,105 @@
-import FieldLabel from '@/components/field-label/FieldLabel.component'
-import { Award, Heart, MapPin, Package, User } from 'lucide-react'
-import type React from 'react'
+import type { User } from 'firebase/auth'
+import { LogOut, ShieldCheck } from 'lucide-react'
+import { Link } from 'react-router'
 
-function Account({
-	selectedMode,
-	fullName,
-	email,
-	password,
-	error,
-	accountLoading,
-	onSelectedModeClick,
-	onFullNameChange,
-	onEmailChange,
-	onPasswordChange,
-	onLoginWithEmailClick,
-	onSignUpWithEmailClick,
-	onLoginWithGoogleClick,
-}: {
-	selectedMode: 'login' | 'signup'
-	fullName: string
-	email: string
-	password: string
-	error: string
-	accountLoading: boolean
-	onSelectedModeClick: (mode: 'login' | 'signup') => void
-	onFullNameChange: (value: string) => void
-	onEmailChange: (value: string) => void
-	onPasswordChange: (value: string) => void
-	onLoginWithEmailClick: (event: React.SubmitEvent) => void
-	onSignUpWithEmailClick: (event: React.SubmitEvent) => void
-	onLoginWithGoogleClick: () => void
-}) {
+function Account({ user }: { user: User }) {
 	return (
-		<div className="mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:px-6 lg:grid-cols-2">
-			<div className="mx-auto w-full max-w-md">
-				<div className="text-center">
-					<p className="text-xs uppercase tracking-luxe text-primary">ANSYLA Circle</p>
-					<h1 className="mt-3 font-serif text-4xl">
-						{selectedMode === 'login' ? 'Welcome Back' : 'Create Account'}
-					</h1>
+		<div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+			<div className="flex flex-wrap items-end justify-between gap-4 border-b border-border pb-6">
+				<div>
+					<p className="text-xs uppercase tracking-luxe text-primary">My Account</p>
+					<h1 className="mt-2 font-serif text-4xl">Hello, {user?.displayName}</h1>
 				</div>
-
-				<div className="mt-8 flex border border-border">
-					{(['login', 'signup'] as const).map(mode => (
-						<button
-							key={mode}
-							onClick={() => onSelectedModeClick(mode)}
-							className={`flex-1 py-3 text-xs uppercase tracking-luxe transition-colors ${
-								selectedMode === mode
-									? 'bg-gradient-gold text-primary-foreground'
-									: 'text-muted-foreground'
-							}`}
+				<div className="flex items-center gap-3">
+					{/* {user?.role === 'admin' && (
+						<Link
+							to="/admin"
+							className="flex items-center gap-2 border border-primary/40 px-4 py-2 text-xs uppercase tracking-wider text-primary hover:bg-primary/10"
 						>
-							{mode === 'login' ? 'Login' : 'Sign Up'}
-						</button>
-					))}
-				</div>
-
-				<form
-					onSubmit={
-						selectedMode === 'login' ? onLoginWithEmailClick : onSignUpWithEmailClick
-					}
-					className="mt-6 space-y-4"
-				>
-					{selectedMode === 'signup' && (
-						<FieldLabel
-							label="Full Name"
-							value={fullName}
-							onChange={onFullNameChange}
-						/>
-					)}
-
-					<FieldLabel
-						label="Email Address"
-						type="email"
-						value={email}
-						onChange={onEmailChange}
-					/>
-					<FieldLabel
-						label="Password"
-						type="password"
-						value={password}
-						onChange={onPasswordChange}
-					/>
-
-					{selectedMode === 'login' && (
-						<div className="text-right">
-							<button
-								type="button"
-								className="text-xs text-muted-foreground hover:text-primary"
-							>
-								Forgot password?
-							</button>
-						</div>
-					)}
-
-					{error && <p className="text-xs text-destructive">{error}</p>}
-
+							<ShieldCheck className="h-4 w-4" /> Admin
+						</Link>
+					)} */}
 					<button
-						disabled={accountLoading}
-						className="w-full bg-gradient-gold py-3.5 text-xs font-medium uppercase tracking-luxe text-primary-foreground disabled:opacity-60"
+						// onClick={logout}
+						className="flex items-center gap-2 border border-border px-4 py-2 text-xs uppercase tracking-wider text-muted-foreground hover:border-primary hover:text-primary"
 					>
-						{accountLoading
-							? 'Please wait…'
-							: selectedMode === 'login'
-								? 'Login'
-								: 'Create Account'}
+						<LogOut className="h-4 w-4" /> Logout
 					</button>
-				</form>
-
-				<div className="my-6 flex items-center gap-3 text-xs text-muted-foreground">
-					<span className="h-px flex-1 bg-border" /> or{' '}
-					<span className="h-px flex-1 bg-border" />
 				</div>
-
-				<button
-					type="button"
-					onClick={onLoginWithGoogleClick}
-					disabled={accountLoading}
-					className="flex w-full items-center justify-center gap-3 border border-border py-3 text-sm hover:border-primary disabled:opacity-60"
-				>
-					<span className="font-serif text-base text-primary">G</span> Continue with
-					Google
-				</button>
 			</div>
 
-			{/* Benefits preview */}
-			<div className="space-y-6">
-				<div className="border border-primary/30 bg-card p-6 shadow-gold">
-					<div className="flex items-center gap-3">
-						<Award className="h-7 w-7 text-primary" />
-						<div>
-							<p className="font-serif text-2xl">ANSYLA Rewards</p>
-							<p className="text-xs uppercase tracking-wider text-primary">
-								Earn points on every purchase
-							</p>
-						</div>
-					</div>
-					<p className="mt-4 text-sm text-muted-foreground">
-						Join the ANSYLA Circle for early access to collections, complimentary
-						engraving, and exclusive member events across South Africa.
-					</p>
-				</div>
-
-				<div className="grid grid-cols-2 gap-4">
-					{[
-						{ icon: Package, label: 'Track Orders' },
-						{ icon: MapPin, label: 'Saved Addresses' },
-						{ icon: Heart, label: 'Wishlist' },
-						{ icon: User, label: 'Profile' },
-					].map(item => (
-						<div
-							key={item.label}
-							className="flex flex-col items-center gap-3 border border-border bg-card p-6 text-center"
+			<div className="mt-8 grid gap-8 lg:grid-cols-[220px_1fr]">
+				{/* Side nav */}
+				<nav className="flex gap-2 overflow-x-auto lg:flex-col lg:overflow-visible">
+					{/* {tabs.map(t => (
+						<button
+							key={t.id}
+							onClick={() => setTab(t.id)}
+							className={`flex shrink-0 items-center gap-3 px-4 py-3 text-left text-sm transition-colors ${
+								tab === t.id
+									? 'bg-gradient-gold text-primary-foreground'
+									: 'border border-border text-muted-foreground hover:border-primary hover:text-primary'
+							}`}
 						>
-							<item.icon className="h-6 w-6 text-primary" />
-							<span className="text-sm">{item.label}</span>
-						</div>
-					))}
+							<t.icon className="h-4 w-4" /> {t.label}
+						</button>
+					))} */}
+				</nav>
+
+				<div>
+					{/* {tab === 'overview' && <Overview onSeeOrders={() => setTab('orders')} />}
+					{tab === 'orders' && <Orders />}
+					{tab === 'wishlist' && <Wishlist />}
+					{tab === 'addresses' && <Addresses />}
+					{tab === 'profile' && <Profile />} */}
 				</div>
 			</div>
 		</div>
 	)
 }
+
+// function Overview({ onSeeOrders }: { onSeeOrders: () => void }) {
+// 	const totalSpent = myOrders.reduce((s, o) => s + o.total, 0)
+// 	return (
+// 		<div className="space-y-6">
+// 			<div className="border border-primary/30 bg-card p-6 shadow-gold">
+// 				<div className="flex items-center gap-3">
+// 					<Award className="h-7 w-7 text-primary" />
+// 					<div>
+// 						<p className="font-serif text-2xl">ANSYLA Rewards</p>
+// 						<p className="text-xs uppercase tracking-wider text-primary">
+// 							{mockProfile.tier} Member
+// 						</p>
+// 					</div>
+// 				</div>
+// 				<div className="mt-5">
+// 					<div className="flex justify-between text-xs text-muted-foreground">
+// 						<span>{mockProfile.points.toLocaleString()} pts</span>
+// 						<span>Platinum at 2 000</span>
+// 					</div>
+// 					<div className="mt-2 h-2 overflow-hidden rounded-full bg-secondary">
+// 						<div
+// 							className="h-full bg-gradient-gold"
+// 							style={{ width: `${(mockProfile.points / 2000) * 100}%` }}
+// 						/>
+// 					</div>
+// 				</div>
+// 			</div>
+
+// 			<div className="grid gap-4 sm:grid-cols-3">
+// 				<Stat label="Orders" value={String(myOrders.length)} />
+// 				<Stat label="Total Spent" value={formatZAR(totalSpent)} />
+// 				<Stat label="Member Since" value={mockProfile.memberSince} />
+// 			</div>
+
+// 			<button
+// 				onClick={onSeeOrders}
+// 				className="w-full bg-gradient-gold py-3.5 text-xs font-medium uppercase tracking-luxe text-primary-foreground"
+// 			>
+// 				View Order History
+// 			</button>
+// 		</div>
+// 	)
+// }
 
 export default Account

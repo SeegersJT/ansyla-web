@@ -8,7 +8,9 @@ import ProductContainer from '@/containers/landing-page/product/Product.containe
 import CartDrawer from '@/components/cart-drawer/CartDrawer.component'
 import CartContainer from '@/containers/landing-page/cart/Cart.container'
 import ScrollToTop from '@/components/scroll-to-top/ScrollToTop.component'
+import AuthenticationContainer from '@/containers/landing-page/dashboard/authentication/Authentication.container'
 import AccountContainer from '@/containers/landing-page/dashboard/account/Account.container'
+import ProtectedRoute from '@/components/protected-route/ProtectRoute.component'
 
 export const AppRouter = () => (
 	<BrowserRouter>
@@ -24,9 +26,12 @@ export const AppRouter = () => (
 				<Route path={'/cart'} element={<CartContainer />} />
 
 				<Route path="/dashboard" element={<DashboardContainer />}>
-					<Route path={'account'} element={<AccountContainer />} />
-					{/* <Route path={'/customer'} element={<LoginContainer />} /> */}
-					{/* <Route path={'/admin'} element={<LoginContainer />} /> */}
+					<Route index element={<AuthenticationContainer />} />
+
+					<Route element={<ProtectedRoute />}>
+						<Route path={'account'} element={<AccountContainer />} />
+						{/* <Route path={'/admin'} element={<LoginContainer />} /> */}
+					</Route>
 				</Route>
 			</Route>
 
