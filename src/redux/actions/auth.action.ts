@@ -1,4 +1,9 @@
-import type { AuthUser, LoginCredentials, RegisterCredentials } from '../types/auth.type'
+import type {
+	AuthUser,
+	AuthUserDetails,
+	LoginCredentials,
+	RegisterCredentials,
+} from '../types/auth.type'
 
 export const AUTH_ACTIONS = {
 	REQUEST_FIREBASE_EMAIL_LOGIN: '[AUTH] - FIREBASE EMAIL LOGIN - REQUEST',
@@ -10,6 +15,10 @@ export const AUTH_ACTIONS = {
 	SET_AUTH_USER: '[AUTH] - AUTH USER - SET',
 	SET_INITIALIZED: '[AUTH] - INITIALIZED - SET',
 	SET_ERROR_MESSAGE: '[AUTH] - ERROR MESSAGE - SET',
+
+	REQUEST_AUTH_USER_DETAILS: '[AUTH] - AUTH USER DETAILS - REQUEST',
+	REQUEST_AUTH_USER_DETAILS_LOADING: '[AUTH] - AUTH USER DETAILS - REQUEST - LOADING',
+	SET_AUTH_USER_DETAILS: '[AUTH] - AUTH USER DETAILS - SET',
 } as const
 
 export const requestFirebaseEmailLogin = (payload: LoginCredentials) => ({
@@ -45,4 +54,19 @@ export const setInitialized = (initialized: boolean) => ({
 export const setErrorMessage = (message: string) => ({
 	type: AUTH_ACTIONS.SET_ERROR_MESSAGE,
 	payload: message,
+})
+
+export const requestAuthUserDetails = (uid: string | null) => ({
+	type: AUTH_ACTIONS.REQUEST_AUTH_USER_DETAILS,
+	payload: uid,
+})
+
+export const requestAuthUserDetailsLoading = (loading: boolean) => ({
+	type: AUTH_ACTIONS.REQUEST_AUTH_USER_DETAILS_LOADING,
+	payload: loading,
+})
+
+export const setAuthUserDetails = (userDetails: AuthUserDetails) => ({
+	type: AUTH_ACTIONS.SET_AUTH_USER_DETAILS,
+	payload: userDetails,
 })

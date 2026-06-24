@@ -11,6 +11,7 @@ import {
 	setInitialized,
 } from '../actions/auth.action'
 import type { User } from 'firebase/auth'
+import { navigate } from '@/utils/Navigator'
 
 const convertToAuthUser = (user: User): AuthUser => ({
 	uid: user.uid,
@@ -49,10 +50,24 @@ function* handleFirebaseEmailLoginRequest(action: { type: string; payload: Login
 	try {
 		const user: User = yield call([authService, authService.login], action.payload)
 		yield put(setAuthUser(convertToAuthUser(user)))
+		yield put(
+			addSystemNotification({
+				type: 'success',
+				title: 'Login',
+				message: 'Successfully Logged into ANSYLA Jewels',
+			})
+		)
+		yield call(navigate, '/dashboard/account')
 	} catch (err) {
 		const message = err instanceof Error ? err.message : 'Login failed'
 		yield put(setErrorMessage(message))
-		yield put(addSystemNotification({ type: 'error', title: 'Login', message }))
+		yield put(
+			addSystemNotification({
+				type: 'error',
+				title: 'Login',
+				message: 'Failed to Log into Ansyla Jewels',
+			})
+		)
 	} finally {
 		yield put(requestFirebaseEmailLoginLoading(false))
 	}

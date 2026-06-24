@@ -18,6 +18,10 @@ export class Utils {
 		return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`
 	}
 
+	static formatDateReadable(date: Date, options?: Intl.DateTimeFormatOptions): string {
+		return new Intl.DateTimeFormat('en-ZA', { ...options }).format(date)
+	}
+
 	static formatPrice(amount: number, currency: string = 'ZAR'): string {
 		return new Intl.NumberFormat('en-ZA', {
 			style: 'currency',

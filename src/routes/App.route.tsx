@@ -11,6 +11,12 @@ import ScrollToTop from '@/components/scroll-to-top/ScrollToTop.component'
 import AuthenticationContainer from '@/containers/landing-page/dashboard/authentication/Authentication.container'
 import AccountContainer from '@/containers/landing-page/dashboard/account/Account.container'
 import ProtectedRoute from '@/components/protected-route/ProtectRoute.component'
+import OverviewContainer from '@/containers/landing-page/dashboard/account/overview/Overview.container'
+import OrdersContainer from '@/containers/landing-page/dashboard/account/orders/Orders.container'
+import WishlistContainer from '@/containers/landing-page/dashboard/account/wishlist/Wishlist.container'
+import AddressesContainer from '@/containers/landing-page/dashboard/account/addresses/Addresses.container'
+import ProfileContainer from '@/containers/landing-page/dashboard/account/profile/Profile.container'
+import { NavigateInjector } from '@/components/navigate-injector/NavigateInjector.component'
 
 export const AppRouter = () => (
 	<BrowserRouter>
@@ -29,8 +35,22 @@ export const AppRouter = () => (
 					<Route index element={<AuthenticationContainer />} />
 
 					<Route element={<ProtectedRoute />}>
-						<Route path={'account'} element={<AccountContainer />} />
-						{/* <Route path={'/admin'} element={<LoginContainer />} /> */}
+						<Route path={'account'} element={<AccountContainer />}>
+							<Route index element={<Navigate to="overview" replace />} />
+							<Route path="overview" element={<OverviewContainer />} />
+							<Route path="orders" element={<OrdersContainer />} />
+							<Route path="wishlist" element={<WishlistContainer />} />
+							<Route path="addresses" element={<AddressesContainer />} />
+							<Route path="profile" element={<ProfileContainer />} />
+						</Route>
+
+						{/* <Route path={'admin'} element={<AdminContainer />}>
+							<Route index element={<Navigate to="overview" replace />} />
+							<Route path="overview" element={<AdminOverviewContainer />} />
+							<Route path="stock" element={<AdminStockContainer />} />
+							<Route path="orders" element={<AdminOrdersContainer />} />
+							<Route path="customers" element={<AdminCustomersContainer />} />
+						</Route> */}
 					</Route>
 				</Route>
 			</Route>
@@ -40,5 +60,6 @@ export const AppRouter = () => (
 
 		<CartDrawer />
 		<ScrollToTop />
+		<NavigateInjector />
 	</BrowserRouter>
 )
