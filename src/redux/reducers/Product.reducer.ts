@@ -6,6 +6,9 @@ const initialState: ProductState = {
 	selectedProduct: defaultProductItem,
 	productDataloading: false,
 	selectedProductLoading: false,
+	addProductLoading: false,
+	updateProductLoading: false,
+	removeProductLoading: false,
 }
 
 type Action = { type: string; payload?: unknown }
@@ -34,6 +37,24 @@ export const ProductReducer = (state = initialState, action: Action): ProductSta
 			return {
 				...state,
 				selectedProduct: action.payload as ProductItem,
+			}
+
+		case PRODUCT_ACTIONS.REQUEST_ADD_PRODUCT_LOADING:
+			return {
+				...state,
+				addProductLoading: action.payload as boolean,
+			}
+
+		case PRODUCT_ACTIONS.REQUEST_UPDATE_PRODUCT_LOADING:
+			return {
+				...state,
+				updateProductLoading: action.payload as boolean,
+			}
+
+		case PRODUCT_ACTIONS.REQUEST_REMOVE_PRODUCT_LOADING:
+			return {
+				...state,
+				removeProductLoading: action.payload as boolean,
 			}
 
 		default:

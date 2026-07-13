@@ -3,6 +3,7 @@ import { useAppDispatch } from '@/hooks/useAppDispatch'
 import { useAppSelector } from '@/hooks/useAppSelector'
 import { addToCart, setCartDrawerOpen } from '@/redux/actions/Cart.action'
 import { requestProductByProductNo } from '@/redux/actions/Product.action'
+import { requestToggleWishlistItem } from '@/redux/actions/Wishlist.action'
 import type { ProductItem } from '@/redux/types/Product.type'
 import { Utils } from '@/utils/Utils'
 import { useEffect, useState } from 'react'
@@ -13,14 +14,15 @@ function ProductContainer() {
 
 	const { selectedProduct } = useAppSelector(state => state.product)
 	const { settingsData } = useAppSelector(state => state.settings)
+	const { productIds } = useAppSelector(state => state.wishlist)
 
 	const { context } = useParams<{ context: string }>()
 
 	const [zoom, setZoom] = useState<boolean>(false)
 	const [selectedQuantity, setSelectedQuantity] = useState<number>(1)
-	const [addedToWishList, setAddedToWishList] = useState<boolean>(false)
 
 	const stockAvailibility = Utils.calculateStockAvailability(selectedProduct?.stock)
+	const addedToWishList = productIds.includes(selectedProduct?.id)
 
 	const handleOnZoomChange = (value: boolean) => {
 		setZoom(value)
@@ -31,7 +33,7 @@ function ProductContainer() {
 	}
 
 	const handleOnAddToWishListClick = () => {
-		setAddedToWishList(!addedToWishList)
+		dispatch(requestToggleWishlistItem(selectedProduct.id))
 	}
 
 	const handleOnAddToCartClick = (product: ProductItem, selectedQuantity: number) => {

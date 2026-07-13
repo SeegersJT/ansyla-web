@@ -4,6 +4,7 @@ import type { Settings, SettingsState } from '../types/Settings.type'
 const initialState: SettingsState = {
 	settingsData: [],
 	settingsDataLoading: false,
+	updateSettingsLoading: false,
 }
 
 type Action = { type: string; payload?: unknown }
@@ -20,6 +21,12 @@ export const SettingsReducer = (state = initialState, action: Action): SettingsS
 			return {
 				...state,
 				settingsData: action.payload as Settings[],
+			}
+
+		case SETTINGS_ACTIONS.REQUEST_UPDATE_SETTINGS_LOADING:
+			return {
+				...state,
+				updateSettingsLoading: action.payload as boolean,
 			}
 
 		default:

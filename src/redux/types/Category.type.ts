@@ -1,5 +1,5 @@
 export interface CategoryItem {
-	id: string | null
+	id: string
 	category_no: string | null
 	category_sequence: number | null
 	name: string | undefined
@@ -14,4 +14,7 @@ export interface CategoryItem {
 export interface CategoryState {
 	categoryData: CategoryItem[]
 	categoryDataLoading: boolean
+	addCategoryLoading: boolean
+	updateCategoryLoading: boolean
+	removeCategoryLoading: boolean
 }

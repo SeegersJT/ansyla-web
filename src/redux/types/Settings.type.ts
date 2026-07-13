@@ -18,6 +18,7 @@ export interface OrderStatus {
 }
 
 export interface Settings {
+	id: string
 	currency: string
 	currency_symbol: string | null
 	prefixes: SettingsPrefix
@@ -31,4 +32,5 @@ export interface Settings {
 export interface SettingsState {
 	settingsData: Settings[]
 	settingsDataLoading: boolean
+	updateSettingsLoading: boolean
 }

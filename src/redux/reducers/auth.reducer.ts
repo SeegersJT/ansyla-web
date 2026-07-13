@@ -1,10 +1,12 @@
 import { AUTH_ACTIONS } from '../actions/auth.action'
-import type { AuthState, AuthUser } from '../types/auth.type'
+import type { AuthState, AuthUser, AuthUserDetails } from '../types/auth.type'
 
 const initialState: AuthState = {
 	user: null,
 	initialized: false,
 	loading: false,
+	detailsLoading: false,
+	logoutLoading: false,
 	error: null,
 }
 
@@ -18,11 +20,26 @@ export const AuthReducer = (state = initialState, action: Action): AuthState => 
 				loading: action.payload as boolean,
 			}
 
+		case AUTH_ACTIONS.REQUEST_AUTH_USER_DETAILS_LOADING:
+			return {
+				...state,
+				detailsLoading: action.payload as boolean,
+			}
+
 		case AUTH_ACTIONS.SET_AUTH_USER:
 			return {
 				...state,
 				user: action.payload as AuthUser | null,
 			}
+
+		case AUTH_ACTIONS.SET_AUTH_USER_DETAILS: {
+			const user_details = action.payload as AuthUserDetails | null
+
+			return {
+				...state,
+				user: state.user ? { ...state.user, user_details } : state.user,
+			}
+		}
 
 		case AUTH_ACTIONS.SET_INITIALIZED:
 			return {
@@ -34,6 +51,12 @@ export const AuthReducer = (state = initialState, action: Action): AuthState => 
 			return {
 				...state,
 				error: action.payload as string | null,
+			}
+
+		case AUTH_ACTIONS.REQUEST_LOGOUT_LOADING:
+			return {
+				...state,
+				logoutLoading: action.payload as boolean,
 			}
 
 		default:

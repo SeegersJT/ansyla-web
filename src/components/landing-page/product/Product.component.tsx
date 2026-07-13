@@ -117,7 +117,7 @@ function Product({
 						</div>
 						<button
 							onClick={onAddToWishlistClick}
-							className="flex h-12 w-12 items-center justify-center border border-border hover:border-primary"
+							className="flex h-12 w-12 items-center justify-center border border-border hover:border-primary hover:cursor-pointer"
 							aria-label="Wishlist"
 						>
 							<Heart
@@ -126,10 +126,10 @@ function Product({
 						</button>
 					</div>
 
-					<div className="mt-5 flex flex-col gap-3 sm:flex-row">
+					<div className="mt-5 flex flex-col gap-3 sm:flex-row ">
 						<button
 							onClick={() => onAddToCartClick(product, selectedQuantity)}
-							className="flex-1 bg-gradient-gold py-3.5 text-xs font-medium uppercase tracking-luxe text-primary-foreground transition-opacity hover:opacity-90"
+							className="flex-1 bg-gradient-gold py-3.5 text-xs font-medium uppercase tracking-luxe text-primary-foreground hover:cursor-pointer transition-opacity hover:opacity-90"
 						>
 							Add to Cart
 						</button>

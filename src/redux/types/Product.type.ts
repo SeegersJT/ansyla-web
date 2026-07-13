@@ -63,4 +63,7 @@ export interface ProductState {
 	selectedProduct: ProductItem
 	productDataloading: boolean
 	selectedProductLoading: boolean
+	addProductLoading: boolean
+	updateProductLoading: boolean
+	removeProductLoading: boolean
 }

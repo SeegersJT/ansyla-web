@@ -1,7 +1,9 @@
 import { Link } from 'react-router'
-import { Eye, ShoppingBag } from 'lucide-react'
+import { Eye, Heart, ShoppingBag } from 'lucide-react'
 import { useAppDispatch } from '@/hooks/useAppDispatch'
+import { useAppSelector } from '@/hooks/useAppSelector'
 import { addToCart, setCartDrawerOpen } from '@/redux/actions/Cart.action'
+import { requestToggleWishlistItem } from '@/redux/actions/Wishlist.action'
 import type { ProductItem } from '@/redux/types/Product.type'
 import StarRating from '../star-rating/StarRating.component'
 import { Utils } from '@/utils/Utils'
@@ -9,9 +11,15 @@ import { Utils } from '@/utils/Utils'
 function ProductCard({ currency, product }: { currency: string; product: ProductItem }) {
 	const dispatch = useAppDispatch()
 
+	const isWishlisted = useAppSelector(state => state.wishlist.productIds.includes(product.id))
+
 	const handleOnAddCartItemClick = (product: ProductItem, quantity: number) => {
 		dispatch(setCartDrawerOpen(true))
 		dispatch(addToCart(product, quantity))
+	}
+
+	const handleOnWishlistToggleClick = () => {
+		dispatch(requestToggleWishlistItem(product.id))
 	}
 
 	return (
@@ -41,10 +49,20 @@ function ProductCard({ currency, product }: { currency: string; product: Product
 					)}
 				</div>
 
+				<button
+					onClick={handleOnWishlistToggleClick}
+					className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full hover:cursor-pointer border border-border bg-background/70 backdrop-blur transition-colors hover:border-primary"
+					aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
+				>
+					<Heart
+						className={`h-4 w-4 ${isWishlisted ? 'fill-primary text-primary' : 'text-foreground'}`}
+					/>
+				</button>
+
 				<div className="absolute inset-x-3 bottom-3 flex translate-y-3 gap-2 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
 					<button
 						onClick={() => handleOnAddCartItemClick(product, 1)}
-						className="flex flex-1 items-center justify-center gap-2 bg-gradient-gold py-2.5 text-xs font-medium uppercase tracking-wider text-primary-foreground transition-opacity hover:opacity-90"
+						className="flex flex-1 items-center justify-center hover:cursor-pointer gap-2 bg-gradient-gold py-2.5 text-xs font-medium uppercase tracking-wider text-primary-foreground transition-opacity hover:opacity-90"
 					>
 						<ShoppingBag className="h-3.5 w-3.5" /> Add
 					</button>

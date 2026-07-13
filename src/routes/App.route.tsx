@@ -11,12 +11,20 @@ import ScrollToTop from '@/components/scroll-to-top/ScrollToTop.component'
 import AuthenticationContainer from '@/containers/landing-page/dashboard/authentication/Authentication.container'
 import AccountContainer from '@/containers/landing-page/dashboard/account/Account.container'
 import ProtectedRoute from '@/components/protected-route/ProtectRoute.component'
+import AdminProtectRoute from '@/components/admin-protect-route/AdminProtectRoute.component'
 import OverviewContainer from '@/containers/landing-page/dashboard/account/overview/Overview.container'
 import OrdersContainer from '@/containers/landing-page/dashboard/account/orders/Orders.container'
 import WishlistContainer from '@/containers/landing-page/dashboard/account/wishlist/Wishlist.container'
 import AddressesContainer from '@/containers/landing-page/dashboard/account/addresses/Addresses.container'
 import ProfileContainer from '@/containers/landing-page/dashboard/account/profile/Profile.container'
+import AdminContainer from '@/containers/landing-page/dashboard/admin/Admin.container'
+import AdminOverviewContainer from '@/containers/landing-page/dashboard/admin/overview/Overview.container'
+import AdminStockContainer from '@/containers/landing-page/dashboard/admin/stock/Stock.container'
+import AdminOrdersContainer from '@/containers/landing-page/dashboard/admin/orders/Orders.container'
+import AdminCustomersContainer from '@/containers/landing-page/dashboard/admin/customers/Customers.container'
 import { NavigateInjector } from '@/components/navigate-injector/NavigateInjector.component'
+import AdminCategoriesContainer from '@/containers/landing-page/dashboard/admin/categories/Categories.containers'
+import AdminSettingsContainer from '@/containers/landing-page/dashboard/admin/settings/Settings.container'
 
 export const AppRouter = () => (
 	<BrowserRouter>
@@ -44,13 +52,17 @@ export const AppRouter = () => (
 							<Route path="profile" element={<ProfileContainer />} />
 						</Route>
 
-						{/* <Route path={'admin'} element={<AdminContainer />}>
-							<Route index element={<Navigate to="overview" replace />} />
-							<Route path="overview" element={<AdminOverviewContainer />} />
-							<Route path="stock" element={<AdminStockContainer />} />
-							<Route path="orders" element={<AdminOrdersContainer />} />
-							<Route path="customers" element={<AdminCustomersContainer />} />
-						</Route> */}
+						<Route element={<AdminProtectRoute />}>
+							<Route path={'admin'} element={<AdminContainer />}>
+								<Route index element={<Navigate to="overview" replace />} />
+								<Route path="overview" element={<AdminOverviewContainer />} />
+								<Route path="stock" element={<AdminStockContainer />} />
+								<Route path="categories" element={<AdminCategoriesContainer />} />
+								<Route path="orders" element={<AdminOrdersContainer />} />
+								<Route path="customers" element={<AdminCustomersContainer />} />
+								<Route path="settings" element={<AdminSettingsContainer />} />
+							</Route>
+						</Route>
 					</Route>
 				</Route>
 			</Route>

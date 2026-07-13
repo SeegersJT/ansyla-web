@@ -1,6 +1,3 @@
-// src/firebase/firestoreService.ts
-// Generic Firestore CRUD helpers
-
 import {
 	collection,
 	doc,
@@ -16,12 +13,12 @@ import {
 	type DocumentData,
 	type WithFieldValue,
 	serverTimestamp,
+	setDoc,
 } from 'firebase/firestore'
 import { db } from './config'
 import { Utils } from '@/utils/Utils'
 
 export const firestoreService = {
-	/** Fetch a single document by ID */
 	getById: async <T>(collectionName: string, id: string): Promise<T | null> => {
 		const snap = await getDoc(doc(db, collectionName, id))
 		return snap.exists()
@@ -29,7 +26,6 @@ export const firestoreService = {
 			: null
 	},
 
-	/** Fetch all documents in a collection with optional constraints */
 	getAll: async <T>(
 		collectionName: string,
 		constraints: QueryConstraint[] = []
@@ -64,6 +60,18 @@ export const firestoreService = {
 
 	remove: async (collectionName: string, id: string): Promise<void> => {
 		await deleteDoc(doc(db, collectionName, id))
+	},
+
+	set: async <T extends DocumentData>(
+		collectionName: string,
+		id: string,
+		data: WithFieldValue<T>
+	): Promise<void> => {
+		await setDoc(
+			doc(db, collectionName, id),
+			{ ...data, updatedAt: serverTimestamp() },
+			{ merge: true }
+		)
 	},
 
 	where,

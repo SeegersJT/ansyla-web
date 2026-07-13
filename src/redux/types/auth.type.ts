@@ -19,13 +19,15 @@ export interface AuthUser {
 	displayName: string | null
 	photoURL: string | null
 	emailVerified: boolean
-	user_details: AuthUserDetails
+	user_details: AuthUserDetails | null
 }
 
 export interface AuthState {
 	user: AuthUser | null
 	initialized: boolean
 	loading: boolean
+	detailsLoading: boolean
+	logoutLoading: boolean
 	error: string | null
 }
 

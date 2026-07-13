@@ -1,13 +1,13 @@
 import Account from '@/components/landing-page/dashboard/account/Account.component'
 import { useAppDispatch } from '@/hooks/useAppDispatch'
 import { useAppSelector } from '@/hooks/useAppSelector'
-import { requestAuthUserDetails } from '@/redux/actions/auth.action'
+import { requestAuthUserDetails, requestLogout } from '@/redux/actions/auth.action'
 import { useEffect } from 'react'
 
 function AccountContainer() {
 	const dispatch = useAppDispatch()
 
-	const { user } = useAppSelector(state => state.auth)
+	const { user, logoutLoading } = useAppSelector(state => state.auth)
 
 	useEffect(() => {
 		if (user === null) return
@@ -15,9 +15,17 @@ function AccountContainer() {
 		dispatch(requestAuthUserDetails(user.uid))
 	}, [dispatch, user])
 
+	const handleOnLogoutClick = () => {
+		dispatch(requestLogout())
+	}
+
 	return (
 		<>
-			<Account user={user} />
+			<Account
+				user={user}
+				logoutLoading={logoutLoading}
+				onLogoutClick={handleOnLogoutClick}
+			/>
 		</>
 	)
 }
