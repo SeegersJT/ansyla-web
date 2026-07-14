@@ -10,6 +10,7 @@ const initialState: OrderState = {
 	markOrderAsPaidLoading: false,
 	myOrderData: [],
 	myOrderDataLoading: false,
+	cancelOrderLoading: false,
 }
 
 type Action = { type: string; payload?: unknown }
@@ -42,6 +43,9 @@ export const OrderReducer = (state = initialState, action: Action): OrderState =
 
 		case ORDER_ACTIONS.CLEAR_LAST_PLACED_ORDER:
 			return { ...state, lastPlacedOrder: null }
+
+		case ORDER_ACTIONS.REQUEST_CANCEL_ORDER_LOADING:
+			return { ...state, cancelOrderLoading: action.payload as boolean }
 
 		default:
 			return state

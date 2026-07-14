@@ -51,7 +51,7 @@ function ProductCard({ currency, product }: { currency: string; product: Product
 
 				<button
 					onClick={handleOnWishlistToggleClick}
-					className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full hover:cursor-pointer border border-border bg-background/70 backdrop-blur transition-colors hover:border-primary"
+					className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full  border border-border bg-background/70 backdrop-blur transition-colors hover:border-primary"
 					aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
 				>
 					<Heart
@@ -62,7 +62,7 @@ function ProductCard({ currency, product }: { currency: string; product: Product
 				<div className="absolute inset-x-3 bottom-3 flex translate-y-3 gap-2 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
 					<button
 						onClick={() => handleOnAddCartItemClick(product, 1)}
-						className="flex flex-1 items-center justify-center hover:cursor-pointer gap-2 bg-gradient-gold py-2.5 text-xs font-medium uppercase tracking-wider text-primary-foreground transition-opacity hover:opacity-90"
+						className="flex flex-1 items-center justify-center  gap-2 bg-gradient-gold py-2.5 text-xs font-medium uppercase tracking-wider text-primary-foreground transition-opacity hover:opacity-90"
 					>
 						<ShoppingBag className="h-3.5 w-3.5" /> Add
 					</button>

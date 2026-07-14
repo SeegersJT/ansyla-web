@@ -12,6 +12,7 @@ function AdminCustomersContainer() {
 
 	const { customerData, customerDataLoading } = useAppSelector(state => state.customer)
 	const { orderData } = useAppSelector(state => state.order)
+	const { productData } = useAppSelector(state => state.product)
 
 	const [search, setSearch] = useState('')
 	const [selectedCustomer, setSelectedCustomer] = useState<CustomerItem | null>(null)
@@ -64,6 +65,7 @@ function AdminCustomersContainer() {
 	return (
 		<Customers
 			customers={filteredCustomers}
+			products={productData}
 			loading={customerDataLoading}
 			search={search}
 			selectedCustomer={selectedCustomer}

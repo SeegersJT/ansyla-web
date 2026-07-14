@@ -475,7 +475,7 @@ function Checkout({
 
 					<button
 						disabled={placingOrder || outOfStockItems.length > 0}
-						className="mt-6 w-full bg-gradient-gold py-3.5 text-xs font-medium uppercase tracking-luxe text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-60 hover:cursor-pointer"
+						className="mt-6 w-full bg-gradient-gold py-3.5 text-xs font-medium uppercase tracking-luxe text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-60 "
 					>
 						{placingOrder
 							? 'Placing Order…'

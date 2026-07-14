@@ -1,5 +1,7 @@
 import { Timestamp } from 'firebase/firestore'
 import type { StockAvailabilityItem } from './Utils.type'
+import type { OrderStatus } from '@/redux/types/Settings.type'
+import { CANCELLED_ORDER_STATUS } from '@/redux/types/Order.type'
 
 export class Utils {
 	static convertTimestamps<T extends Record<string, unknown>>(obj: T): T {
@@ -76,5 +78,25 @@ export class Utils {
 	static getOrderStatusStyle(statusNo: number | null | undefined): string {
 		const index = Math.abs(statusNo ?? 0) % Utils.STATUS_COLOR_PALETTE.length
 		return Utils.STATUS_COLOR_PALETTE[index]
+	}
+
+	static isOrderCancellable(
+		status: string,
+		statusOptions: OrderStatus[],
+		actor: 'admin' | 'customer'
+	): boolean {
+		console.log('statusOptions', statusOptions)
+		if (status === CANCELLED_ORDER_STATUS) return false
+		if (!statusOptions || statusOptions.length === 0) return true
+
+		const sorted = [...statusOptions].sort((a, b) => (a.status_no ?? 0) - (b.status_no ?? 0))
+
+		if (actor === 'admin') {
+			const finalStatus = sorted[sorted.length - 1]?.status
+			return status !== finalStatus
+		}
+
+		const firstStatus = sorted[0]?.status
+		return status === firstStatus
 	}
 }

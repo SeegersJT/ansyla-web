@@ -1,30 +1,37 @@
 import DataTable, { type Column } from '@/components/data-table/DataTable.component'
 import OrderDetail from '@/components/order-detail/OrderDetail.component'
-import type { OrderItem } from '@/redux/types/Order.type'
+import { CANCELLED_ORDER_STATUS, type OrderItem } from '@/redux/types/Order.type'
+import type { ProductItem } from '@/redux/types/Product.type'
 import type { OrderStatus } from '@/redux/types/Settings.type'
 import { Utils } from '@/utils/Utils'
-import { Eye } from 'lucide-react'
+import { Ban, Eye } from 'lucide-react'
 
 function Orders({
 	orders,
+	products,
 	loading,
 	statusOptions,
 	selectedOrder,
 	markingAsPaid,
+	cancelling,
 	onStatusChange,
 	onViewOrderClick,
 	onCloseDetailClick,
 	onMarkAsPaidClick,
+	onCancelOrderClick,
 }: {
 	orders: OrderItem[]
+	products: ProductItem[]
 	loading: boolean
 	statusOptions: OrderStatus[]
 	selectedOrder: OrderItem | null
 	markingAsPaid: boolean
+	cancelling: boolean
 	onStatusChange: (id: string, status: string) => void
 	onViewOrderClick: (order: OrderItem) => void
 	onCloseDetailClick: () => void
 	onMarkAsPaidClick: (id: string) => void
+	onCancelOrderClick: (order: OrderItem) => void
 }) {
 	const findStatusNo = (status: string) =>
 		statusOptions.find(option => option.status === status)?.status_no ?? 0
@@ -61,51 +68,69 @@ function Orders({
 					>
 						{order.payment_status}
 					</span>
-					{order.payment_status === 'Pending Payment' && (
-						<button
-							onClick={() => onMarkAsPaidClick(order.id)}
-							disabled={markingAsPaid}
-							className="block text-[10px] uppercase tracking-wider text-primary hover:underline disabled:opacity-60 hover:cursor-pointer"
-						>
-							Mark as Paid
-						</button>
-					)}
+					{order.payment_status === 'Pending Payment' &&
+						order.status !== CANCELLED_ORDER_STATUS && (
+							<button
+								onClick={() => onMarkAsPaidClick(order.id)}
+								disabled={markingAsPaid}
+								className="block text-[10px] uppercase tracking-wider text-primary hover:underline disabled:opacity-60"
+							>
+								Mark as Paid
+							</button>
+						)}
 				</div>
 			),
 		},
 		{
 			key: 'status',
 			header: 'Status',
-			render: order => (
-				<select
-					value={order.status}
-					onChange={e => onStatusChange(order.id, e.target.value)}
-					className={`border bg-background px-3 py-1.5 text-[10px] uppercase tracking-wider outline-none ${Utils.getOrderStatusStyle(findStatusNo(order.status))}`}
-				>
-					{sortedStatusOptions.length === 0 ? (
-						<option value={order.status}>{order.status}</option>
-					) : (
-						sortedStatusOptions.map(option => (
-							<option key={option.status} value={option.status ?? ''}>
-								{option.status}
-							</option>
-						))
-					)}
-				</select>
-			),
+			render: order =>
+				order.status === CANCELLED_ORDER_STATUS ? (
+					<span className="inline-block border border-destructive/40 px-3 py-1.5 text-[10px] uppercase tracking-wider text-destructive">
+						Cancelled
+					</span>
+				) : (
+					<select
+						value={order.status}
+						onChange={e => onStatusChange(order.id, e.target.value)}
+						className={`border bg-background px-3 py-1.5 text-[10px] uppercase tracking-wider outline-none ${Utils.getOrderStatusStyle(findStatusNo(order.status))}`}
+					>
+						{sortedStatusOptions.length === 0 ? (
+							<option value={order.status}>{order.status}</option>
+						) : (
+							sortedStatusOptions.map(option => (
+								<option key={option.status} value={option.status ?? ''}>
+									{option.status}
+								</option>
+							))
+						)}
+					</select>
+				),
 		},
 		{
 			key: 'actions',
 			header: 'Actions',
 			align: 'right',
 			render: order => (
-				<button
-					onClick={() => onViewOrderClick(order)}
-					className="border border-border p-2 hover:border-primary hover:text-primary"
-					aria-label="View order"
-				>
-					<Eye className="h-3.5 w-3.5" />
-				</button>
+				<div className="flex justify-end gap-2">
+					<button
+						onClick={() => onViewOrderClick(order)}
+						className="border border-border p-2 hover:border-primary hover:text-primary "
+						aria-label="View order"
+					>
+						<Eye className="h-3.5 w-3.5" />
+					</button>
+					{Utils.isOrderCancellable(order.status, statusOptions, 'admin') && (
+						<button
+							onClick={() => onCancelOrderClick(order)}
+							disabled={cancelling}
+							className="border border-border p-2 hover:border-destructive hover:text-destructive disabled:opacity-60 "
+							aria-label="Cancel order"
+						>
+							<Ban className="h-3.5 w-3.5" />
+						</button>
+					)}
+				</div>
 			),
 		},
 	]
@@ -122,17 +147,34 @@ function Orders({
 			{selectedOrder && (
 				<OrderDetail
 					order={selectedOrder}
+					products={products}
 					onClose={onCloseDetailClick}
 					actions={
-						selectedOrder.payment_status === 'Pending Payment' && (
-							<button
-								onClick={() => onMarkAsPaidClick(selectedOrder.id)}
-								disabled={markingAsPaid}
-								className="bg-gradient-gold px-5 py-2.5 text-xs font-medium uppercase tracking-luxe text-primary-foreground disabled:opacity-60 hover:cursor-pointer"
-							>
-								{markingAsPaid ? 'Updating…' : 'Mark as Paid'}
-							</button>
-						)
+						<div className="flex flex-wrap gap-3">
+							{selectedOrder.payment_status === 'Pending Payment' &&
+								selectedOrder.status !== CANCELLED_ORDER_STATUS && (
+									<button
+										onClick={() => onMarkAsPaidClick(selectedOrder.id)}
+										disabled={markingAsPaid}
+										className="bg-gradient-gold px-5 py-2.5 text-xs font-medium uppercase tracking-luxe text-primary-foreground disabled:opacity-60 "
+									>
+										{markingAsPaid ? 'Updating…' : 'Mark as Paid'}
+									</button>
+								)}
+							{Utils.isOrderCancellable(
+								selectedOrder.status,
+								statusOptions,
+								'admin'
+							) && (
+								<button
+									onClick={() => onCancelOrderClick(selectedOrder)}
+									disabled={cancelling}
+									className="border border-destructive px-5 py-2.5 text-xs uppercase tracking-wider text-destructive hover:bg-destructive hover:text-primary-foreground disabled:opacity-60 "
+								>
+									{cancelling ? 'Cancelling…' : 'Cancel Order'}
+								</button>
+							)}
+						</div>
 					}
 				/>
 			)}

@@ -76,7 +76,7 @@ function Header({
 						className="relative hover:text-primary"
 						aria-label="Cart"
 					>
-						<Icon.ShoppingBag className="h-5 w-5 hover:cursor-pointer" />
+						<Icon.ShoppingBag className="h-5 w-5 " />
 						{cartDataCount > 0 && (
 							<span className="absolute -right-2 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-gradient-gold px-1 text-[10px] font-semibold text-primary-foreground">
 								{cartDataCount}

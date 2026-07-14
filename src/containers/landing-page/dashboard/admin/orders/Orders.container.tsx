@@ -2,6 +2,7 @@ import Orders from '@/components/landing-page/dashboard/admin/orders/Orders.comp
 import { useAppDispatch } from '@/hooks/useAppDispatch'
 import { useAppSelector } from '@/hooks/useAppSelector'
 import {
+	requestCancelOrder,
 	requestMarkOrderAsPaid,
 	requestOrderItems,
 	requestUpdateOrderStatus,
@@ -12,10 +13,10 @@ import { useEffect, useMemo, useState } from 'react'
 function AdminOrdersContainer() {
 	const dispatch = useAppDispatch()
 
-	const { orderData, orderDataLoading, markOrderAsPaidLoading } = useAppSelector(
-		state => state.order
-	)
+	const { orderData, orderDataLoading, markOrderAsPaidLoading, cancelOrderLoading } =
+		useAppSelector(state => state.order)
 	const { settingsData } = useAppSelector(state => state.settings)
+	const { productData } = useAppSelector(state => state.product)
 
 	const [selectedOrder, setSelectedOrder] = useState<OrderItem | null>(null)
 
@@ -53,17 +54,24 @@ function AdminOrdersContainer() {
 		dispatch(requestMarkOrderAsPaid(id))
 	}
 
+	const handleOnCancelOrderClick = (order: OrderItem) => {
+		dispatch(requestCancelOrder({ order, actor: 'admin' }))
+	}
+
 	return (
 		<Orders
 			orders={sortedOrders}
+			products={productData}
 			loading={orderDataLoading}
 			statusOptions={statusOptions}
 			selectedOrder={selectedOrder}
 			markingAsPaid={markOrderAsPaidLoading}
+			cancelling={cancelOrderLoading}
 			onStatusChange={handleOnStatusChange}
 			onViewOrderClick={handleOnViewOrderClick}
 			onCloseDetailClick={handleOnCloseDetailClick}
 			onMarkAsPaidClick={handleOnMarkAsPaidClick}
+			onCancelOrderClick={handleOnCancelOrderClick}
 		/>
 	)
 }

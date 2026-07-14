@@ -1,9 +1,10 @@
+export const CANCELLED_ORDER_STATUS = 'Cancelled'
+
 export type OrderStatusValue = string
 
 export interface OrderLineItem {
 	product_id: string
 	name: string
-	image: string | null
 	price: number
 	quantity: number
 }
@@ -81,4 +82,5 @@ export interface OrderState {
 	markOrderAsPaidLoading: boolean
 	myOrderData: OrderItem[]
 	myOrderDataLoading: boolean
+	cancelOrderLoading: boolean
 }

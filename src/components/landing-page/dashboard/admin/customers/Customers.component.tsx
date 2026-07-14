@@ -2,11 +2,13 @@ import DataTable, { type Column } from '@/components/data-table/DataTable.compon
 import OrderDetail from '@/components/order-detail/OrderDetail.component'
 import type { CustomerItem } from '@/redux/types/Customer.type'
 import type { OrderItem } from '@/redux/types/Order.type'
+import type { ProductItem } from '@/redux/types/Product.type'
 import { Utils } from '@/utils/Utils'
 import { Eye, Search, X } from 'lucide-react'
 
 function Customers({
 	customers,
+	products,
 	loading,
 	search,
 	selectedCustomer,
@@ -19,6 +21,7 @@ function Customers({
 	onCloseOrderDetailClick,
 }: {
 	customers: CustomerItem[]
+	products: ProductItem[]
 	loading: boolean
 	search: string
 	selectedCustomer: CustomerItem | null
@@ -52,7 +55,7 @@ function Customers({
 			render: customer => (
 				<button
 					onClick={() => onViewCustomerClick(customer)}
-					className="border border-border p-2 hover:border-primary hover:text-primary"
+					className="border border-border p-2 hover:border-primary hover:text-primary "
 					aria-label="View customer"
 				>
 					<Eye className="h-3.5 w-3.5" />
@@ -164,7 +167,11 @@ function Customers({
 			)}
 
 			{selectedOrder && (
-				<OrderDetail order={selectedOrder} onClose={onCloseOrderDetailClick} />
+				<OrderDetail
+					order={selectedOrder}
+					products={products}
+					onClose={onCloseOrderDetailClick}
+				/>
 			)}
 		</div>
 	)

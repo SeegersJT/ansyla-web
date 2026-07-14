@@ -180,7 +180,7 @@ function SettingsComponent({
 					<button
 						type="button"
 						onClick={onAddStatusClick}
-						className="flex items-center gap-1.5 text-xs uppercase tracking-wider text-primary hover:underline"
+						className="flex items-center gap-1.5 text-xs uppercase tracking-wider text-primary hover:underline "
 					>
 						<Plus className="h-3.5 w-3.5" /> Add Status
 					</button>
@@ -228,7 +228,7 @@ function SettingsComponent({
 
 			<button
 				disabled={saving}
-				className="w-full bg-gradient-gold py-3.5 text-xs font-medium uppercase tracking-luxe text-primary-foreground disabled:opacity-60"
+				className="w-full bg-gradient-gold py-3.5 text-xs font-medium uppercase tracking-luxe text-primary-foreground disabled:opacity-60 "
 			>
 				{saving ? 'Saving…' : 'Save Settings'}
 			</button>

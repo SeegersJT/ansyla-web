@@ -165,7 +165,7 @@ function Product({
 					<div className="mt-5 flex flex-col gap-3 sm:flex-row">
 						<button
 							onClick={() => onAddToCartClick(product, selectedQuantity)}
-							className="flex-1 bg-gradient-gold py-3.5 text-xs font-medium uppercase tracking-luxe text-primary-foreground transition-opacity hover:opacity-90 hover:cursor-pointer"
+							className="flex-1 bg-gradient-gold py-3.5 text-xs font-medium uppercase tracking-luxe text-primary-foreground transition-opacity hover:opacity-90 "
 						>
 							Add to Cart
 						</button>
@@ -211,7 +211,7 @@ function Product({
 								<button
 									onClick={onSubmitReviewClick}
 									disabled={reviewRating === 0 || submittingReview}
-									className="bg-gradient-gold px-6 py-2.5 text-xs font-medium uppercase tracking-luxe text-primary-foreground disabled:opacity-60 hover:cursor-pointer"
+									className="bg-gradient-gold px-6 py-2.5 text-xs font-medium uppercase tracking-luxe text-primary-foreground disabled:opacity-60 "
 								>
 									{submittingReview
 										? 'Saving…'
@@ -223,7 +223,7 @@ function Product({
 									<button
 										onClick={onRemoveReviewClick}
 										disabled={removingReview}
-										className="border border-border px-6 py-2.5 text-xs uppercase tracking-wider text-muted-foreground hover:border-destructive hover:text-destructive disabled:opacity-60 hover:cursor-pointer"
+										className="border border-border px-6 py-2.5 text-xs uppercase tracking-wider text-muted-foreground hover:border-destructive hover:text-destructive disabled:opacity-60 "
 									>
 										{removingReview ? 'Removing…' : 'Remove Review'}
 									</button>

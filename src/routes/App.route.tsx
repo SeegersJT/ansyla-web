@@ -32,8 +32,6 @@ export const AppRouter = () => (
 		<Routes>
 			<Route path={'/'} element={<Navigate to={'/home'} replace />} />
 
-			{/* <Route path={'/coming-soon'} element={<ComingSoonContainer />} /> */}
-
 			<Route element={<LandingPageContainer />}>
 				<Route path={'/home'} element={<HomeContainer />} />
 				<Route path={'/shop'} element={<ShopContainer />} />

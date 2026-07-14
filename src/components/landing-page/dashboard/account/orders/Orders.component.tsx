@@ -1,22 +1,32 @@
 import DataTable, { type Column } from '@/components/data-table/DataTable.component'
 import OrderDetail from '@/components/order-detail/OrderDetail.component'
-import type { OrderItem } from '@/redux/types/Order.type'
+import { CANCELLED_ORDER_STATUS, type OrderItem } from '@/redux/types/Order.type'
+import type { ProductItem } from '@/redux/types/Product.type'
+import type { OrderStatus } from '@/redux/types/Settings.type'
 import { Utils } from '@/utils/Utils'
-import { Eye, Package } from 'lucide-react'
+import { Ban, Eye, Package } from 'lucide-react'
 import { Link } from 'react-router'
 
 function Orders({
 	orders,
+	products,
 	loading,
+	statusOptions,
 	selectedOrder,
+	cancelling,
 	onViewOrderClick,
 	onCloseDetailClick,
+	onCancelOrderClick,
 }: {
 	orders: OrderItem[]
+	products: ProductItem[]
 	loading: boolean
+	statusOptions: OrderStatus[]
 	selectedOrder: OrderItem | null
+	cancelling: boolean
 	onViewOrderClick: (order: OrderItem) => void
 	onCloseDetailClick: () => void
+	onCancelOrderClick: (order: OrderItem) => void
 }) {
 	if (!loading && orders.length === 0) {
 		return (
@@ -35,17 +45,19 @@ function Orders({
 
 	const columns: Column<OrderItem>[] = [
 		{ key: 'order_no', header: 'Order', accessor: order => order.order_no ?? order.id },
-		{
-			key: 'createdAt',
-			header: 'Date',
-			accessor: order => String(order.createdAt),
-		},
+		{ key: 'createdAt', header: 'Date', accessor: order => String(order.createdAt) },
 		{ key: 'total', header: 'Total', accessor: order => Utils.formatPrice(order.total) },
 		{
 			key: 'status',
 			header: 'Status',
 			render: order => (
-				<span className="border border-primary/40 px-3 py-1 text-[10px] uppercase tracking-wider text-primary">
+				<span
+					className={`border px-3 py-1 text-[10px] uppercase tracking-wider ${
+						order.status === CANCELLED_ORDER_STATUS
+							? 'border-destructive/40 text-destructive'
+							: 'border-primary/40 text-primary'
+					}`}
+				>
 					{order.status}
 				</span>
 			),
@@ -70,13 +82,25 @@ function Orders({
 			header: 'Actions',
 			align: 'right',
 			render: order => (
-				<button
-					onClick={() => onViewOrderClick(order)}
-					className="border border-border p-2 hover:border-primary hover:text-primary hover:cursor-pointer"
-					aria-label="View order"
-				>
-					<Eye className="h-3.5 w-3.5" />
-				</button>
+				<div className="flex justify-end gap-2">
+					<button
+						onClick={() => onViewOrderClick(order)}
+						className="border border-border p-2 hover:border-primary hover:text-primary "
+						aria-label="View order"
+					>
+						<Eye className="h-3.5 w-3.5" />
+					</button>
+					{Utils.isOrderCancellable(order.status, statusOptions, 'customer') && (
+						<button
+							onClick={() => onCancelOrderClick(order)}
+							disabled={cancelling}
+							className="border border-border p-2 hover:border-destructive hover:text-destructive disabled:opacity-60 "
+							aria-label="Cancel order"
+						>
+							<Ban className="h-3.5 w-3.5" />
+						</button>
+					)}
+				</div>
 			),
 		},
 	]
@@ -90,7 +114,28 @@ function Orders({
 				emptyMessage={loading ? 'Loading orders…' : 'No orders yet.'}
 			/>
 
-			{selectedOrder && <OrderDetail order={selectedOrder} onClose={onCloseDetailClick} />}
+			{selectedOrder && (
+				<OrderDetail
+					order={selectedOrder}
+					products={products}
+					onClose={onCloseDetailClick}
+					actions={
+						Utils.isOrderCancellable(
+							selectedOrder.status,
+							statusOptions,
+							'customer'
+						) ? (
+							<button
+								onClick={() => onCancelOrderClick(selectedOrder)}
+								disabled={cancelling}
+								className="border border-destructive px-5 py-2.5 text-xs uppercase tracking-wider text-destructive hover:bg-destructive hover:text-primary-foreground disabled:opacity-60 "
+							>
+								{cancelling ? 'Cancelling…' : 'Cancel Order'}
+							</button>
+						) : undefined
+					}
+				/>
+			)}
 		</div>
 	)
 }

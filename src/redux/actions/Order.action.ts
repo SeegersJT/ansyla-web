@@ -19,6 +19,9 @@ export const ORDER_ACTIONS = {
 	REQUEST_CREATE_ORDER_LOADING: '[ORDER] - CREATE ORDER - REQUEST - LOADING',
 	SET_LAST_PLACED_ORDER: '[ORDER] - LAST PLACED ORDER - SET',
 	CLEAR_LAST_PLACED_ORDER: '[ORDER] - LAST PLACED ORDER - CLEAR',
+
+	REQUEST_CANCEL_ORDER: '[ORDER] - CANCEL ORDER - REQUEST',
+	REQUEST_CANCEL_ORDER_LOADING: '[ORDER] - CANCEL ORDER - REQUEST - LOADING',
 } as const
 
 export const requestOrderItems = () => ({
@@ -96,5 +99,20 @@ export const requestMarkOrderAsPaid = (id: string) => ({
 
 export const requestMarkOrderAsPaidLoading = (loading: boolean) => ({
 	type: ORDER_ACTIONS.REQUEST_MARK_ORDER_AS_PAID_LOADING,
+	payload: loading,
+})
+
+export interface CancelOrderPayload {
+	order: OrderItem
+	actor: 'admin' | 'customer'
+}
+
+export const requestCancelOrder = (payload: CancelOrderPayload) => ({
+	type: ORDER_ACTIONS.REQUEST_CANCEL_ORDER,
+	payload,
+})
+
+export const requestCancelOrderLoading = (loading: boolean) => ({
+	type: ORDER_ACTIONS.REQUEST_CANCEL_ORDER_LOADING,
 	payload: loading,
 })

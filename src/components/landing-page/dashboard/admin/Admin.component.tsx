@@ -32,7 +32,7 @@ function Admin({
 					<button
 						onClick={onLogoutClick}
 						disabled={logoutLoading}
-						className="flex items-center gap-2 border border-border px-4 py-2 text-xs uppercase tracking-wider text-muted-foreground hover:border-primary hover:text-primary disabled:opacity-60"
+						className="flex items-center gap-2 border border-border px-4 py-2 text-xs uppercase tracking-wider text-muted-foreground hover:border-primary hover:text-primary disabled:opacity-60 "
 					>
 						<LogOut className="h-4 w-4" /> {logoutLoading ? 'Logging out…' : 'Logout'}
 					</button>

@@ -1,10 +1,12 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects'
 import { firestoreService } from '@/firebase'
-import type { OrderItem, OrderStatusValue } from '../types/Order.type'
+import { CANCELLED_ORDER_STATUS, type OrderItem, type OrderStatusValue } from '../types/Order.type'
 import {
 	ORDER_ACTIONS,
+	requestCancelOrderLoading,
 	requestCreateOrderLoading,
 	requestMarkOrderAsPaidLoading,
+	requestMyOrderItems,
 	requestMyOrderItemsLoading,
 	requestOrderItems,
 	requestOrderItemsLoading,
@@ -12,6 +14,7 @@ import {
 	setLastPlacedOrder,
 	setMyOrderItems,
 	setOrderItems,
+	type CancelOrderPayload,
 	type CreateOrderPayload,
 } from '../actions/Order.action'
 import { addSystemNotification } from '../actions/Notification.action'
@@ -149,7 +152,6 @@ function* handleCreateOrderRequest(action: { type: string; payload: CreateOrderP
 			items: cartData.map(item => ({
 				product_id: item.product.id,
 				name: item.product.name,
-				image: item.product.images?.[0]?.url ?? null,
 				price: item.product.price,
 				quantity: item.quantity,
 			})),
@@ -273,10 +275,58 @@ function* handleMarkOrderAsPaidRequest(action: { type: string; payload: string }
 	}
 }
 
+function* handleCancelOrderRequest(action: { type: string; payload: CancelOrderPayload }) {
+	yield put(requestCancelOrderLoading(true))
+
+	try {
+		const { order, actor } = action.payload
+
+		yield call([firestoreService, firestoreService.update], 'Orders', order.id, {
+			status: CANCELLED_ORDER_STATUS,
+		})
+
+		for (const item of order.items) {
+			const product: ProductItem | null = yield call(
+				firestoreService.getById<ProductItem>,
+				'Products',
+				item.product_id
+			)
+			if (!product) continue
+
+			yield call([firestoreService, firestoreService.update], 'Products', product.id, {
+				stock: (product.stock ?? 0) + item.quantity,
+			})
+		}
+
+		yield put(requestProductItems())
+
+		if (actor === 'admin') {
+			yield put(requestOrderItems())
+		} else {
+			const uid: string | undefined = yield select((state: RootState) => state.auth.user?.uid)
+			if (uid) yield put(requestMyOrderItems(uid))
+		}
+
+		yield put(
+			addSystemNotification({
+				type: 'success',
+				title: 'Orders',
+				message: 'Order cancelled successfully',
+			})
+		)
+	} catch (err) {
+		const message = err instanceof Error ? err.message : 'Failed to Cancel Order'
+		yield put(addSystemNotification({ type: 'error', title: 'Orders', message: message }))
+	} finally {
+		yield put(requestCancelOrderLoading(false))
+	}
+}
+
 export function* orderSaga() {
 	yield takeLatest(ORDER_ACTIONS.REQUEST_ORDER_ITEMS, handleOrderItemsRequest)
 	yield takeLatest(ORDER_ACTIONS.REQUEST_MY_ORDER_ITEMS, handleMyOrderItemsRequest)
 	yield takeLatest(ORDER_ACTIONS.REQUEST_UPDATE_ORDER_STATUS, handleUpdateOrderStatusRequest)
 	yield takeLatest(ORDER_ACTIONS.REQUEST_MARK_ORDER_AS_PAID, handleMarkOrderAsPaidRequest)
+	yield takeLatest(ORDER_ACTIONS.REQUEST_CANCEL_ORDER, handleCancelOrderRequest)
 	yield takeLatest(ORDER_ACTIONS.REQUEST_CREATE_ORDER, handleCreateOrderRequest)
 }

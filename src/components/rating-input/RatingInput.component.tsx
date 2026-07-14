@@ -19,7 +19,7 @@ function RatingInput({ value, onChange }: { value: number; onChange: (rating: nu
 						aria-label={`Rate ${starValue} star${starValue > 1 ? 's' : ''}`}
 					>
 						<Star
-							className={`h-6 w-6 transition-colors hover:cursor-pointer ${
+							className={`h-6 w-6 transition-colors  ${
 								filled ? 'fill-primary text-primary' : 'text-muted-foreground/40'
 							}`}
 						/>

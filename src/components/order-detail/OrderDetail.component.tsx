@@ -1,6 +1,8 @@
 import type { OrderItem } from '@/redux/types/Order.type'
+import { CANCELLED_ORDER_STATUS } from '@/redux/types/Order.type'
+import type { ProductItem } from '@/redux/types/Product.type'
 import { Utils } from '@/utils/Utils'
-import { X } from 'lucide-react'
+import { Gem, X } from 'lucide-react'
 import type React from 'react'
 
 const paymentStatusStyles: Record<string, string> = {
@@ -10,10 +12,12 @@ const paymentStatusStyles: Record<string, string> = {
 
 function OrderDetail({
 	order,
+	products,
 	onClose,
 	actions,
 }: {
 	order: OrderItem
+	products: ProductItem[]
 	onClose: () => void
 	actions?: React.ReactNode
 }) {
@@ -28,12 +32,18 @@ function OrderDetail({
 						</p>
 					</div>
 					<button onClick={onClose} aria-label="Close">
-						<X className="h-5 w-5 text-muted-foreground hover:text-foreground hover:cursor-pointer" />
+						<X className="h-5 w-5 text-muted-foreground hover:text-foreground" />
 					</button>
 				</div>
 
 				<div className="mt-4 flex flex-wrap gap-2">
-					<span className="border border-primary/40 px-3 py-1 text-[10px] uppercase tracking-wider text-primary">
+					<span
+						className={`border px-3 py-1 text-[10px] uppercase tracking-wider ${
+							order.status === CANCELLED_ORDER_STATUS
+								? 'border-destructive/40 text-destructive'
+								: 'border-primary/40 text-primary'
+						}`}
+					>
 						{order.status}
 					</span>
 					<span
@@ -80,24 +90,33 @@ function OrderDetail({
 						Items
 					</h4>
 					<div className="space-y-3">
-						{order.items.map((item, index) => (
-							<div key={`${item.product_id}-${index}`} className="flex gap-3">
-								{item.image && (
-									<img
-										src={item.image}
-										alt={item.name}
-										className="h-14 w-14 rounded-sm border border-border object-cover"
-									/>
-								)}
-								<div className="flex-1 text-sm">
-									<p>{item.name}</p>
-									<p className="text-muted-foreground">Qty {item.quantity}</p>
+						{order.items.map((item, index) => {
+							const product = products.find(p => p.id === item.product_id)
+							const imageUrl = product?.images?.[0]?.url
+
+							return (
+								<div key={`${item.product_id}-${index}`} className="flex gap-3">
+									{imageUrl ? (
+										<img
+											src={imageUrl}
+											alt={item.name}
+											className="h-14 w-14 rounded-sm border border-border object-cover"
+										/>
+									) : (
+										<div className="flex h-14 w-14 items-center justify-center rounded-sm border border-border bg-background">
+											<Gem className="h-5 w-5 text-muted-foreground/40" />
+										</div>
+									)}
+									<div className="flex-1 text-sm">
+										<p>{item.name}</p>
+										<p className="text-muted-foreground">Qty {item.quantity}</p>
+									</div>
+									<p className="text-sm text-primary">
+										{Utils.formatPrice(item.price * item.quantity)}
+									</p>
 								</div>
-								<p className="text-sm text-primary">
-									{Utils.formatPrice(item.price * item.quantity)}
-								</p>
-							</div>
-						))}
+							)
+						})}
 					</div>
 				</div>
 
