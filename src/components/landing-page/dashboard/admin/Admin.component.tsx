@@ -1,5 +1,5 @@
 import type { AdminTabItem } from '@/containers/landing-page/dashboard/admin/Admin.helper'
-import type { AuthUser } from '@/redux/types/Auth.type'
+import type { AuthUser } from '@/redux/types/Authenticated.type'
 import { LogOut, User } from 'lucide-react'
 import { Link, NavLink, Outlet } from 'react-router'
 

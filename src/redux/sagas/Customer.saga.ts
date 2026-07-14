@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects'
 import { firestoreService } from '@/firebase'
-import type { AuthUserDetails } from '../types/Auth.type'
+import type { AuthUserDetails } from '../types/Authenticated.type'
 import type { OrderItem } from '../types/Order.type'
 import type { CustomerItem } from '../types/Customer.type'
 import {

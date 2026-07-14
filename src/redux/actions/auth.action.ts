@@ -3,7 +3,7 @@ import type {
 	AuthUserDetails,
 	LoginCredentials,
 	RegisterCredentials,
-} from '../types/Auth.type'
+} from '../types/Authenticated.type'
 
 export const AUTH_ACTIONS = {
 	REQUEST_FIREBASE_EMAIL_LOGIN: '[AUTH] - FIREBASE EMAIL LOGIN - REQUEST',

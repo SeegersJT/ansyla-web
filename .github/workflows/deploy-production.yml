@@ -43,3 +43,4 @@ jobs:
                   firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ANSYLA_6043F }}
                   projectId: ansyla-6043f
                   channelId: live
+

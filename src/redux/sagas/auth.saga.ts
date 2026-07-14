@@ -8,7 +8,7 @@ import type {
 	AuthUserDetails,
 	LoginCredentials,
 	RegisterCredentials,
-} from '../types/Auth.type'
+} from '../types/Authenticated.type'
 import {
 	AUTH_ACTIONS,
 	requestFirebaseEmailLoginLoading,

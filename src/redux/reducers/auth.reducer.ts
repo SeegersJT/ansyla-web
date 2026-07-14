@@ -1,5 +1,5 @@
 import { AUTH_ACTIONS } from '../actions/Auth.action'
-import type { AuthState, AuthUser, AuthUserDetails } from '../types/Auth.type'
+import type { AuthState, AuthUser, AuthUserDetails } from '../types/Authenticated.type'
 
 const initialState: AuthState = {
 	user: null,
