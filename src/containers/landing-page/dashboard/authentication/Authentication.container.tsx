@@ -4,7 +4,7 @@ import { useAppSelector } from '@/hooks/useAppSelector'
 import {
 	requestFirebaseEmailLogin,
 	requestFirebaseEmailRegister,
-} from '@/redux/actions/Auth.action'
+} from '@/redux/actions/Authentication.action'
 import React, { useState } from 'react'
 
 function AuthenticationContainer() {

@@ -8,7 +8,7 @@ import type {
 	AuthUserDetails,
 	LoginCredentials,
 	RegisterCredentials,
-} from '../types/Authenticated.type'
+} from '../types/Authentication.type'
 import {
 	AUTH_ACTIONS,
 	requestFirebaseEmailLoginLoading,
@@ -19,7 +19,7 @@ import {
 	setAuthUser,
 	setAuthUserDetails,
 	setInitialized,
-} from '../actions/Auth.action'
+} from '../actions/Authentication.action'
 import type { User } from 'firebase/auth'
 import { navigate } from '@/utils/Navigator'
 import type { OrderItem } from '../types/Order.type'

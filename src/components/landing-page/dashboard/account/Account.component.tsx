@@ -1,5 +1,5 @@
 import { accountTabs } from '@/containers/landing-page/dashboard/account/Account.helper'
-import type { AuthUser } from '@/redux/types/Authenticated.type'
+import type { AuthUser } from '@/redux/types/Authentication.type'
 import { LogOut, ShieldCheck } from 'lucide-react'
 import { Link, NavLink, Outlet } from 'react-router'
 

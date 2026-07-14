@@ -1,7 +1,7 @@
 import Account from '@/components/landing-page/dashboard/account/Account.component'
 import { useAppDispatch } from '@/hooks/useAppDispatch'
 import { useAppSelector } from '@/hooks/useAppSelector'
-import { requestAuthUserDetails, requestLogout } from '@/redux/actions/Auth.action'
+import { requestAuthUserDetails, requestLogout } from '@/redux/actions/Authentication.action'
 import { useEffect } from 'react'
 
 function AccountContainer() {

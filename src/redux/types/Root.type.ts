@@ -1,5 +1,5 @@
 import type { AddressState } from './Address.type'
-import type { AuthState } from './Authenticated.type'
+import type { AuthState } from './Authentication.type'
 import type { CartState } from './Cart.type'
 import type { CategoryState } from './Category.type'
 import type { CouponState } from './Coupon.type'

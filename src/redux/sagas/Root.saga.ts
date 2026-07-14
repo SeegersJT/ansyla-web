@@ -9,7 +9,7 @@ import { orderSaga } from './Order.saga'
 import { customerSaga } from './Customer.saga'
 import { wishlistSaga } from './Wishlist.saga'
 import { reviewSaga } from './Review.saga'
-import { authSaga } from './Auth.saga'
+import { authSaga } from './Authentication.saga'
 import { addressSaga } from './Address.saga'
 
 export function* RootSaga() {

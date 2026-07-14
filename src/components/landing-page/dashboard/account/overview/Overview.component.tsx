@@ -1,5 +1,5 @@
 import { Stat } from '@/containers/landing-page/dashboard/account/overview/Overview.helper'
-import type { AuthUserDetails } from '@/redux/types/Authenticated.type'
+import type { AuthUserDetails } from '@/redux/types/Authentication.type'
 import type { OrderItem } from '@/redux/types/Order.type'
 import { Utils } from '@/utils/Utils'
 import { Award } from 'lucide-react'

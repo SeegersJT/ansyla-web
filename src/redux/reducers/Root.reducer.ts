@@ -10,7 +10,7 @@ import { OrderReducer } from './Order.reducer'
 import { CustomerReducer } from './Customer.reducer'
 import { WishlistReducer } from './Wishlist.reducer'
 import { ReviewReducer } from './Review.reducer'
-import { AuthReducer } from './Auth.reducer'
+import { AuthReducer } from './Authentication.reducer'
 import { AddressReducer } from './Address.type'
 
 export const RootReducer = combineReducers({
