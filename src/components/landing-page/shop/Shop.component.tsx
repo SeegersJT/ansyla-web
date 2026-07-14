@@ -60,8 +60,8 @@ function Shop({
 						<input
 							type="range"
 							min={100}
-							max={1000}
-							step={100}
+							max={500}
+							step={50}
 							value={selectedMaxPrice}
 							onChange={e => onSelectedMaxPriceChange(Number(e.target.value))}
 							className="w-full accent-[var(--gold)]"

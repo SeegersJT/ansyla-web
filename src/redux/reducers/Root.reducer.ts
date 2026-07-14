@@ -6,10 +6,12 @@ import { SettingsReducer } from './Settings.reducer'
 import { NewsLetterReducer } from './Newsletter.reduce'
 import { CartReducer } from './Cart.reducer'
 import { CouponReducer } from './Coupon.reducer'
-import { AuthReducer } from './auth.reducer'
 import { OrderReducer } from './Order.reducer'
 import { CustomerReducer } from './Customer.reducer'
 import { WishlistReducer } from './Wishlist.reducer'
+import { ReviewReducer } from './Review.reducer'
+import { AuthReducer } from './Auth.reducer'
+import { AddressReducer } from './Address.type'
 
 export const RootReducer = combineReducers({
 	system: combineReducers({
@@ -25,4 +27,6 @@ export const RootReducer = combineReducers({
 	order: OrderReducer,
 	customer: CustomerReducer,
 	wishlist: WishlistReducer,
+	review: ReviewReducer,
+	address: AddressReducer,
 })

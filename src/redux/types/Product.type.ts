@@ -29,10 +29,10 @@ export interface ProductItem {
 	is_best_seller: boolean
 	is_new: boolean
 	active: boolean
-	created_by: string | null
-	created_at: Date | null
-	updated_by: string | null
-	updated_at: Date | null
+	createdBy: string | null
+	createdAt: Date | null
+	updatedBy: string | null
+	updatedAt: Date | null
 }
 
 export const defaultProductItem: ProductItem = {
@@ -52,10 +52,10 @@ export const defaultProductItem: ProductItem = {
 	is_best_seller: false,
 	is_new: false,
 	active: false,
-	created_by: '',
-	created_at: new Date(),
-	updated_by: '',
-	updated_at: new Date(),
+	createdBy: '',
+	createdAt: new Date(),
+	updatedBy: '',
+	updatedAt: new Date(),
 }
 
 export interface ProductState {

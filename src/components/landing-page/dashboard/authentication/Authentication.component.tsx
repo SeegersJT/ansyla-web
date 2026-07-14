@@ -46,7 +46,7 @@ function Authentication({
 						<button
 							key={mode}
 							onClick={() => onSelectedModeClick(mode)}
-							className={`flex-1 py-3 text-xs uppercase tracking-luxe transition-colors ${
+							className={`flex-1 py-3 text-xs uppercase tracking-luxe transition-colors hover:cursor-pointer ${
 								selectedMode === mode
 									? 'bg-gradient-gold text-primary-foreground'
 									: 'text-muted-foreground'
@@ -88,7 +88,7 @@ function Authentication({
 						<div className="text-right">
 							<button
 								type="button"
-								className="text-xs text-muted-foreground hover:text-primary"
+								className="text-xs text-muted-foreground hover:text-primary hover:cursor-pointer"
 							>
 								Forgot password?
 							</button>
@@ -99,7 +99,7 @@ function Authentication({
 
 					<button
 						disabled={accountLoading}
-						className="w-full bg-gradient-gold py-3.5 text-xs font-medium uppercase tracking-luxe text-primary-foreground disabled:opacity-60"
+						className="w-full bg-gradient-gold py-3.5 text-xs font-medium uppercase tracking-luxe text-primary-foreground disabled:opacity-60 hover:cursor-pointer"
 					>
 						{accountLoading
 							? 'Please wait…'
@@ -118,7 +118,7 @@ function Authentication({
 					type="button"
 					onClick={onLoginWithGoogleClick}
 					disabled={accountLoading}
-					className="flex w-full items-center justify-center gap-3 border border-border py-3 text-sm hover:border-primary disabled:opacity-60"
+					className="flex w-full items-center justify-center gap-3 border border-border py-3 text-sm hover:border-primary disabled:opacity-60 hover:cursor-pointer"
 				>
 					<span className="font-serif text-base text-primary">G</span> Continue with
 					Google

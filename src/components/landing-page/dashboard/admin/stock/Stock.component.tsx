@@ -9,6 +9,7 @@ import type React from 'react'
 
 function Stock({
 	products,
+	productDataloading,
 	categoryData,
 	showForm,
 	editId,
@@ -25,6 +26,7 @@ function Stock({
 	onSaveClick,
 }: {
 	products: ProductItem[]
+	productDataloading: Boolean
 	categoryData: CategoryItem[]
 	showForm: boolean
 	editId: string | null
@@ -107,7 +109,11 @@ function Stock({
 				</button>
 			</div>
 
-			<DataTable columns={columns} data={products} emptyMessage="No products yet." />
+			<DataTable
+				columns={columns}
+				data={products}
+				emptyMessage={productDataloading ? 'Loading products…' : 'No products yet.'}
+			/>
 
 			{showForm && (
 				<div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 p-4">

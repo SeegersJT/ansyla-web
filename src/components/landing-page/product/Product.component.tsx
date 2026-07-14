@@ -1,6 +1,8 @@
 import ProductCard from '@/components/product-card/ProductCard.component'
+import RatingInput from '@/components/rating-input/RatingInput.component'
 import StarRating from '@/components/star-rating/StarRating.component'
 import { colorMap, iconMap } from '@/containers/landing-page/product/Product.helper'
+import type { ReviewItem } from '@/redux/types/Review.type'
 import type { ProductItem } from '@/redux/types/Product.type'
 import type { Settings } from '@/redux/types/Settings.type'
 import { Utils } from '@/utils/Utils'
@@ -10,29 +12,63 @@ import { Link } from 'react-router'
 
 function Product({
 	product,
+	productLoading,
 	zoom,
 	settings,
 	stockAvailibity,
 	selectedQuantity,
 	addedToWishList,
 	relatedProducts,
+	reviews,
+	reviewsLoading,
+	userReview,
+	reviewRating,
+	reviewComment,
+	submittingReview,
+	removingReview,
+	isLoggedIn,
 	onZoomChange,
 	onQuantityChange,
 	onAddToWishlistClick,
 	onAddToCartClick,
+	onReviewRatingChange,
+	onReviewCommentChange,
+	onSubmitReviewClick,
+	onRemoveReviewClick,
 }: {
 	product: ProductItem
+	productLoading: boolean
 	zoom: boolean
 	settings: Settings
 	stockAvailibity: StockAvailabilityItem
 	selectedQuantity: number
 	addedToWishList: boolean
 	relatedProducts: ProductItem[]
+	reviews: ReviewItem[]
+	reviewsLoading: boolean
+	userReview: ReviewItem | undefined
+	reviewRating: number
+	reviewComment: string
+	submittingReview: boolean
+	removingReview: boolean
+	isLoggedIn: boolean
 	onZoomChange: (value: boolean) => void
 	onQuantityChange: (quantity: number) => void
 	onAddToWishlistClick: () => void
 	onAddToCartClick: (product: ProductItem, selectedQuantity: number) => void
+	onReviewRatingChange: (rating: number) => void
+	onReviewCommentChange: (comment: string) => void
+	onSubmitReviewClick: () => void
+	onRemoveReviewClick: () => void
 }) {
+	if (productLoading) {
+		return (
+			<div className="mx-auto flex max-w-7xl items-center justify-center px-4 py-32 sm:px-6">
+				<p className="text-muted-foreground">Loading…</p>
+			</div>
+		)
+	}
+
 	return (
 		<div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
 			<nav className="mb-8 text-xs uppercase tracking-wider text-muted-foreground">
@@ -117,7 +153,7 @@ function Product({
 						</div>
 						<button
 							onClick={onAddToWishlistClick}
-							className="flex h-12 w-12 items-center justify-center border border-border hover:border-primary hover:cursor-pointer"
+							className="flex h-12 w-12 items-center justify-center border border-border hover:border-primary"
 							aria-label="Wishlist"
 						>
 							<Heart
@@ -126,10 +162,10 @@ function Product({
 						</button>
 					</div>
 
-					<div className="mt-5 flex flex-col gap-3 sm:flex-row ">
+					<div className="mt-5 flex flex-col gap-3 sm:flex-row">
 						<button
 							onClick={() => onAddToCartClick(product, selectedQuantity)}
-							className="flex-1 bg-gradient-gold py-3.5 text-xs font-medium uppercase tracking-luxe text-primary-foreground hover:cursor-pointer transition-opacity hover:opacity-90"
+							className="flex-1 bg-gradient-gold py-3.5 text-xs font-medium uppercase tracking-luxe text-primary-foreground transition-opacity hover:opacity-90 hover:cursor-pointer"
 						>
 							Add to Cart
 						</button>
@@ -151,6 +187,96 @@ function Product({
 					</div>
 				</div>
 			</div>
+
+			<section className="mt-24 border-t border-border pt-16">
+				<div className="mx-auto max-w-3xl">
+					<h2 className="mb-8 text-center font-serif text-3xl">Ratings &amp; Reviews</h2>
+
+					{isLoggedIn ? (
+						<div className="mb-10 border border-border bg-card p-6">
+							<h3 className="font-serif text-lg">
+								{userReview ? 'Update Your Review' : 'Write a Review'}
+							</h3>
+							<div className="mt-4">
+								<RatingInput value={reviewRating} onChange={onReviewRatingChange} />
+							</div>
+							<textarea
+								value={reviewComment}
+								onChange={e => onReviewCommentChange(e.target.value)}
+								placeholder="Share your thoughts on this piece..."
+								rows={3}
+								className="mt-4 w-full border border-border bg-background px-4 py-3 text-sm outline-none focus:border-primary"
+							/>
+							<div className="mt-4 flex gap-3">
+								<button
+									onClick={onSubmitReviewClick}
+									disabled={reviewRating === 0 || submittingReview}
+									className="bg-gradient-gold px-6 py-2.5 text-xs font-medium uppercase tracking-luxe text-primary-foreground disabled:opacity-60 hover:cursor-pointer"
+								>
+									{submittingReview
+										? 'Saving…'
+										: userReview
+											? 'Update Review'
+											: 'Submit Review'}
+								</button>
+								{userReview && (
+									<button
+										onClick={onRemoveReviewClick}
+										disabled={removingReview}
+										className="border border-border px-6 py-2.5 text-xs uppercase tracking-wider text-muted-foreground hover:border-destructive hover:text-destructive disabled:opacity-60 hover:cursor-pointer"
+									>
+										{removingReview ? 'Removing…' : 'Remove Review'}
+									</button>
+								)}
+							</div>
+						</div>
+					) : (
+						<div className="flex flex-col items-center">
+							<p className="mb-2 text-center text-sm text-muted-foreground">
+								Please log in to leave a rating and review.
+							</p>
+							<Link
+								to="/dashboard"
+								className="bg-gradient-gold px-6 py-3 text-xs font-medium uppercase tracking-wider text-primary-foreground mb-10"
+							>
+								Log In
+							</Link>
+						</div>
+					)}
+
+					{reviewsLoading ? (
+						<p className="text-center text-sm text-muted-foreground">
+							Loading reviews…
+						</p>
+					) : reviews.length === 0 ? (
+						<p className="text-center text-sm text-muted-foreground">
+							No reviews yet. Be the first to share your thoughts.
+						</p>
+					) : (
+						<div className="space-y-6">
+							{reviews.map(review => (
+								<div
+									key={review.id}
+									className="border-b border-border pb-6 last:border-0"
+								>
+									<div className="flex items-center justify-between">
+										<p className="font-serif text-base">{review.user_name}</p>
+										<span className="text-xs text-muted-foreground">
+											{String(review.createdAt)}
+										</span>
+									</div>
+									<StarRating rating={review.rating} className="mt-1" />
+									{review.comment && (
+										<p className="mt-3 text-sm leading-relaxed text-foreground/90">
+											{review.comment}
+										</p>
+									)}
+								</div>
+							))}
+						</div>
+					)}
+				</div>
+			</section>
 
 			{relatedProducts.length > 0 && (
 				<section className="mt-24">

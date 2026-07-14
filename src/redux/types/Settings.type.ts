@@ -17,6 +17,14 @@ export interface OrderStatus {
 	status_no: number | null
 }
 
+export interface SettingsBankDetails {
+	bank_name: string | null
+	account_holder: string | null
+	account_number: string | null
+	branch_code: string | null
+	account_type: string | null
+}
+
 export interface Settings {
 	id: string
 	currency: string
@@ -24,6 +32,7 @@ export interface Settings {
 	prefixes: SettingsPrefix
 	sequences: SettingsSequence[]
 	statuses: OrderStatus[]
+	bank_details: SettingsBankDetails
 	store_name: string | null
 	shipping_cost: number
 	free_shipping_threshold: number

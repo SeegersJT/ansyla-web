@@ -1,6 +1,11 @@
 import DataField from '@/components/data-field/DataField.component'
 import type { SettingsForm } from '@/containers/landing-page/dashboard/admin/settings/Settings.container'
-import type { OrderStatus, SettingsPrefix, SettingsSequence } from '@/redux/types/Settings.type'
+import type {
+	OrderStatus,
+	SettingsBankDetails,
+	SettingsPrefix,
+	SettingsSequence,
+} from '@/redux/types/Settings.type'
 import { Plus, Trash2 } from 'lucide-react'
 import type React from 'react'
 
@@ -10,6 +15,7 @@ function SettingsComponent({
 	onFormChange,
 	onPrefixChange,
 	onSequenceChange,
+	onBankDetailsChange,
 	onStatusChange,
 	onAddStatusClick,
 	onRemoveStatusClick,
@@ -20,6 +26,7 @@ function SettingsComponent({
 	onFormChange: (value: Partial<SettingsForm>) => void
 	onPrefixChange: (key: keyof SettingsPrefix, value: string) => void
 	onSequenceChange: (key: keyof SettingsSequence, value: string) => void
+	onBankDetailsChange: (key: keyof SettingsBankDetails, value: string) => void
 	onStatusChange: (index: number, value: Partial<OrderStatus>) => void
 	onAddStatusClick: () => void
 	onRemoveStatusClick: (index: number) => void
@@ -126,6 +133,43 @@ function SettingsComponent({
 						type="number"
 						value={String(form.sequences.user_no ?? 0)}
 						onChange={v => onSequenceChange('user_no', v)}
+					/>
+				</div>
+			</section>
+
+			<section className="space-y-4 border border-border bg-card p-6">
+				<h3 className="text-xs uppercase tracking-luxe text-primary">
+					Manual EFT Banking Details
+				</h3>
+				<p className="text-xs text-muted-foreground">
+					Shown to customers at checkout when they select Manual EFT as their payment
+					method.
+				</p>
+				<div className="grid gap-4 sm:grid-cols-2">
+					<DataField
+						label="Bank Name"
+						value={form.bank_details.bank_name ?? ''}
+						onChange={v => onBankDetailsChange('bank_name', v)}
+					/>
+					<DataField
+						label="Account Holder"
+						value={form.bank_details.account_holder ?? ''}
+						onChange={v => onBankDetailsChange('account_holder', v)}
+					/>
+					<DataField
+						label="Account Number"
+						value={form.bank_details.account_number ?? ''}
+						onChange={v => onBankDetailsChange('account_number', v)}
+					/>
+					<DataField
+						label="Branch Code"
+						value={form.bank_details.branch_code ?? ''}
+						onChange={v => onBankDetailsChange('branch_code', v)}
+					/>
+					<DataField
+						label="Account Type"
+						value={form.bank_details.account_type ?? ''}
+						onChange={v => onBankDetailsChange('account_type', v)}
 					/>
 				</div>
 			</section>

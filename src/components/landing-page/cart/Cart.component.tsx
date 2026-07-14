@@ -16,6 +16,7 @@ function Cart({
 	shippingCost,
 	discount,
 	total,
+	couponLoading,
 	onRemoveAllOfProductClick,
 	onRemoveCartItemClick,
 	onAddCartItemClick,
@@ -31,6 +32,7 @@ function Cart({
 	shippingCost: number
 	discount: number
 	total: number
+	couponLoading: boolean
 	onRemoveAllOfProductClick: (productId: string) => void
 	onRemoveCartItemClick: (productId: string) => void
 	onAddCartItemClick: (product: ProductItem, quantity: number) => void
@@ -116,13 +118,15 @@ function Cart({
 							value={coupon}
 							onChange={event => onCouponChange(event.target.value)}
 							placeholder="Coupon code"
-							className="flex-1 border border-border bg-background px-3 py-2.5 text-sm outline-none focus:border-primary"
+							disabled={couponLoading}
+							className="flex-1 border border-border bg-background px-3 py-2.5 text-sm outline-none focus:border-primary disabled:opacity-50"
 						/>
 						<button
 							onClick={onApplyCouponClick}
-							className="flex items-center gap-1.5 border border-primary px-4 text-xs uppercase tracking-wider text-primary hover:bg-primary hover:text-primary-foreground"
+							disabled={couponLoading}
+							className="flex items-center gap-1.5 border border-primary px-4 text-xs uppercase tracking-wider text-primary hover:bg-primary hover:text-primary-foreground disabled:opacity-50"
 						>
-							<Tag className="h-3.5 w-3.5" /> Apply
+							<Tag className="h-3.5 w-3.5" /> {couponLoading ? 'Applying…' : 'Apply'}
 						</button>
 					</div>
 					{isCouponApplied && (

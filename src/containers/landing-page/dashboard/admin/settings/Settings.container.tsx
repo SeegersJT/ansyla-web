@@ -5,6 +5,7 @@ import { requestSettings, requestUpdateSettings } from '@/redux/actions/Settings
 import type {
 	OrderStatus,
 	Settings,
+	SettingsBankDetails,
 	SettingsPrefix,
 	SettingsSequence,
 } from '@/redux/types/Settings.type'
@@ -20,6 +21,7 @@ export interface SettingsForm {
 	prefixes: SettingsPrefix
 	sequences: SettingsSequence
 	statuses: OrderStatus[]
+	bank_details: SettingsBankDetails
 }
 
 const emptySettingsForm: SettingsForm = {
@@ -31,6 +33,13 @@ const emptySettingsForm: SettingsForm = {
 	prefixes: { category_prefix: '', order_prefix: '', product_prefix: '', user_prefix: '' },
 	sequences: { category_no: 0, order_no: 0, product_no: 0, user_no: 0 },
 	statuses: [],
+	bank_details: {
+		bank_name: '',
+		account_holder: '',
+		account_number: '',
+		branch_code: '',
+		account_type: '',
+	},
 }
 
 function AdminSettingsContainer() {
@@ -57,6 +66,7 @@ function AdminSettingsContainer() {
 			prefixes: settings.prefixes ?? emptySettingsForm.prefixes,
 			sequences: settings.sequences?.[0] ?? emptySettingsForm.sequences,
 			statuses: settings.statuses ?? [],
+			bank_details: settings.bank_details ?? emptySettingsForm.bank_details,
 		})
 	}, [settingsData])
 
@@ -72,6 +82,13 @@ function AdminSettingsContainer() {
 		setForm(current => ({
 			...current,
 			sequences: { ...current.sequences, [key]: Number(value) || 0 },
+		}))
+	}
+
+	const handleOnBankDetailsChange = (key: keyof SettingsBankDetails, value: string) => {
+		setForm(current => ({
+			...current,
+			bank_details: { ...current.bank_details, [key]: value },
 		}))
 	}
 
@@ -113,6 +130,7 @@ function AdminSettingsContainer() {
 			prefixes: form.prefixes,
 			sequences: [form.sequences],
 			statuses: form.statuses,
+			bank_details: form.bank_details,
 		}
 
 		dispatch(requestUpdateSettings(settingsId, payload))
@@ -125,6 +143,7 @@ function AdminSettingsContainer() {
 			onFormChange={handleOnFormChange}
 			onPrefixChange={handleOnPrefixChange}
 			onSequenceChange={handleOnSequenceChange}
+			onBankDetailsChange={handleOnBankDetailsChange}
 			onStatusChange={handleOnStatusChange}
 			onAddStatusClick={handleOnAddStatusClick}
 			onRemoveStatusClick={handleOnRemoveStatusClick}

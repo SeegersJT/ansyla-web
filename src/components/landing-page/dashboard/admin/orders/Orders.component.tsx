@@ -1,18 +1,30 @@
 import DataTable, { type Column } from '@/components/data-table/DataTable.component'
+import OrderDetail from '@/components/order-detail/OrderDetail.component'
 import type { OrderItem } from '@/redux/types/Order.type'
 import type { OrderStatus } from '@/redux/types/Settings.type'
 import { Utils } from '@/utils/Utils'
+import { Eye } from 'lucide-react'
 
 function Orders({
 	orders,
 	loading,
 	statusOptions,
+	selectedOrder,
+	markingAsPaid,
 	onStatusChange,
+	onViewOrderClick,
+	onCloseDetailClick,
+	onMarkAsPaidClick,
 }: {
 	orders: OrderItem[]
 	loading: boolean
 	statusOptions: OrderStatus[]
+	selectedOrder: OrderItem | null
+	markingAsPaid: boolean
 	onStatusChange: (id: string, status: string) => void
+	onViewOrderClick: (order: OrderItem) => void
+	onCloseDetailClick: () => void
+	onMarkAsPaidClick: (id: string) => void
 }) {
 	const findStatusNo = (status: string) =>
 		statusOptions.find(option => option.status === status)?.status_no ?? 0
@@ -35,6 +47,33 @@ function Orders({
 		},
 		{ key: 'total', header: 'Total', accessor: order => Utils.formatPrice(order.total) },
 		{
+			key: 'payment',
+			header: 'Payment',
+			render: order => (
+				<div className="space-y-1">
+					<p className="text-xs text-muted-foreground">{order.payment_method}</p>
+					<span
+						className={`inline-block border px-2 py-0.5 text-[10px] uppercase tracking-wider ${
+							order.payment_status === 'Paid'
+								? 'border-green-500/40 text-green-500'
+								: 'border-yellow-500/40 text-yellow-500'
+						}`}
+					>
+						{order.payment_status}
+					</span>
+					{order.payment_status === 'Pending Payment' && (
+						<button
+							onClick={() => onMarkAsPaidClick(order.id)}
+							disabled={markingAsPaid}
+							className="block text-[10px] uppercase tracking-wider text-primary hover:underline disabled:opacity-60 hover:cursor-pointer"
+						>
+							Mark as Paid
+						</button>
+					)}
+				</div>
+			),
+		},
+		{
 			key: 'status',
 			header: 'Status',
 			render: order => (
@@ -55,6 +94,20 @@ function Orders({
 				</select>
 			),
 		},
+		{
+			key: 'actions',
+			header: 'Actions',
+			align: 'right',
+			render: order => (
+				<button
+					onClick={() => onViewOrderClick(order)}
+					className="border border-border p-2 hover:border-primary hover:text-primary"
+					aria-label="View order"
+				>
+					<Eye className="h-3.5 w-3.5" />
+				</button>
+			),
+		},
 	]
 
 	return (
@@ -65,6 +118,24 @@ function Orders({
 				data={orders}
 				emptyMessage={loading ? 'Loading orders…' : 'No orders yet.'}
 			/>
+
+			{selectedOrder && (
+				<OrderDetail
+					order={selectedOrder}
+					onClose={onCloseDetailClick}
+					actions={
+						selectedOrder.payment_status === 'Pending Payment' && (
+							<button
+								onClick={() => onMarkAsPaidClick(selectedOrder.id)}
+								disabled={markingAsPaid}
+								className="bg-gradient-gold px-5 py-2.5 text-xs font-medium uppercase tracking-luxe text-primary-foreground disabled:opacity-60 hover:cursor-pointer"
+							>
+								{markingAsPaid ? 'Updating…' : 'Mark as Paid'}
+							</button>
+						)
+					}
+				/>
+			)}
 		</div>
 	)
 }

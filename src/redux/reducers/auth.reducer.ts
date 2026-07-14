@@ -1,5 +1,5 @@
-import { AUTH_ACTIONS } from '../actions/auth.action'
-import type { AuthState, AuthUser, AuthUserDetails } from '../types/auth.type'
+import { AUTH_ACTIONS } from '../actions/Auth.action'
+import type { AuthState, AuthUser, AuthUserDetails } from '../types/Auth.type'
 
 const initialState: AuthState = {
 	user: null,
@@ -18,6 +18,18 @@ export const AuthReducer = (state = initialState, action: Action): AuthState => 
 			return {
 				...state,
 				loading: action.payload as boolean,
+			}
+
+		case AUTH_ACTIONS.REQUEST_FIREBASE_EMAIL_REGISTER_LOADING:
+			return {
+				...state,
+				loading: action.payload as boolean,
+			}
+
+		case AUTH_ACTIONS.REQUEST_LOGOUT_LOADING:
+			return {
+				...state,
+				logoutLoading: action.payload as boolean,
 			}
 
 		case AUTH_ACTIONS.REQUEST_AUTH_USER_DETAILS_LOADING:
@@ -51,12 +63,6 @@ export const AuthReducer = (state = initialState, action: Action): AuthState => 
 			return {
 				...state,
 				error: action.payload as string | null,
-			}
-
-		case AUTH_ACTIONS.REQUEST_LOGOUT_LOADING:
-			return {
-				...state,
-				logoutLoading: action.payload as boolean,
 			}
 
 		default:

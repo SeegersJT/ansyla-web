@@ -1,5 +1,5 @@
 import { accountTabs } from '@/containers/landing-page/dashboard/account/Account.helper'
-import type { AuthUser } from '@/redux/types/auth.type'
+import type { AuthUser } from '@/redux/types/Auth.type'
 import { LogOut, ShieldCheck } from 'lucide-react'
 import { Link, NavLink, Outlet } from 'react-router'
 
@@ -59,7 +59,7 @@ function Account({
 					))}
 				</nav>
 
-				<div>
+				<div className="min-w-0">
 					<Outlet />
 				</div>
 			</div>

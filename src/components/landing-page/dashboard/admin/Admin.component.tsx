@@ -1,5 +1,5 @@
 import type { AdminTabItem } from '@/containers/landing-page/dashboard/admin/Admin.helper'
-import type { AuthUser } from '@/redux/types/auth.type'
+import type { AuthUser } from '@/redux/types/Auth.type'
 import { LogOut, User } from 'lucide-react'
 import { Link, NavLink, Outlet } from 'react-router'
 
@@ -58,7 +58,7 @@ function Admin({
 					))}
 				</nav>
 
-				<div>
+				<div className="min-w-0">
 					<Outlet />
 				</div>
 			</div>

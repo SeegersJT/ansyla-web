@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import LandingPageContainer from '@/containers/landing-page/LandingPage.container'
 import HomeContainer from '@/containers/landing-page/home/Home.container'
 import DashboardContainer from '@/containers/landing-page/dashboard/Dashboard.container'
-import ComingSoonContainer from '@/containers/coming-soon/ComingSoon.container'
+// import ComingSoonContainer from '@/containers/coming-soon/ComingSoon.container'
 import ShopContainer from '@/containers/landing-page/shop/Shop.container'
 import ProductContainer from '@/containers/landing-page/product/Product.container'
 import CartDrawer from '@/components/cart-drawer/CartDrawer.component'
@@ -25,19 +25,21 @@ import AdminCustomersContainer from '@/containers/landing-page/dashboard/admin/c
 import { NavigateInjector } from '@/components/navigate-injector/NavigateInjector.component'
 import AdminCategoriesContainer from '@/containers/landing-page/dashboard/admin/categories/Categories.containers'
 import AdminSettingsContainer from '@/containers/landing-page/dashboard/admin/settings/Settings.container'
+import CheckoutContainer from '@/containers/landing-page/checkout/Checkout.container'
 
 export const AppRouter = () => (
 	<BrowserRouter>
 		<Routes>
 			<Route path={'/'} element={<Navigate to={'/home'} replace />} />
 
-			<Route path={'/coming-soon'} element={<ComingSoonContainer />} />
+			{/* <Route path={'/coming-soon'} element={<ComingSoonContainer />} /> */}
 
 			<Route element={<LandingPageContainer />}>
 				<Route path={'/home'} element={<HomeContainer />} />
 				<Route path={'/shop'} element={<ShopContainer />} />
 				<Route path={'/product/:context'} element={<ProductContainer />} />
 				<Route path={'/cart'} element={<CartContainer />} />
+				<Route path={'/checkout'} element={<CheckoutContainer />} />
 
 				<Route path="/dashboard" element={<DashboardContainer />}>
 					<Route index element={<AuthenticationContainer />} />

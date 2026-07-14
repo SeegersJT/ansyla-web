@@ -5,10 +5,12 @@ import { productSaga } from './Product.saga'
 import { settingsSaga } from './Settings.saga'
 import { newsletterSaga } from './Newsletter.saga'
 import { couponSaga } from './Coupon.saga'
-import { authSaga } from './auth.saga'
 import { orderSaga } from './Order.saga'
 import { customerSaga } from './Customer.saga'
 import { wishlistSaga } from './Wishlist.saga'
+import { reviewSaga } from './Review.saga'
+import { authSaga } from './Auth.saga'
+import { addressSaga } from './Address.saga'
 
 export function* RootSaga() {
 	yield all([
@@ -22,5 +24,7 @@ export function* RootSaga() {
 		orderSaga(),
 		customerSaga(),
 		wishlistSaga(),
+		reviewSaga(),
+		addressSaga(),
 	])
 }

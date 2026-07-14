@@ -1,18 +1,21 @@
 import Authentication from '@/components/landing-page/dashboard/authentication/Authentication.component'
 import { useAppDispatch } from '@/hooks/useAppDispatch'
-import { requestFirebaseEmailLogin } from '@/redux/actions/auth.action'
+import { useAppSelector } from '@/hooks/useAppSelector'
+import {
+	requestFirebaseEmailLogin,
+	requestFirebaseEmailRegister,
+} from '@/redux/actions/Auth.action'
 import React, { useState } from 'react'
 
 function AuthenticationContainer() {
 	const dispatch = useAppDispatch()
 
+	const { loading, error } = useAppSelector(state => state.auth)
+
 	const [selectedMode, setSelectedMode] = useState<'login' | 'signup'>('login')
 	const [fullName, setFullName] = useState<string>('')
 	const [email, setEmail] = useState<string>('')
 	const [password, setPassword] = useState<string>('')
-	const [error, setError] = useState<string>('')
-
-	const [accountLoading, setaccountLoading] = useState<boolean>(false)
 
 	const handleOnSelectedModeClick = (mode: 'login' | 'signup') => {
 		setSelectedMode(mode)
@@ -37,6 +40,7 @@ function AuthenticationContainer() {
 
 	const handleOnSignUpWithEmailClick = (event: React.SubmitEvent) => {
 		event.preventDefault()
+		dispatch(requestFirebaseEmailRegister({ fullName, email, password }))
 	}
 
 	return (
@@ -45,8 +49,8 @@ function AuthenticationContainer() {
 			fullName={fullName}
 			email={email}
 			password={password}
-			error={error}
-			accountLoading={accountLoading}
+			error={error ?? ''}
+			accountLoading={loading}
 			onSelectedModeClick={handleOnSelectedModeClick}
 			onFullNameChange={handleOnFullNameChange}
 			onEmailChange={handleOnEmailChange}

@@ -96,9 +96,9 @@ function AdminCategoriesContainer() {
 			dispatch(
 				requestAddCategory({
 					...payload,
-					created_by: null,
+					createdBy: null,
 					created_on: null,
-					updated_by: null,
+					updatedBy: null,
 					updated_on: null,
 				})
 			)

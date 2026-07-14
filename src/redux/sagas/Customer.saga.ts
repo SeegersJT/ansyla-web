@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects'
 import { firestoreService } from '@/firebase'
-import type { AuthUserDetails } from '../types/auth.type'
+import type { AuthUserDetails } from '../types/Auth.type'
 import type { OrderItem } from '../types/Order.type'
 import type { CustomerItem } from '../types/Customer.type'
 import {
@@ -26,18 +26,24 @@ function* handleCustomerItemsRequest() {
 			[]
 		)
 
-		const customers: CustomerItem[] = users.map(user => {
-			const userOrders = orders.filter(order => order.customer_email === user.email_address)
+		const customers: CustomerItem[] = users
+			.filter(user => user.role !== 'admin')
+			.map(user => {
+				const userOrders = orders.filter(
+					order => order.customer_email === user.email_address
+				)
 
-			return {
-				id: user.id,
-				name: `${user.first_name} ${user.last_name}`.trim(),
-				email: user.email_address,
-				orders: userOrders.length,
-				spent: userOrders.reduce((total, order) => total + order.total, 0),
-				tier: user.tier,
-			}
-		})
+				return {
+					id: user.id,
+					name: `${user.first_name} ${user.last_name}`.trim(),
+					email: user.email_address,
+					phone: user.phone_number ?? '',
+					orders: userOrders.length,
+					spent: userOrders.reduce((total, order) => total + order.total, 0),
+					tier: user.tier,
+				}
+			})
+			.sort((a, b) => b.spent - a.spent)
 
 		yield put(setCustomerItems(customers))
 	} catch (err) {

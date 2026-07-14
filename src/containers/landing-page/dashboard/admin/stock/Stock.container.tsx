@@ -31,9 +31,8 @@ export type StockForm = typeof emptyStockForm
 function AdminStockContainer() {
 	const dispatch = useAppDispatch()
 
-	const { productData, addProductLoading, updateProductLoading } = useAppSelector(
-		state => state.product
-	)
+	const { productData, productDataloading, addProductLoading, updateProductLoading } =
+		useAppSelector(state => state.product)
 	const { categoryData } = useAppSelector(state => state.category)
 
 	const [showForm, setShowForm] = useState(false)
@@ -133,10 +132,10 @@ function AdminStockContainer() {
 					product_sequence: null,
 					rating: 0,
 					reviews: 0,
-					created_by: null,
-					created_at: null,
-					updated_by: null,
-					updated_at: null,
+					createdBy: null,
+					createdAt: null,
+					updatedBy: null,
+					updatedAt: null,
 				})
 			)
 		}
@@ -147,6 +146,7 @@ function AdminStockContainer() {
 	return (
 		<Stock
 			products={productData}
+			productDataloading={productDataloading}
 			categoryData={categoryData}
 			showForm={showForm}
 			editId={editId}

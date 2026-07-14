@@ -1,10 +1,20 @@
-export type OrderStatusValue = 'Processing' | 'Shipped' | 'Delivered' | 'Cancelled'
+export type OrderStatusValue = string
 
 export interface OrderLineItem {
 	product_id: string
 	name: string
+	image: string | null
 	price: number
 	quantity: number
+}
+
+export interface OrderShippingAddress {
+	full_name: string
+	phone_number: string
+	line1: string
+	city: string
+	province: string
+	postal_code: string
 }
 
 export interface OrderItem {
@@ -15,12 +25,20 @@ export interface OrderItem {
 	customer_name: string | null
 	customer_email: string | null
 	items: OrderLineItem[]
+	shipping_address: OrderShippingAddress
+	delivery_method: 'standard' | 'express'
+	payment_method: string
+	payment_status: string
+	payment_reference: string | null
+	subtotal: number
+	shipping_cost: number
+	discount: number
 	total: number
 	status: string
-	created_by: string | null
-	created_at: Date | null
-	updated_by: string | null
-	updated_at: Date | null
+	createdBy: string | null
+	createdAt: Date | null
+	updatedBy: string | null
+	updatedAt: Date | null
 }
 
 export const defaultOrderItem: OrderItem = {
@@ -31,16 +49,36 @@ export const defaultOrderItem: OrderItem = {
 	customer_name: '',
 	customer_email: '',
 	items: [],
+	shipping_address: {
+		full_name: '',
+		phone_number: '',
+		line1: '',
+		city: '',
+		province: '',
+		postal_code: '',
+	},
+	delivery_method: 'standard',
+	payment_method: '',
+	payment_status: 'Pending Payment',
+	payment_reference: null,
+	subtotal: 0,
+	shipping_cost: 0,
+	discount: 0,
 	total: 0,
 	status: 'Processing',
-	created_by: '',
-	created_at: new Date(),
-	updated_by: '',
-	updated_at: new Date(),
+	createdBy: '',
+	createdAt: new Date(),
+	updatedBy: '',
+	updatedAt: new Date(),
 }
 
 export interface OrderState {
 	orderData: OrderItem[]
 	orderDataLoading: boolean
 	updateOrderStatusLoading: boolean
+	createOrderLoading: boolean
+	lastPlacedOrder: OrderItem | null
+	markOrderAsPaidLoading: boolean
+	myOrderData: OrderItem[]
+	myOrderDataLoading: boolean
 }

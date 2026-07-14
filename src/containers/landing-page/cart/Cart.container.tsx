@@ -11,7 +11,7 @@ function CartContainer() {
 
 	const { cartData, cartDataSubtotal } = useAppSelector(state => state.cart)
 	const { settingsData } = useAppSelector(state => state.settings)
-	const { couponItem, isCouponApplied } = useAppSelector(state => state.coupon)
+	const { couponItem, isCouponApplied, couponLoading } = useAppSelector(state => state.coupon)
 
 	const [coupon, setCoupon] = useState<string>('')
 
@@ -57,6 +57,7 @@ function CartContainer() {
 			coupon={coupon}
 			couponItem={couponItem}
 			isCouponApplied={isCouponApplied}
+			couponLoading={couponLoading}
 			shippingCost={shippingCost}
 			discount={discount}
 			total={total}

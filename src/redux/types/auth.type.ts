@@ -11,6 +11,7 @@ export interface AuthUserDetails {
 	tier_updated_at: Date
 	total_orders: number
 	last_login_at: Date
+	createdAt: Date | null
 }
 
 export interface AuthUser {

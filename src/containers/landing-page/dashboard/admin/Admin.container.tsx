@@ -1,7 +1,7 @@
 import Admin from '@/components/landing-page/dashboard/admin/Admin.component'
 import { useAppDispatch } from '@/hooks/useAppDispatch'
 import { useAppSelector } from '@/hooks/useAppSelector'
-import { requestLogout } from '@/redux/actions/auth.action'
+import { requestLogout } from '@/redux/actions/Auth.action'
 import { adminTabs } from './Admin.helper'
 
 function AdminContainer() {

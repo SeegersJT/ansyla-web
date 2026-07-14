@@ -1,13 +1,38 @@
 import DataField from '@/components/data-field/DataField.component'
+import type { AddressForm } from '@/containers/landing-page/dashboard/account/addresses/Addresses.container'
+import type { AddressItem } from '@/redux/types/Address.type'
+import type React from 'react'
 
-function Addresses({ selectedAddress }: { selectedAddress: string | null }) {
+function Addresses({
+	addresses,
+	editId,
+	form,
+	saving,
+	onAddClick,
+	onEditClick,
+	onCancelClick,
+	onRemoveClick,
+	onFormChange,
+	onSaveClick,
+}: {
+	addresses: AddressItem[]
+	editId: string | 'new' | null
+	form: AddressForm
+	saving: boolean
+	onAddClick: () => void
+	onEditClick: (address: AddressItem) => void
+	onCancelClick: () => void
+	onRemoveClick: (addressId: string) => void
+	onFormChange: (value: Partial<AddressForm>) => void
+	onSaveClick: (event: React.FormEvent) => void
+}) {
 	return (
 		<div className="space-y-4">
 			<div className="flex items-center justify-between">
 				<h2 className="font-serif text-2xl">Saved Addresses</h2>
-				{selectedAddress === null && (
+				{editId === null && (
 					<button
-						onClick={() => {}}
+						onClick={onAddClick}
 						className="border border-primary/40 px-4 py-2 text-xs uppercase tracking-wider text-primary hover:bg-primary/10"
 					>
 						Add Address
@@ -15,27 +40,53 @@ function Addresses({ selectedAddress }: { selectedAddress: string | null }) {
 				)}
 			</div>
 
-			{selectedAddress !== null && (
-				<form onSubmit={() => {}} className="space-y-4 border border-border bg-card p-6">
+			{editId !== null && (
+				<form onSubmit={onSaveClick} className="space-y-4 border border-border bg-card p-6">
 					<p className="font-serif text-lg">
-						{selectedAddress === 'new' ? 'New Address' : 'Edit Address'}
+						{editId === 'new' ? 'New Address' : 'Edit Address'}
 					</p>
-					<DataField label="Label" value={'Home'} onChange={() => {}} />
+					<DataField
+						label="Label"
+						value={form.label}
+						onChange={v => onFormChange({ label: v })}
+					/>
+					<DataField
+						label="Full Name"
+						value={form.full_name}
+						onChange={v => onFormChange({ full_name: v })}
+					/>
+					<DataField
+						label="Phone Number"
+						value={form.phone_number}
+						onChange={v => onFormChange({ phone_number: v })}
+					/>
 					<DataField
 						label="Street Address"
-						value={'13 Steenbok Street'}
-						onChange={() => {}}
+						value={form.line1}
+						onChange={v => onFormChange({ line1: v })}
 					/>
 					<div className="grid gap-4 sm:grid-cols-3">
-						<DataField label="City" value={'Potchefstroom'} onChange={() => {}} />
-						<DataField label="Province" value={'North-West'} onChange={() => {}} />
-						<DataField label="Postal Code" value={'1234'} onChange={() => {}} />
+						<DataField
+							label="City"
+							value={form.city}
+							onChange={v => onFormChange({ city: v })}
+						/>
+						<DataField
+							label="Province"
+							value={form.province}
+							onChange={v => onFormChange({ province: v })}
+						/>
+						<DataField
+							label="Postal Code"
+							value={form.postal_code}
+							onChange={v => onFormChange({ postal_code: v })}
+						/>
 					</div>
 					<label className="flex items-center gap-2 text-sm text-muted-foreground">
 						<input
 							type="checkbox"
-							checked={false}
-							onChange={() => {}}
+							checked={form.is_default}
+							onChange={e => onFormChange({ is_default: e.target.checked })}
 							className="h-4 w-4 accent-primary"
 						/>
 						Set as default address
@@ -43,13 +94,14 @@ function Addresses({ selectedAddress }: { selectedAddress: string | null }) {
 					<div className="flex gap-3 pt-2">
 						<button
 							type="submit"
-							className="bg-gradient-gold px-5 py-2.5 text-xs font-medium uppercase tracking-luxe text-primary-foreground"
+							disabled={saving}
+							className="bg-gradient-gold px-5 py-2.5 text-xs font-medium uppercase tracking-luxe text-primary-foreground disabled:opacity-60"
 						>
-							Save Address
+							{saving ? 'Saving…' : 'Save Address'}
 						</button>
 						<button
 							type="button"
-							onClick={() => {}}
+							onClick={onCancelClick}
 							className="border border-border px-5 py-2.5 text-xs uppercase tracking-wider text-muted-foreground hover:border-primary hover:text-primary"
 						>
 							Cancel
@@ -59,30 +111,33 @@ function Addresses({ selectedAddress }: { selectedAddress: string | null }) {
 			)}
 
 			<div className="grid gap-4 sm:grid-cols-2">
-				{/* {addresses.map(a => (
-					<div key={a.id} className="flex flex-col border border-border bg-card p-5">
+				{addresses.map(address => (
+					<div
+						key={address.id}
+						className="flex flex-col border border-border bg-card p-5"
+					>
 						<div className="flex items-center justify-between">
-							<p className="text-sm font-medium">{a.label}</p>
-							{a.isDefault && (
+							<p className="text-sm font-medium">{address.label}</p>
+							{address.is_default && (
 								<span className="text-[10px] uppercase tracking-wider text-primary">
 									Default
 								</span>
 							)}
 						</div>
-						<p className="mt-2 text-sm text-muted-foreground">{a.line1}</p>
+						<p className="mt-2 text-sm text-muted-foreground">{address.line1}</p>
 						<p className="text-sm text-muted-foreground">
-							{a.city}, {a.province} {a.postalCode}
+							{address.city}, {address.province} {address.postal_code}
 						</p>
 						<div className="mt-4 flex gap-2 border-t border-border pt-3">
 							<button
-								onClick={() => startEdit(a)}
+								onClick={() => onEditClick(address)}
 								className="text-xs uppercase tracking-wider text-primary hover:underline"
 							>
 								Edit
 							</button>
 							<span className="text-border">·</span>
 							<button
-								onClick={() => remove(a.id)}
+								onClick={() => onRemoveClick(address.id)}
 								className="text-xs uppercase tracking-wider text-destructive hover:underline"
 							>
 								Delete
@@ -90,9 +145,9 @@ function Addresses({ selectedAddress }: { selectedAddress: string | null }) {
 						</div>
 					</div>
 				))}
-				{addresses.length === 0 && (
+				{addresses.length === 0 && editId === null && (
 					<p className="text-sm text-muted-foreground">No saved addresses yet.</p>
-				)} */}
+				)}
 			</div>
 		</div>
 	)

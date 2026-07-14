@@ -6,6 +6,7 @@ export const CART_ACTIONS = {
 	REMOVE_FROM_CART: '[CART] - REMOVE FROM CART',
 	REMOVE_ALL_OF_PRODUCT: '[CART] - REMOVE ALL OF PRODUCT',
 	SET_CART_DRAWER_OPEN: '[CART] - CART DRAWER OPEN - SET',
+	CLEAR_CART: '[CART] - CLEAR CART',
 } as const
 
 export const addToCart = (product: ProductItem, quantity: number) => ({
@@ -26,4 +27,8 @@ export const removeAllOfProduct = (productId: string) => ({
 export const setCartDrawerOpen = (isOpen: boolean) => ({
 	type: CART_ACTIONS.SET_CART_DRAWER_OPEN,
 	payload: isOpen,
+})
+
+export const clearCart = () => ({
+	type: CART_ACTIONS.CLEAR_CART,
 })

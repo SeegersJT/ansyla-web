@@ -5,9 +5,9 @@ export interface CategoryItem {
 	name: string | undefined
 	description: string | null
 	image: string | undefined
-	created_by: string | null
+	createdBy: string | null
 	created_on: Date | null
-	updated_by: string | null
+	updatedBy: string | null
 	updated_on: Date | null
 }
 
