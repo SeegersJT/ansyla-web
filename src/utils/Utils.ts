@@ -85,7 +85,6 @@ export class Utils {
 		statusOptions: OrderStatus[],
 		actor: 'admin' | 'customer'
 	): boolean {
-		console.log('statusOptions', statusOptions)
 		if (status === CANCELLED_ORDER_STATUS) return false
 		if (!statusOptions || statusOptions.length === 0) return true
 
