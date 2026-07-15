@@ -201,7 +201,6 @@ function CheckoutContainer() {
 		<Checkout
 			cartData={cartData}
 			isLoggedIn={!!user}
-			savedAddresses={addressData}
 			selectedAddressId={selectedAddressId}
 			form={form}
 			saveAddress={saveAddress}

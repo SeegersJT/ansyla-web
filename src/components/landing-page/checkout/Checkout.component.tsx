@@ -1,6 +1,5 @@
 import FieldLabel from '@/components/field-label/FieldLabel.component'
 import type { CheckoutForm } from '@/containers/landing-page/checkout/Checkout.container'
-import type { AddressItem } from '@/redux/types/Address.type'
 import type { CartItem } from '@/redux/types/Cart.type'
 import type { OrderItem } from '@/redux/types/Order.type'
 import type { SettingsBankDetails } from '@/redux/types/Settings.type'
@@ -33,7 +32,6 @@ const payMethods = [
 function Checkout({
 	cartData,
 	isLoggedIn,
-	savedAddresses,
 	selectedAddressId,
 	form,
 	saveAddress,
@@ -59,7 +57,6 @@ function Checkout({
 	placedOrder,
 	bankDetails,
 	onFormChange,
-	onSelectedAddressChange,
 	onSaveAddressChange,
 	onSetAsDefaultAddressChange,
 	onDeliveryMethodChange,
@@ -69,7 +66,6 @@ function Checkout({
 }: {
 	cartData: CartItem[]
 	isLoggedIn: boolean
-	savedAddresses: AddressItem[]
 	selectedAddressId: string
 	form: CheckoutForm
 	saveAddress: boolean
