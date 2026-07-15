@@ -56,7 +56,7 @@ function Stock({
 			key: 'name',
 			header: 'Product',
 			render: product => (
-				<div className="flex items-center gap-3">
+				<div className={`flex items-center gap-3 ${product.active ? '' : 'opacity-50'}`}>
 					<img
 						src={product.images?.[0]?.url}
 						alt={product.name}
@@ -78,6 +78,26 @@ function Stock({
 					}
 				>
 					{product.stock}
+				</span>
+			),
+		},
+		{
+			key: 'active',
+			header: 'Status',
+			render: product => (
+				<span
+					className={`inline-flex items-center gap-1.5 border px-3 py-1 text-[10px] uppercase tracking-wider ${
+						product.active
+							? 'border-green-500/40 text-green-500'
+							: 'border-muted-foreground/40 text-muted-foreground'
+					}`}
+				>
+					<span
+						className={`h-1.5 w-1.5 rounded-full ${
+							product.active ? 'bg-green-500' : 'bg-muted-foreground'
+						}`}
+					/>
+					{product.active ? 'Active' : 'Inactive'}
 				</span>
 			),
 		},

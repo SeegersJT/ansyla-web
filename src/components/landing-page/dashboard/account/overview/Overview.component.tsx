@@ -1,6 +1,6 @@
 import { Stat } from '@/containers/landing-page/dashboard/account/overview/Overview.helper'
 import type { AuthUserDetails } from '@/redux/types/Authentication.type'
-import type { OrderItem } from '@/redux/types/Order.type'
+import { CANCELLED_ORDER_STATUS, type OrderItem } from '@/redux/types/Order.type'
 import type { LoyaltyResult } from '@/utils/Utils.type'
 import { Utils } from '@/utils/Utils'
 import { Award } from 'lucide-react'
@@ -73,18 +73,54 @@ function Overview({
 						You haven't placed any orders yet.
 					</p>
 				) : (
-					<ul className="mt-4 space-y-3">
-						{recentOrders.map(order => (
-							<li
-								key={order.id}
-								className="flex items-center justify-between text-sm"
-							>
-								<span>{order.order_no ?? order.id}</span>
-								<span className="text-primary">
-									{Utils.formatPrice(order.total, currency)}
-								</span>
-							</li>
-						))}
+					<ul className="mt-4 space-y-4">
+						{recentOrders.map(order => {
+							const itemCount = order.items.reduce(
+								(total, item) => total + item.quantity,
+								0
+							)
+							const itemsSummary =
+								order.items.length === 0
+									? ''
+									: order.items.length === 1
+										? order.items[0].name
+										: `${order.items[0].name} +${order.items.length - 1} more`
+
+							return (
+								<Link
+									key={order.id}
+									to="../orders"
+									className="block border-b border-border pb-4 transition-opacity last:border-0 last:pb-0 hover:opacity-70"
+								>
+									<div className="flex items-center justify-between gap-3 text-sm">
+										<span className="font-serif">
+											{order.order_no ?? order.id}
+										</span>
+										<span className="text-primary">
+											{Utils.formatPrice(order.total, currency)}
+										</span>
+									</div>
+									<p className="mt-1 truncate text-sm text-muted-foreground">
+										{itemsSummary}
+									</p>
+									<div className="mt-2 flex items-center justify-between text-xs text-muted-foreground">
+										<span>
+											{String(order.createdAt).split(' ')[0]} · {itemCount}{' '}
+											{itemCount === 1 ? 'item' : 'items'}
+										</span>
+										<span
+											className={`border px-2 py-0.5 uppercase tracking-wider ${
+												order.status === CANCELLED_ORDER_STATUS
+													? 'border-destructive/40 text-destructive'
+													: 'border-primary/40 text-primary'
+											}`}
+										>
+											{order.status}
+										</span>
+									</div>
+								</Link>
+							)
+						})}
 					</ul>
 				)}
 			</div>
