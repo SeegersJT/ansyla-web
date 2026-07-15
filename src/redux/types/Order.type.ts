@@ -34,6 +34,8 @@ export interface OrderItem {
 	subtotal: number
 	shipping_cost: number
 	discount: number
+	points_redeemed: number
+	points_discount: number
 	total: number
 	status: string
 	createdBy: string | null
@@ -65,6 +67,8 @@ export const defaultOrderItem: OrderItem = {
 	subtotal: 0,
 	shipping_cost: 0,
 	discount: 0,
+	points_redeemed: 0,
+	points_discount: 0,
 	total: 0,
 	status: 'Processing',
 	createdBy: '',

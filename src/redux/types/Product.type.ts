@@ -20,7 +20,8 @@ export interface ProductItem {
 	description: string | null
 	category_id: string | null
 	category_name: string | null
-	materials: ProductMaterialState | null
+	materials: string[]
+	occasions: string[]
 	images: ProductImagesItem[]
 	price: number
 	stock: number | null
@@ -43,7 +44,8 @@ export const defaultProductItem: ProductItem = {
 	description: '',
 	category_id: '',
 	category_name: '',
-	materials: defaultMaterialItem,
+	materials: [],
+	occasions: [],
 	images: [],
 	price: 0,
 	stock: 0,

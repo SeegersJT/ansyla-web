@@ -79,31 +79,41 @@ function Cart({
 										<Trash2 className="h-4 w-4 text-muted-foreground hover:text-destructive" />
 									</button>
 								</div>
-								{/* <p className="mt-1 text-sm text-muted-foreground">{product?.material}</p> */}
-								<div className="mt-auto flex items-center justify-between">
-									<div className="flex items-center border border-border">
-										<button
-											onClick={() => onRemoveCartItemClick(product?.id)}
-											className="px-3 py-2 text-muted-foreground hover:text-primary"
-											aria-label="Decrease"
-										>
-											<Minus className="h-3.5 w-3.5" />
-										</button>
-										<span className="w-9 text-center text-sm">{quantity}</span>
-										<button
-											onClick={() => onAddCartItemClick(product, 1)}
-											className="px-3 py-2 text-muted-foreground hover:text-primary"
-											aria-label="Increase"
-										>
-											<Plus className="h-3.5 w-3.5" />
-										</button>
+
+								<div className="mt-auto flex flex-col gap-1">
+									<div className="flex items-center justify-between">
+										<div className="flex items-center border border-border">
+											<button
+												onClick={() => onRemoveCartItemClick(product?.id)}
+												className="px-3 py-2 text-muted-foreground hover:text-primary"
+												aria-label="Decrease"
+											>
+												<Minus className="h-3.5 w-3.5" />
+											</button>
+											<span className="w-9 text-center text-sm">
+												{quantity}
+											</span>
+											<button
+												onClick={() => onAddCartItemClick(product, 1)}
+												disabled={quantity >= (product?.stock ?? 0)}
+												className="px-3 py-2 text-muted-foreground hover:text-primary disabled:cursor-not-allowed disabled:opacity-40"
+												aria-label="Increase"
+											>
+												<Plus className="h-3.5 w-3.5" />
+											</button>
+										</div>
+										<p className="font-serif text-lg text-primary">
+											{Utils.formatPrice(
+												product?.price * quantity,
+												settings.currency
+											)}
+										</p>
 									</div>
-									<p className="font-serif text-lg text-primary">
-										{Utils.formatPrice(
-											product?.price * quantity,
-											settings.currency
-										)}
-									</p>
+									{quantity >= (product?.stock ?? 0) && (
+										<p className="text-xs text-muted-foreground">
+											Maximum available stock ({product?.stock ?? 0}) reached
+										</p>
+									)}
 								</div>
 							</div>
 						</div>

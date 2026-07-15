@@ -10,6 +10,7 @@ export interface AuthUserDetails {
 	tier: string
 	tier_updated_at: Date
 	total_orders: number
+	points_redeemed: number
 	last_login_at: Date
 	createdAt: Date | null
 }

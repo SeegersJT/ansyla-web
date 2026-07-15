@@ -1,8 +1,13 @@
 import Checkout from '@/components/landing-page/checkout/Checkout.component'
 import { useAppDispatch } from '@/hooks/useAppDispatch'
 import { useAppSelector } from '@/hooks/useAppSelector'
-import { clearLastPlacedOrder, requestCreateOrder } from '@/redux/actions/Order.action'
+import {
+	clearLastPlacedOrder,
+	requestCreateOrder,
+	requestMyOrderItems,
+} from '@/redux/actions/Order.action'
 import type { OrderShippingAddress } from '@/redux/types/Order.type'
+import { Utils } from '@/utils/Utils'
 import { useEffect, useState } from 'react'
 import type React from 'react'
 
@@ -27,7 +32,9 @@ function CheckoutContainer() {
 	const { couponItem, isCouponApplied } = useAppSelector(state => state.coupon)
 	const { user } = useAppSelector(state => state.auth)
 	const { addressData } = useAppSelector(state => state.address)
-	const { createOrderLoading, lastPlacedOrder } = useAppSelector(state => state.order)
+	const { createOrderLoading, lastPlacedOrder, myOrderData } = useAppSelector(
+		state => state.order
+	)
 
 	const settings = settingsData[0]
 
@@ -37,6 +44,7 @@ function CheckoutContainer() {
 	const [setAsDefaultAddress, setSetAsDefaultAddress] = useState<boolean>(false)
 	const [deliveryMethod, setDeliveryMethod] = useState<'standard' | 'express'>('standard')
 	const [paymentMethod, setPaymentMethod] = useState<string>('Manual EFT')
+	const [pointsToRedeem, setPointsToRedeem] = useState<number>(0)
 
 	useEffect(() => {
 		if (!user) return
@@ -46,7 +54,8 @@ function CheckoutContainer() {
 			fullName: user.displayName ?? current.fullName,
 			email: user.email ?? current.email,
 		}))
-	}, [user])
+		dispatch(requestMyOrderItems(user.uid))
+	}, [dispatch, user])
 
 	useEffect(() => {
 		const defaultAddress = addressData.find(address => address.is_default)
@@ -125,8 +134,35 @@ function CheckoutContainer() {
 		: deliveryMethod === 'express'
 			? baseShippingCost + 100
 			: baseShippingCost
-	const discount = isCouponApplied ? (cartDataSubtotal * couponItem.discount_percentage) / 100 : 0
-	const total = cartDataSubtotal - discount + shippingCost
+
+	const couponDiscount = isCouponApplied
+		? (cartDataSubtotal * couponItem.discount_percentage) / 100
+		: 0
+
+	const paidOrders = myOrderData.filter(Utils.isPaidOrder)
+	const totalSpent = paidOrders.reduce((total, order) => total + order.total, 0)
+	const loyalty = Utils.calculateLoyalty(totalSpent, settings)
+	const availablePoints = Utils.getAvailablePoints(loyalty, user?.user_details?.points_redeemed)
+	const maxPointsForSubtotal = settings?.rand_per_point
+		? Math.floor(cartDataSubtotal / settings.rand_per_point)
+		: 0
+	const maxRedeemablePoints = Math.min(availablePoints, maxPointsForSubtotal)
+
+	const pointsDiscount = Utils.calculatePointsDiscount(pointsToRedeem, settings)
+	const pointsBelowMinimum =
+		pointsToRedeem > 0 && pointsToRedeem < (settings?.min_points_redemption ?? 0)
+
+	const discount = couponDiscount + pointsDiscount
+	const total = Math.max(0, cartDataSubtotal - discount) + shippingCost
+
+	useEffect(() => {
+		setPointsToRedeem(current => Math.max(0, Math.min(current, maxRedeemablePoints)))
+	}, [maxRedeemablePoints])
+
+	const handleOnPointsToRedeemChange = (value: number) => {
+		const clamped = Math.max(0, Math.min(Math.floor(value) || 0, maxRedeemablePoints))
+		setPointsToRedeem(clamped)
+	}
 
 	const outOfStockItems = cartData.filter(cartItem => {
 		const product = productData.find(p => p.id === cartItem.product.id)
@@ -136,7 +172,7 @@ function CheckoutContainer() {
 	const handleOnPlaceOrderClick = (event: React.FormEvent) => {
 		event.preventDefault()
 
-		if (outOfStockItems.length > 0) return
+		if (outOfStockItems.length > 0 || pointsBelowMinimum) return
 
 		const shippingAddress: OrderShippingAddress = {
 			full_name: form.fullName,
@@ -156,6 +192,7 @@ function CheckoutContainer() {
 				paymentMethod,
 				saveAddress: !!user && saveAddress && selectedAddressId === 'new',
 				setAsDefaultAddress,
+				pointsToRedeem,
 			})
 		)
 	}
@@ -175,8 +212,15 @@ function CheckoutContainer() {
 			subtotal={cartDataSubtotal}
 			shippingCost={shippingCost}
 			freeShipping={freeShipping}
-			discount={discount}
+			couponDiscount={couponDiscount}
 			isCouponApplied={isCouponApplied}
+			availablePoints={availablePoints}
+			maxRedeemablePoints={maxRedeemablePoints}
+			pointsToRedeem={pointsToRedeem}
+			pointsDiscount={pointsDiscount}
+			pointsBelowMinimum={pointsBelowMinimum}
+			minPointsRedemption={settings?.min_points_redemption ?? 0}
+			randPerPoint={settings?.rand_per_point ?? 0}
 			total={total}
 			currency={settings?.currency}
 			outOfStockItems={outOfStockItems}
@@ -188,6 +232,7 @@ function CheckoutContainer() {
 			onSetAsDefaultAddressChange={handleOnSetAsDefaultAddressChange}
 			onDeliveryMethodChange={handleOnDeliveryMethodChange}
 			onPaymentMethodChange={handleOnPaymentMethodChange}
+			onPointsToRedeemChange={handleOnPointsToRedeemChange}
 			onPlaceOrderClick={handleOnPlaceOrderClick}
 		/>
 	)

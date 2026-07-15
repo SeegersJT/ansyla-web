@@ -1,7 +1,13 @@
-import type { FooterColumns } from '@/containers/landing-page/footer/Footer.helper'
+import type { FooterColumns, SocialLink } from '@/containers/landing-page/footer/Footer.helper'
 import { Link } from 'react-router'
 
-function Footer({ footerColumns }: { footerColumns: FooterColumns[] }) {
+function Footer({
+	footerColumns,
+	socialLinks,
+}: {
+	footerColumns: FooterColumns[]
+	socialLinks: SocialLink[]
+}) {
 	return (
 		<footer className="border-t border-border bg-card">
 			<div className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
@@ -48,7 +54,18 @@ function Footer({ footerColumns }: { footerColumns: FooterColumns[] }) {
 						</a>
 					</p>
 					<div className="flex gap-4 text-muted-foreground">
-						<a href="#" aria-label="Instagram" className="hover:text-primary"></a>
+						{socialLinks.map(social => (
+							<a
+								key={social.label}
+								href={social.href}
+								target="_blank"
+								rel="noopener noreferrer"
+								aria-label={social.label}
+								className="hover:text-primary"
+							>
+								<social.icon className="h-5 w-5" />
+							</a>
+						))}
 					</div>
 				</div>
 			</div>

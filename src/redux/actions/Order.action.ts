@@ -56,6 +56,7 @@ export interface CreateOrderPayload {
 	paymentMethod: string
 	saveAddress: boolean
 	setAsDefaultAddress: boolean
+	pointsToRedeem: number
 }
 
 export const requestCreateOrder = (payload: CreateOrderPayload) => ({

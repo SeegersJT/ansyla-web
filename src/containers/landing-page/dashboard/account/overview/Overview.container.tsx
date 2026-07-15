@@ -2,6 +2,7 @@ import Overview from '@/components/landing-page/dashboard/account/overview/Overv
 import { useAppDispatch } from '@/hooks/useAppDispatch'
 import { useAppSelector } from '@/hooks/useAppSelector'
 import { requestMyOrderItems } from '@/redux/actions/Order.action'
+import { Utils } from '@/utils/Utils'
 import { useEffect } from 'react'
 
 function OverviewContainer() {
@@ -9,6 +10,7 @@ function OverviewContainer() {
 
 	const { user } = useAppSelector(state => state.auth)
 	const { myOrderData, myOrderDataLoading } = useAppSelector(state => state.order)
+	const { settingsData } = useAppSelector(state => state.settings)
 
 	useEffect(() => {
 		if (!user) return
@@ -16,7 +18,9 @@ function OverviewContainer() {
 		dispatch(requestMyOrderItems(user.uid))
 	}, [dispatch, user])
 
-	const totalSpent = myOrderData.reduce((total, order) => total + order.total, 0)
+	const paidOrders = myOrderData.filter(Utils.isPaidOrder)
+	const totalSpent = paidOrders.reduce((total, order) => total + order.total, 0)
+	const loyalty = Utils.calculateLoyalty(totalSpent, settingsData[0])
 
 	return (
 		<Overview
@@ -25,6 +29,8 @@ function OverviewContainer() {
 			ordersLoading={myOrderDataLoading}
 			orderCount={myOrderData.length}
 			totalSpent={totalSpent}
+			loyalty={loyalty}
+			currency={settingsData[0]?.currency}
 		/>
 	)
 }

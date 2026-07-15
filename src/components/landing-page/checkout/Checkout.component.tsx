@@ -43,7 +43,14 @@ function Checkout({
 	subtotal,
 	shippingCost,
 	freeShipping,
-	discount,
+	couponDiscount,
+	availablePoints,
+	maxRedeemablePoints,
+	pointsToRedeem,
+	pointsDiscount,
+	pointsBelowMinimum,
+	minPointsRedemption,
+	randPerPoint,
 	isCouponApplied,
 	total,
 	currency,
@@ -58,6 +65,7 @@ function Checkout({
 	onDeliveryMethodChange,
 	onPaymentMethodChange,
 	onPlaceOrderClick,
+	onPointsToRedeemChange,
 }: {
 	cartData: CartItem[]
 	isLoggedIn: boolean
@@ -71,7 +79,14 @@ function Checkout({
 	subtotal: number
 	shippingCost: number
 	freeShipping: boolean
-	discount: number
+	couponDiscount: number
+	availablePoints: number
+	maxRedeemablePoints: number
+	pointsToRedeem: number
+	pointsDiscount: number
+	pointsBelowMinimum: boolean
+	minPointsRedemption: number
+	randPerPoint: number
 	isCouponApplied: boolean
 	total: number
 	currency: string | undefined
@@ -86,6 +101,7 @@ function Checkout({
 	onDeliveryMethodChange: (value: 'standard' | 'express') => void
 	onPaymentMethodChange: (value: string) => void
 	onPlaceOrderClick: (event: React.FormEvent) => void
+	onPointsToRedeemChange: (value: number) => void
 }) {
 	if (placedOrder) {
 		return (
@@ -198,56 +214,46 @@ function Checkout({
 					<section>
 						<h2 className="mb-5 font-serif text-2xl">Shipping Address</h2>
 
-						{isLoggedIn && savedAddresses.length > 0 && (
-							<div className="mb-4 flex flex-col gap-2">
-								{savedAddresses.map(address => (
-									<label
-										key={address.id}
-										className={`flex cursor-pointer items-start gap-3 border p-4 text-sm transition-colors ${
-											selectedAddressId === address.id
-												? 'border-primary'
-												: 'border-border hover:border-primary/50'
-										}`}
-									>
-										<input
-											type="radio"
-											name="saved-address"
-											checked={selectedAddressId === address.id}
-											onChange={() => onSelectedAddressChange(address.id)}
-											className="mt-1 accent-primary"
-										/>
-										<span>
-											<span className="block font-medium">
-												{address.label}
-												{address.is_default && (
-													<span className="ml-2 text-[10px] uppercase tracking-wider text-primary">
-														Default
-													</span>
-												)}
-											</span>
-											<span className="text-muted-foreground">
-												{address.line1}, {address.city}, {address.province}{' '}
-												{address.postal_code}
-											</span>
-										</span>
-									</label>
-								))}
-								<label
-									className={`flex cursor-pointer items-center gap-3 border p-4 text-sm transition-colors ${
-										selectedAddressId === 'new'
-											? 'border-primary'
-											: 'border-border hover:border-primary/50'
-									}`}
-								>
+						{isLoggedIn && availablePoints > 0 && (
+							<div className="border-b border-border pb-5 text-sm">
+								<p className="text-muted-foreground">
+									You have <span className="text-primary">{availablePoints}</span>{' '}
+									points available (worth{' '}
+									{Utils.formatPrice(availablePoints * randPerPoint, currency)}).
+								</p>
+
+								<div className="mt-3">
 									<input
-										type="radio"
-										name="saved-address"
-										checked={selectedAddressId === 'new'}
-										onChange={() => onSelectedAddressChange('new')}
-										className="accent-primary"
+										type="range"
+										min={0}
+										max={maxRedeemablePoints}
+										step={1}
+										value={pointsToRedeem}
+										onChange={e =>
+											onPointsToRedeemChange(Number(e.target.value))
+										}
+										disabled={maxRedeemablePoints === 0}
+										className="w-full accent-[var(--gold)] disabled:opacity-50"
 									/>
-									Use a new address
-								</label>
+									<div className="mt-1.5 flex items-center justify-between text-muted-foreground">
+										<span>
+											Redeeming{' '}
+											<span className="text-primary">{pointsToRedeem}</span>{' '}
+											points
+										</span>
+										{pointsDiscount > 0 && (
+											<span className="text-primary">
+												- {Utils.formatPrice(pointsDiscount, currency)}
+											</span>
+										)}
+									</div>
+								</div>
+
+								{pointsBelowMinimum && (
+									<p className="mt-1.5 text-xs text-destructive">
+										Redeem at least {minPointsRedemption} points, or 0.
+									</p>
+								)}
 							</div>
 						)}
 
@@ -451,9 +457,17 @@ function Checkout({
 						</div>
 						{isCouponApplied && (
 							<div className="flex justify-between text-muted-foreground">
-								<span>Discount</span>
+								<span>Coupon Discount</span>
 								<span className="text-foreground">
-									- {Utils.formatPrice(discount, currency)}
+									- {Utils.formatPrice(couponDiscount, currency)}
+								</span>
+							</div>
+						)}
+						{pointsDiscount > 0 && (
+							<div className="flex justify-between text-muted-foreground">
+								<span>Points Discount</span>
+								<span className="text-foreground">
+									- {Utils.formatPrice(pointsDiscount, currency)}
 								</span>
 							</div>
 						)}
@@ -474,7 +488,7 @@ function Checkout({
 					</div>
 
 					<button
-						disabled={placingOrder || outOfStockItems.length > 0}
+						disabled={placingOrder || outOfStockItems.length > 0 || pointsBelowMinimum}
 						className="mt-6 w-full bg-gradient-gold py-3.5 text-xs font-medium uppercase tracking-luxe text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-60 "
 					>
 						{placingOrder

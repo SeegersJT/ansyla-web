@@ -6,6 +6,7 @@ export interface CustomerItem {
 	orders: number
 	spent: number
 	tier: string
+	points: number
 }
 
 export interface CustomerState {

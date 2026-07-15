@@ -18,6 +18,8 @@ import {
 	type CreateOrderPayload,
 } from '../actions/Order.action'
 import { addSystemNotification } from '../actions/Notification.action'
+import { setAuthUserDetails } from '../actions/Authentication.action'
+import type { AuthUserDetails } from '../types/Authentication.type'
 import type { CartItem } from '../types/Cart.type'
 import type { RootState } from '../store'
 import type { ProductItem } from '../types/Product.type'
@@ -26,6 +28,7 @@ import { getNextIdentifier } from './Settings.saga'
 import { requestAddAddress } from '../actions/Address.action'
 import { requestProductItems } from '../actions/Product.action'
 import { clearCart } from '../actions/Cart.action'
+import { Utils } from '@/utils/Utils'
 
 function* handleOrderItemsRequest() {
 	yield put(requestOrderItemsLoading(true))
@@ -89,6 +92,10 @@ function* handleCreateOrderRequest(action: { type: string; payload: CreateOrderP
 		)
 		const { couponItem, isCouponApplied } = yield select((state: RootState) => state.coupon)
 		const uid: string | undefined = yield select((state: RootState) => state.auth.user?.uid)
+		const userDetails: AuthUserDetails | null = yield select(
+			(state: RootState) => state.auth.user?.user_details ?? null
+		)
+		const myOrders: OrderItem[] = yield select((state: RootState) => state.order.myOrderData)
 
 		if (cartData.length === 0) {
 			yield put(
@@ -125,11 +132,31 @@ function* handleCreateOrderRequest(action: { type: string; payload: CreateOrderP
 				? baseShippingCost + 100
 				: baseShippingCost
 
-		const discount = isCouponApplied
+		const couponDiscount = isCouponApplied
 			? (cartDataSubtotal * couponItem.discount_percentage) / 100
 			: 0
 
-		const total = cartDataSubtotal - discount + shippingCost
+		// Defensive re-clamp of points redemption, independent of whatever the UI already capped
+		const paidOrders = myOrders.filter(Utils.isPaidOrder)
+		const totalSpent = paidOrders.reduce((total, order) => total + order.total, 0)
+		const loyalty = Utils.calculateLoyalty(totalSpent, settings)
+		const availablePoints = Utils.getAvailablePoints(loyalty, userDetails?.points_redeemed)
+
+		const requestedPoints = Math.max(0, Math.floor(action.payload.pointsToRedeem ?? 0))
+		const meetsMinimum = requestedPoints >= (settings?.min_points_redemption ?? 0)
+		const maxPointsForSubtotal = settings?.rand_per_point
+			? Math.floor(cartDataSubtotal / settings.rand_per_point)
+			: 0
+
+		const pointsToRedeem =
+			uid && meetsMinimum
+				? Math.min(requestedPoints, availablePoints, maxPointsForSubtotal)
+				: 0
+
+		const pointsDiscount = Utils.calculatePointsDiscount(pointsToRedeem, settings)
+		const discount = couponDiscount + pointsDiscount
+
+		const total = Math.max(0, cartDataSubtotal - discount) + shippingCost
 
 		const { identifier }: { identifier: string; sequence: number } = yield call(
 			getNextIdentifier,
@@ -163,6 +190,8 @@ function* handleCreateOrderRequest(action: { type: string; payload: CreateOrderP
 			subtotal: cartDataSubtotal,
 			shipping_cost: shippingCost,
 			discount,
+			points_redeemed: pointsToRedeem,
+			points_discount: pointsDiscount,
 			total,
 			status: firstStatus,
 			createdBy: uid ?? null,
@@ -182,6 +211,20 @@ function* handleCreateOrderRequest(action: { type: string; payload: CreateOrderP
 			yield call([firestoreService, firestoreService.update], 'Products', product.id, {
 				stock: Math.max(0, (product.stock ?? 0) - cartItem.quantity),
 			})
+		}
+
+		if (uid && pointsToRedeem > 0) {
+			const updatedPointsRedeemed = (userDetails?.points_redeemed ?? 0) + pointsToRedeem
+
+			yield call([firestoreService, firestoreService.update], 'Users', uid, {
+				points_redeemed: updatedPointsRedeemed,
+			})
+
+			if (userDetails) {
+				yield put(
+					setAuthUserDetails({ ...userDetails, points_redeemed: updatedPointsRedeemed })
+				)
+			}
 		}
 
 		if (uid && action.payload.saveAddress) {
@@ -296,6 +339,42 @@ function* handleCancelOrderRequest(action: { type: string; payload: CancelOrderP
 			yield call([firestoreService, firestoreService.update], 'Products', product.id, {
 				stock: (product.stock ?? 0) + item.quantity,
 			})
+		}
+
+		// Refund any points spent on this order, same spirit as restoring stock above
+		if (order.customer_id && order.points_redeemed > 0) {
+			const customerDetails: AuthUserDetails | null = yield call(
+				firestoreService.getById<AuthUserDetails>,
+				'Users',
+				order.customer_id
+			)
+
+			if (customerDetails) {
+				const refundedPointsRedeemed = Math.max(
+					0,
+					(customerDetails.points_redeemed ?? 0) - order.points_redeemed
+				)
+
+				yield call(
+					[firestoreService, firestoreService.update],
+					'Users',
+					order.customer_id,
+					{ points_redeemed: refundedPointsRedeemed }
+				)
+
+				const currentUid: string | undefined = yield select(
+					(state: RootState) => state.auth.user?.uid
+				)
+
+				if (currentUid === order.customer_id) {
+					yield put(
+						setAuthUserDetails({
+							...customerDetails,
+							points_redeemed: refundedPointsRedeemed,
+						})
+					)
+				}
+			}
 		}
 
 		yield put(requestProductItems())

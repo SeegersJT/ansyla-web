@@ -158,6 +158,7 @@ function* handleFirebaseEmailRegisterRequest(action: {
 			tier: 'Silver',
 			tier_updated_at: new Date(),
 			total_orders: 0,
+			points_redeemed: 0,
 			last_login_at: new Date(),
 			createdAt: new Date(),
 		})

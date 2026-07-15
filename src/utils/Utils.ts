@@ -1,6 +1,6 @@
 import { Timestamp } from 'firebase/firestore'
-import type { StockAvailabilityItem } from './Utils.type'
-import type { OrderStatus } from '@/redux/types/Settings.type'
+import type { LoyaltyResult, StockAvailabilityItem } from './Utils.type'
+import type { OrderStatus, Settings } from '@/redux/types/Settings.type'
 import { CANCELLED_ORDER_STATUS } from '@/redux/types/Order.type'
 
 export class Utils {
@@ -34,7 +34,7 @@ export class Utils {
 	}
 
 	static calculateStockAvailability(quantity: number | null | undefined): StockAvailabilityItem {
-		if (!quantity) {
+		if (quantity == null || quantity == undefined) {
 			return { label: 'Information Unavailable', icon: 'none', variant: 'destructive' }
 		}
 
@@ -97,5 +97,39 @@ export class Utils {
 
 		const firstStatus = sorted[0]?.status
 		return status === firstStatus
+	}
+
+	static calculateLoyalty(totalSpent: number, settings: Settings | undefined): LoyaltyResult {
+		const tiers = [...(settings?.loyaltyTiers ?? [])].sort(
+			(a, b) => (a.min_spend ?? 0) - (b.min_spend ?? 0)
+		)
+
+		const currentTier =
+			[...tiers].reverse().find(t => totalSpent >= (t.min_spend ?? 0))?.tier ??
+			tiers[0]?.tier ??
+			'Member'
+
+		const nextTier = tiers.find(t => (t.min_spend ?? 0) > totalSpent) ?? null
+		const amountToNextTier = nextTier ? Math.max(0, (nextTier.min_spend ?? 0) - totalSpent) : 0
+
+		const pointsRate = (settings?.points_per_100_spent ?? 0) / 100
+		const points = Math.floor(totalSpent * pointsRate)
+
+		return { tier: currentTier, points, nextTier, amountToNextTier }
+	}
+
+	static isPaidOrder(order: { payment_status: string; status: string }): boolean {
+		return order.payment_status === 'Paid' && order.status !== CANCELLED_ORDER_STATUS
+	}
+
+	static getAvailablePoints(
+		loyalty: LoyaltyResult,
+		pointsRedeemed: number | null | undefined
+	): number {
+		return Math.max(0, loyalty.points - (pointsRedeemed ?? 0))
+	}
+
+	static calculatePointsDiscount(pointsToRedeem: number, settings: Settings | undefined): number {
+		return Math.max(0, pointsToRedeem) * (settings?.rand_per_point ?? 0)
 	}
 }

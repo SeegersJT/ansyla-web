@@ -19,8 +19,8 @@ export const emptyStockForm = {
 	price: '',
 	stock: '',
 	images: [] as ProductImagesItem[],
-	gold: false,
-	stainless_Steel: false,
+	materials: [] as string[],
+	occasions: [] as string[],
 	is_new: false,
 	is_best_seller: false,
 	active: true,
@@ -34,6 +34,10 @@ function AdminStockContainer() {
 	const { productData, productDataloading, addProductLoading, updateProductLoading } =
 		useAppSelector(state => state.product)
 	const { categoryData } = useAppSelector(state => state.category)
+	const { settingsData } = useAppSelector(state => state.settings)
+
+	const materialOptions = settingsData[0]?.materials ?? []
+	const occasionOptions = settingsData[0]?.occasions ?? []
 
 	const [showForm, setShowForm] = useState(false)
 	const [editId, setEditId] = useState<string | null>(null)
@@ -59,8 +63,8 @@ function AdminStockContainer() {
 			price: String(product.price ?? 0),
 			stock: String(product.stock ?? 0),
 			images: product.images ?? [],
-			gold: product.materials?.gold ?? false,
-			stainless_Steel: product.materials?.stainless_Steel ?? false,
+			materials: Array.isArray(product.materials) ? product.materials : [],
+			occasions: Array.isArray(product.occasions) ? product.occasions : [],
 			is_new: product.is_new,
 			is_best_seller: product.is_best_seller,
 			active: product.active,
@@ -103,6 +107,24 @@ function AdminStockContainer() {
 		}))
 	}
 
+	const handleOnMaterialToggle = (material: string) => {
+		setForm(current => ({
+			...current,
+			materials: current.materials.includes(material)
+				? current.materials.filter(item => item !== material)
+				: [...current.materials, material],
+		}))
+	}
+
+	const handleOnOccasionToggle = (occasion: string) => {
+		setForm(current => ({
+			...current,
+			occasions: current.occasions.includes(occasion)
+				? current.occasions.filter(item => item !== occasion)
+				: [...current.occasions, occasion],
+		}))
+	}
+
 	const handleOnSaveClick = (event: React.FormEvent) => {
 		event.preventDefault()
 
@@ -116,7 +138,8 @@ function AdminStockContainer() {
 			price: Number(form.price) || 0,
 			stock: Number(form.stock) || 0,
 			images: form.images,
-			materials: { gold: form.gold, stainless_Steel: form.stainless_Steel },
+			materials: form.materials,
+			occasions: form.occasions,
 			is_new: form.is_new,
 			is_best_seller: form.is_best_seller,
 			active: form.active,
@@ -148,6 +171,8 @@ function AdminStockContainer() {
 			products={productData}
 			productDataloading={productDataloading}
 			categoryData={categoryData}
+			materialOptions={materialOptions}
+			occasionOptions={occasionOptions}
 			showForm={showForm}
 			editId={editId}
 			form={form}
@@ -159,6 +184,8 @@ function AdminStockContainer() {
 			onFormChange={handleOnFormChange}
 			onImageFilesSelected={handleOnImageFilesSelected}
 			onRemoveImageClick={handleOnRemoveImageClick}
+			onMaterialToggle={handleOnMaterialToggle}
+			onOccasionToggle={handleOnOccasionToggle}
 			onCloseFormClick={handleOnCloseFormClick}
 			onSaveClick={handleOnSaveClick}
 		/>

@@ -8,6 +8,7 @@ import ProductCard from '@/components/product-card/ProductCard.component'
 import { Loader2, Quote, Sparkles } from 'lucide-react'
 import type { NewsletterState } from '@/redux/types/Newsletter.type'
 import type React from 'react'
+import PageMeta from '@/components/seo/PageMeta.component'
 
 function Home({
 	categoryData,
@@ -34,6 +35,11 @@ function Home({
 }) {
 	return (
 		<div>
+			<PageMeta
+				title="Luxury Gold & Stainless Steel Jewelry"
+				description="Shop ANSYLA's collection of hand-finished, timeless jewelry pieces. Nationwide delivery across South Africa."
+				path="/home"
+			/>
 			{/* Hero */}
 			<section className="relative">
 				<div className="relative h-[88vh] min-h-[560px] w-full overflow-hidden">

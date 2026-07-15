@@ -3,6 +3,7 @@ import DataTable, { type Column } from '@/components/data-table/DataTable.compon
 import type { StockForm } from '@/containers/landing-page/dashboard/admin/stock/Stock.container'
 import type { CategoryItem } from '@/redux/types/Category.type'
 import type { ProductItem } from '@/redux/types/Product.type'
+import type { MaterialOption, OccasionOption } from '@/redux/types/Settings.type'
 import { Utils } from '@/utils/Utils'
 import { Loader2, Pencil, Plus, Trash2, X } from 'lucide-react'
 import type React from 'react'
@@ -11,6 +12,8 @@ function Stock({
 	products,
 	productDataloading,
 	categoryData,
+	materialOptions,
+	occasionOptions,
 	showForm,
 	editId,
 	form,
@@ -22,12 +25,16 @@ function Stock({
 	onFormChange,
 	onImageFilesSelected,
 	onRemoveImageClick,
+	onMaterialToggle,
+	onOccasionToggle,
 	onCloseFormClick,
 	onSaveClick,
 }: {
 	products: ProductItem[]
 	productDataloading: Boolean
 	categoryData: CategoryItem[]
+	materialOptions: MaterialOption[]
+	occasionOptions: OccasionOption[]
 	showForm: boolean
 	editId: string | null
 	form: StockForm
@@ -39,6 +46,8 @@ function Stock({
 	onFormChange: (value: Partial<StockForm>) => void
 	onImageFilesSelected: (files: FileList | null) => void
 	onRemoveImageClick: (url: string) => void
+	onMaterialToggle: (material: string) => void
+	onOccasionToggle: (occasion: string) => void
 	onCloseFormClick: () => void
 	onSaveClick: (event: React.FormEvent) => void
 }) {
@@ -223,27 +232,61 @@ function Stock({
 							</label>
 						</div>
 
+						<div>
+							<span className="mb-1.5 block text-xs uppercase tracking-wider text-muted-foreground">
+								Materials
+							</span>
+							<div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+								{materialOptions.length === 0 && (
+									<p className="text-xs text-muted-foreground">
+										No materials configured. Add some under Settings.
+									</p>
+								)}
+								{materialOptions.map(option => (
+									<label
+										key={option.material}
+										className="flex items-center gap-2"
+									>
+										<input
+											type="checkbox"
+											checked={form.materials.includes(option.material ?? '')}
+											onChange={() => onMaterialToggle(option.material ?? '')}
+											className="h-4 w-4 accent-primary"
+										/>
+										{option.material}
+									</label>
+								))}
+							</div>
+						</div>
+
+						<div>
+							<span className="mb-1.5 block text-xs uppercase tracking-wider text-muted-foreground">
+								Occasions
+							</span>
+							<div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+								{occasionOptions.length === 0 && (
+									<p className="text-xs text-muted-foreground">
+										No occasions configured. Add some under Settings.
+									</p>
+								)}
+								{occasionOptions.map(option => (
+									<label
+										key={option.occasion}
+										className="flex items-center gap-2"
+									>
+										<input
+											type="checkbox"
+											checked={form.occasions.includes(option.occasion ?? '')}
+											onChange={() => onOccasionToggle(option.occasion ?? '')}
+											className="h-4 w-4 accent-primary"
+										/>
+										{option.occasion}
+									</label>
+								))}
+							</div>
+						</div>
+
 						<div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-							<label className="flex items-center gap-2">
-								<input
-									type="checkbox"
-									checked={form.gold}
-									onChange={e => onFormChange({ gold: e.target.checked })}
-									className="h-4 w-4 accent-primary"
-								/>
-								Gold
-							</label>
-							<label className="flex items-center gap-2">
-								<input
-									type="checkbox"
-									checked={form.stainless_Steel}
-									onChange={e =>
-										onFormChange({ stainless_Steel: e.target.checked })
-									}
-									className="h-4 w-4 accent-primary"
-								/>
-								Stainless Steel
-							</label>
 							<label className="flex items-center gap-2">
 								<input
 									type="checkbox"

@@ -49,6 +49,11 @@ function Customers({
 			),
 		},
 		{
+			key: 'points',
+			header: 'Points',
+			accessor: c => String(c.points),
+		},
+		{
 			key: 'actions',
 			header: 'Actions',
 			align: 'right',
@@ -111,7 +116,7 @@ function Customers({
 							</span>
 						</div>
 
-						<div className="mt-6 grid gap-4 sm:grid-cols-2">
+						<div className="mt-6 grid gap-4 sm:grid-cols-3">
 							<div className="border border-border bg-background p-4 text-center">
 								<p className="font-serif text-2xl text-primary">
 									{selectedCustomer.orders}
@@ -126,6 +131,14 @@ function Customers({
 								</p>
 								<p className="mt-1 text-xs uppercase tracking-wider text-muted-foreground">
 									Total Spent
+								</p>
+							</div>
+							<div className="border border-border bg-background p-4 text-center">
+								<p className="font-serif text-2xl text-primary">
+									{selectedCustomer.points}
+								</p>
+								<p className="mt-1 text-xs uppercase tracking-wider text-muted-foreground">
+									Points
 								</p>
 							</div>
 						</div>

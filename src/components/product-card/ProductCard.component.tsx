@@ -12,8 +12,11 @@ function ProductCard({ currency, product }: { currency: string; product: Product
 	const dispatch = useAppDispatch()
 
 	const isWishlisted = useAppSelector(state => state.wishlist.productIds.includes(product.id))
+	const outOfStock = (product?.stock ?? 0) <= 0
 
 	const handleOnAddCartItemClick = (product: ProductItem, quantity: number) => {
+		if (outOfStock) return
+
 		dispatch(setCartDrawerOpen(true))
 		dispatch(addToCart(product, quantity))
 	}
@@ -32,20 +35,30 @@ function ProductCard({ currency, product }: { currency: string; product: Product
 						loading="lazy"
 						width={800}
 						height={800}
-						className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+						className={`h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 ${
+							outOfStock ? 'opacity-60 grayscale' : ''
+						}`}
 					/>
 				</Link>
 
 				<div className="absolute left-3 top-3 flex flex-col gap-1.5">
-					{product?.is_new && (
-						<span className="bg-gradient-gold px-2.5 py-1 text-[10px] font-medium uppercase tracking-luxe text-primary-foreground">
-							New
+					{outOfStock ? (
+						<span className="border border-destructive/60 bg-background/70 px-2.5 py-1 text-[10px] font-medium uppercase tracking-luxe text-destructive backdrop-blur">
+							Out of Stock
 						</span>
-					)}
-					{product?.is_best_seller && (
-						<span className="border border-primary/60 bg-background/70 px-2.5 py-1 text-[10px] font-medium uppercase tracking-luxe text-primary backdrop-blur">
-							Best Seller
-						</span>
+					) : (
+						<>
+							{product?.is_new && (
+								<span className="bg-gradient-gold px-2.5 py-1 text-[10px] font-medium uppercase tracking-luxe text-primary-foreground">
+									New
+								</span>
+							)}
+							{product?.is_best_seller && (
+								<span className="border border-primary/60 bg-background/70 px-2.5 py-1 text-[10px] font-medium uppercase tracking-luxe text-primary backdrop-blur">
+									Best Seller
+								</span>
+							)}
+						</>
 					)}
 				</div>
 
@@ -62,9 +75,11 @@ function ProductCard({ currency, product }: { currency: string; product: Product
 				<div className="absolute inset-x-3 bottom-3 flex translate-y-3 gap-2 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
 					<button
 						onClick={() => handleOnAddCartItemClick(product, 1)}
-						className="flex flex-1 items-center justify-center  gap-2 bg-gradient-gold py-2.5 text-xs font-medium uppercase tracking-wider text-primary-foreground transition-opacity hover:opacity-90"
+						disabled={outOfStock}
+						className="flex flex-1 items-center justify-center  gap-2 bg-gradient-gold py-2.5 text-xs font-medium uppercase tracking-wider text-primary-foreground transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
 					>
-						<ShoppingBag className="h-3.5 w-3.5" /> Add
+						<ShoppingBag className="h-3.5 w-3.5" />{' '}
+						{outOfStock ? 'Out of Stock' : 'Add'}
 					</button>
 					<Link
 						to={`/product/${product?.id}`}

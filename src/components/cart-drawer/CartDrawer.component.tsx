@@ -108,30 +108,38 @@ function CartDrawer() {
 												settingsData[0].currency
 											)}
 										</p>
-										<div className="mt-auto flex items-center gap-3">
-											<div className="flex items-center border border-border">
-												<button
-													onClick={() =>
-														handleOnRemoveCartItemClick(product?.id)
-													}
-													className="px-2.5 py-1.5 text-muted-foreground hover:text-primary"
-													aria-label="Decrease"
-												>
-													<Minus className="h-3 w-3" />
-												</button>
-												<span className="w-8 text-center text-sm">
-													{quantity}
-												</span>
-												<button
-													onClick={() =>
-														handleOnAddCartItemClick(product, 1)
-													}
-													className="px-2.5 py-1.5 text-muted-foreground hover:text-primary"
-													aria-label="Increase"
-												>
-													<Plus className="h-3 w-3" />
-												</button>
+										<div className="mt-auto flex flex-col gap-1">
+											<div className="flex items-center gap-3">
+												<div className="flex items-center border border-border">
+													<button
+														onClick={() =>
+															handleOnRemoveCartItemClick(product?.id)
+														}
+														className="px-2.5 py-1.5 text-muted-foreground hover:text-primary"
+														aria-label="Decrease"
+													>
+														<Minus className="h-3 w-3" />
+													</button>
+													<span className="w-8 text-center text-sm">
+														{quantity}
+													</span>
+													<button
+														onClick={() =>
+															handleOnAddCartItemClick(product, 1)
+														}
+														disabled={quantity >= (product?.stock ?? 0)}
+														className="px-2.5 py-1.5 text-muted-foreground hover:text-primary disabled:cursor-not-allowed disabled:opacity-40"
+														aria-label="Increase"
+													>
+														<Plus className="h-3 w-3" />
+													</button>
+												</div>
 											</div>
+											{quantity >= (product?.stock ?? 0) && (
+												<p className="text-[11px] text-muted-foreground">
+													Max stock reached
+												</p>
+											)}
 										</div>
 									</div>
 								</div>

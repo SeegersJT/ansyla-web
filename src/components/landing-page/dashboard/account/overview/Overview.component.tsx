@@ -1,6 +1,7 @@
 import { Stat } from '@/containers/landing-page/dashboard/account/overview/Overview.helper'
 import type { AuthUserDetails } from '@/redux/types/Authentication.type'
 import type { OrderItem } from '@/redux/types/Order.type'
+import type { LoyaltyResult } from '@/utils/Utils.type'
 import { Utils } from '@/utils/Utils'
 import { Award } from 'lucide-react'
 import { Link } from 'react-router'
@@ -11,12 +12,16 @@ function Overview({
 	ordersLoading,
 	orderCount,
 	totalSpent,
+	loyalty,
+	currency,
 }: {
 	userDetails: AuthUserDetails | null
 	orders: OrderItem[]
 	ordersLoading: boolean
 	orderCount: number
 	totalSpent: number
+	loyalty: LoyaltyResult
+	currency: string | undefined
 }) {
 	const recentOrders = [...orders]
 		.sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)))
@@ -27,20 +32,35 @@ function Overview({
 	return (
 		<div className="space-y-6">
 			<div className="border border-primary/30 bg-card p-6 shadow-gold">
-				<div className="flex items-center gap-3">
-					<Award className="h-7 w-7 text-primary" />
-					<div>
-						<p className="font-serif text-2xl">ANSYLA Rewards</p>
-						<p className="text-xs uppercase tracking-wider text-primary">
-							{userDetails?.tier ?? 'Silver'} Member
+				<div className="flex items-center justify-between gap-3">
+					<div className="flex items-center gap-3">
+						<Award className="h-7 w-7 text-primary" />
+						<div>
+							<p className="font-serif text-2xl">ANSYLA Rewards</p>
+							<p className="text-xs uppercase tracking-wider text-primary">
+								{loyalty.tier} Member
+							</p>
+						</div>
+					</div>
+					<div className="text-right">
+						<p className="font-serif text-2xl text-primary">{loyalty.points}</p>
+						<p className="text-xs uppercase tracking-wider text-muted-foreground">
+							Points
 						</p>
 					</div>
 				</div>
+
+				{loyalty.nextTier && (
+					<p className="mt-4 text-xs text-muted-foreground">
+						{Utils.formatPrice(loyalty.amountToNextTier, currency)} away from{' '}
+						<span className="text-primary">{loyalty.nextTier.tier}</span>
+					</p>
+				)}
 			</div>
 
 			<div className="grid gap-4 sm:grid-cols-3">
 				<Stat label="Orders" value={String(orderCount)} />
-				<Stat label="Total Spent" value={Utils.formatPrice(totalSpent)} />
+				<Stat label="Total Spent" value={Utils.formatPrice(totalSpent, currency)} />
 				<Stat label="Member Since" value={memberSince} />
 			</div>
 
@@ -61,7 +81,7 @@ function Overview({
 							>
 								<span>{order.order_no ?? order.id}</span>
 								<span className="text-primary">
-									{Utils.formatPrice(order.total)}
+									{Utils.formatPrice(order.total, currency)}
 								</span>
 							</li>
 						))}

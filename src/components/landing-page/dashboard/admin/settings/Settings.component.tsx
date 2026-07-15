@@ -1,6 +1,9 @@
 import DataField from '@/components/data-field/DataField.component'
 import type { SettingsForm } from '@/containers/landing-page/dashboard/admin/settings/Settings.container'
 import type {
+	LoyaltyTier,
+	MaterialOption,
+	OccasionOption,
 	OrderStatus,
 	SettingsBankDetails,
 	SettingsPrefix,
@@ -19,7 +22,16 @@ function SettingsComponent({
 	onStatusChange,
 	onAddStatusClick,
 	onRemoveStatusClick,
+	onMaterialChange,
+	onAddMaterialClick,
+	onRemoveMaterialClick,
+	onOccasionChange,
+	onAddOccasionClick,
+	onRemoveOccasionClick,
 	onSaveClick,
+	onLoyaltyTierChange,
+	onAddLoyaltyTierClick,
+	onRemoveLoyaltyTierClick,
 }: {
 	form: SettingsForm
 	saving: boolean
@@ -30,7 +42,16 @@ function SettingsComponent({
 	onStatusChange: (index: number, value: Partial<OrderStatus>) => void
 	onAddStatusClick: () => void
 	onRemoveStatusClick: (index: number) => void
+	onMaterialChange: (index: number, value: Partial<MaterialOption>) => void
+	onAddMaterialClick: () => void
+	onRemoveMaterialClick: (index: number) => void
+	onOccasionChange: (index: number, value: Partial<OccasionOption>) => void
+	onAddOccasionClick: () => void
+	onRemoveOccasionClick: (index: number) => void
 	onSaveClick: (event: React.FormEvent) => void
+	onLoyaltyTierChange: (index: number, value: Partial<LoyaltyTier>) => void
+	onAddLoyaltyTierClick: () => void
+	onRemoveLoyaltyTierClick: (index: number) => void
 }) {
 	return (
 		<form onSubmit={onSaveClick} className="space-y-8">
@@ -65,6 +86,24 @@ function SettingsComponent({
 						type="number"
 						value={form.free_shipping_threshold}
 						onChange={v => onFormChange({ free_shipping_threshold: v })}
+					/>
+					<DataField
+						label="Points Earned per R100 Spent"
+						type="number"
+						value={form.points_per_100_spent}
+						onChange={v => onFormChange({ points_per_100_spent: v })}
+					/>
+					<DataField
+						label="Rand Value per Point"
+						type="number"
+						value={form.rand_per_point}
+						onChange={v => onFormChange({ rand_per_point: v })}
+					/>
+					<DataField
+						label="Minimum Points per Redemption"
+						type="number"
+						value={form.min_points_redemption}
+						onChange={v => onFormChange({ min_points_redemption: v })}
 					/>
 				</div>
 			</section>
@@ -222,6 +261,166 @@ function SettingsComponent({
 					))}
 					{form.statuses.length === 0 && (
 						<p className="text-sm text-muted-foreground">No statuses configured yet.</p>
+					)}
+				</div>
+			</section>
+
+			<section className="space-y-4 border border-border bg-card p-6">
+				<div className="flex items-center justify-between">
+					<h3 className="text-xs uppercase tracking-luxe text-primary">Materials</h3>
+					<button
+						type="button"
+						onClick={onAddMaterialClick}
+						className="flex items-center gap-1.5 text-xs uppercase tracking-wider text-primary hover:underline "
+					>
+						<Plus className="h-3.5 w-3.5" /> Add Material
+					</button>
+				</div>
+				<p className="text-xs text-muted-foreground">
+					Drives the material options available when creating or editing products.
+				</p>
+
+				<div className="space-y-3">
+					{form.materials.map((material, index) => (
+						<div key={index} className="flex items-end gap-3">
+							<div className="flex-1">
+								<DataField
+									label="Material"
+									value={material.material ?? ''}
+									onChange={v => onMaterialChange(index, { material: v })}
+								/>
+							</div>
+							<div className="w-28">
+								<DataField
+									label="Order"
+									type="number"
+									value={String(material.material_no ?? 0)}
+									onChange={v =>
+										onMaterialChange(index, { material_no: Number(v) || 0 })
+									}
+								/>
+							</div>
+							<button
+								type="button"
+								onClick={() => onRemoveMaterialClick(index)}
+								className="mb-0.5 border border-border p-3 hover:border-destructive hover:text-destructive"
+								aria-label="Remove material"
+							>
+								<Trash2 className="h-3.5 w-3.5" />
+							</button>
+						</div>
+					))}
+					{form.materials.length === 0 && (
+						<p className="text-sm text-muted-foreground">
+							No materials configured yet.
+						</p>
+					)}
+				</div>
+			</section>
+
+			<section className="space-y-4 border border-border bg-card p-6">
+				<div className="flex items-center justify-between">
+					<h3 className="text-xs uppercase tracking-luxe text-primary">Occasions</h3>
+					<button
+						type="button"
+						onClick={onAddOccasionClick}
+						className="flex items-center gap-1.5 text-xs uppercase tracking-wider text-primary hover:underline "
+					>
+						<Plus className="h-3.5 w-3.5" /> Add Occasion
+					</button>
+				</div>
+				<p className="text-xs text-muted-foreground">
+					Drives the occasion options available when creating or editing products.
+				</p>
+
+				<div className="space-y-3">
+					{form.occasions.map((occasion, index) => (
+						<div key={index} className="flex items-end gap-3">
+							<div className="flex-1">
+								<DataField
+									label="Occasion"
+									value={occasion.occasion ?? ''}
+									onChange={v => onOccasionChange(index, { occasion: v })}
+								/>
+							</div>
+							<div className="w-28">
+								<DataField
+									label="Order"
+									type="number"
+									value={String(occasion.occasion_no ?? 0)}
+									onChange={v =>
+										onOccasionChange(index, { occasion_no: Number(v) || 0 })
+									}
+								/>
+							</div>
+							<button
+								type="button"
+								onClick={() => onRemoveOccasionClick(index)}
+								className="mb-0.5 border border-border p-3 hover:border-destructive hover:text-destructive"
+								aria-label="Remove occasion"
+							>
+								<Trash2 className="h-3.5 w-3.5" />
+							</button>
+						</div>
+					))}
+					{form.occasions.length === 0 && (
+						<p className="text-sm text-muted-foreground">
+							No occasions configured yet.
+						</p>
+					)}
+				</div>
+			</section>
+
+			<section className="space-y-4 border border-border bg-card p-6">
+				<div className="flex items-center justify-between">
+					<h3 className="text-xs uppercase tracking-luxe text-primary">Loyalty Tiers</h3>
+					<button
+						type="button"
+						onClick={onAddLoyaltyTierClick}
+						className="flex items-center gap-1.5 text-xs uppercase tracking-wider text-primary hover:underline "
+					>
+						<Plus className="h-3.5 w-3.5" /> Add Tier
+					</button>
+				</div>
+				<p className="text-xs text-muted-foreground">
+					Customers are placed in the highest tier whose minimum spend they've met, based
+					on total paid orders.
+				</p>
+
+				<div className="space-y-3">
+					{form.loyaltyTiers.map((tier, index) => (
+						<div key={index} className="flex items-end gap-3">
+							<div className="flex-1">
+								<DataField
+									label="Tier Name"
+									value={tier.tier ?? ''}
+									onChange={v => onLoyaltyTierChange(index, { tier: v })}
+								/>
+							</div>
+							<div className="w-40">
+								<DataField
+									label="Min. Spend (ZAR)"
+									type="number"
+									value={String(tier.min_spend ?? 0)}
+									onChange={v =>
+										onLoyaltyTierChange(index, { min_spend: Number(v) || 0 })
+									}
+								/>
+							</div>
+							<button
+								type="button"
+								onClick={() => onRemoveLoyaltyTierClick(index)}
+								className="mb-0.5 border border-border p-3 hover:border-destructive hover:text-destructive"
+								aria-label="Remove tier"
+							>
+								<Trash2 className="h-3.5 w-3.5" />
+							</button>
+						</div>
+					))}
+					{form.loyaltyTiers.length === 0 && (
+						<p className="text-sm text-muted-foreground">
+							No loyalty tiers configured yet.
+						</p>
 					)}
 				</div>
 			</section>

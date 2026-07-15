@@ -15,15 +15,28 @@ export const CartReducer = (state = initialState, action: Action): CartState => 
 	switch (action.type) {
 		case CART_ACTIONS.ADD_TO_CART: {
 			const incoming = action.payload as CartItem
+			const maxQuantity = Math.max(0, incoming?.product?.stock ?? 0)
+
+			if (maxQuantity <= 0) return state
+
 			const exists = state.cartData.find(item => item?.product?.id === incoming?.product?.id)
 
 			const updatedCart = exists
 				? state.cartData.map(item =>
 						item?.product?.id === incoming?.product?.id
-							? { ...item, quantity: item?.quantity + incoming?.quantity }
+							? {
+									...item,
+									quantity: Math.min(
+										maxQuantity,
+										item?.quantity + incoming?.quantity
+									),
+								}
 							: item
 					)
-				: [...state.cartData, incoming]
+				: [
+						...state.cartData,
+						{ ...incoming, quantity: Math.min(maxQuantity, incoming.quantity) },
+					]
 
 			return {
 				...state,

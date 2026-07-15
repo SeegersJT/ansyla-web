@@ -3,6 +3,7 @@ import { useAppDispatch } from '@/hooks/useAppDispatch'
 import { useAppSelector } from '@/hooks/useAppSelector'
 import { requestCustomerItems } from '@/redux/actions/Customer.action'
 import { requestOrderItems } from '@/redux/actions/Order.action'
+import { requestSettings } from '@/redux/actions/Settings.action'
 import type { CustomerItem } from '@/redux/types/Customer.type'
 import type { OrderItem } from '@/redux/types/Order.type'
 import { useEffect, useMemo, useState } from 'react'
@@ -19,6 +20,7 @@ function AdminCustomersContainer() {
 	const [selectedOrder, setSelectedOrder] = useState<OrderItem | null>(null)
 
 	useEffect(() => {
+		dispatch(requestSettings())
 		dispatch(requestCustomerItems())
 		dispatch(requestOrderItems())
 	}, [dispatch])
