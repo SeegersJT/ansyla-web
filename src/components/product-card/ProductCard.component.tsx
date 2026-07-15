@@ -12,10 +12,19 @@ function ProductCard({ currency, product }: { currency: string; product: Product
 	const dispatch = useAppDispatch()
 
 	const isWishlisted = useAppSelector(state => state.wishlist.productIds.includes(product.id))
-	const outOfStock = (product?.stock ?? 0) <= 0
+	const cartQuantity = useAppSelector(
+		state => state.cart.cartData.find(item => item.product?.id === product.id)?.quantity ?? 0
+	)
+
+	const stock = product?.stock ?? 0
+	const outOfStock = stock <= 0
+	const atMaxInCart = !outOfStock && cartQuantity >= stock
+	const addDisabled = outOfStock || atMaxInCart
+
+	const addLabel = outOfStock ? 'Out of Stock' : atMaxInCart ? 'Max in Cart' : 'Add'
 
 	const handleOnAddCartItemClick = (product: ProductItem, quantity: number) => {
-		if (outOfStock) return
+		if (addDisabled) return
 
 		dispatch(setCartDrawerOpen(true))
 		dispatch(addToCart(product, quantity))
@@ -72,22 +81,28 @@ function ProductCard({ currency, product }: { currency: string; product: Product
 					/>
 				</button>
 
-				<div className="absolute inset-x-3 bottom-3 flex translate-y-3 gap-2 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-					<button
-						onClick={() => handleOnAddCartItemClick(product, 1)}
-						disabled={outOfStock}
-						className="flex flex-1 items-center justify-center  gap-2 bg-gradient-gold py-2.5 text-xs font-medium uppercase tracking-wider text-primary-foreground transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-					>
-						<ShoppingBag className="h-3.5 w-3.5" />{' '}
-						{outOfStock ? 'Out of Stock' : 'Add'}
-					</button>
-					<Link
-						to={`/product/${product?.id}`}
-						className="flex items-center justify-center border border-primary/50 bg-background/70 px-3 text-primary backdrop-blur transition-colors hover:bg-primary hover:text-primary-foreground"
-						aria-label="Quick view"
-					>
-						<Eye className="h-4 w-4" />
-					</Link>
+				<div className="absolute inset-x-3 bottom-3 flex translate-y-3 flex-col gap-1.5 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+					{atMaxInCart && (
+						<p className="text-center text-[10px] text-muted-foreground bg-background/70 backdrop-blur py-1">
+							All {stock} in stock are already in your cart
+						</p>
+					)}
+					<div className="flex gap-2">
+						<button
+							onClick={() => handleOnAddCartItemClick(product, 1)}
+							disabled={addDisabled}
+							className="flex flex-1 items-center justify-center  gap-2 bg-gradient-gold py-2.5 text-xs font-medium uppercase tracking-wider text-primary-foreground transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+						>
+							<ShoppingBag className="h-3.5 w-3.5" /> {addLabel}
+						</button>
+						<Link
+							to={`/product/${product?.id}`}
+							className="flex items-center justify-center border border-primary/50 bg-background/70 px-3 text-primary backdrop-blur transition-colors hover:bg-primary hover:text-primary-foreground"
+							aria-label="Quick view"
+						>
+							<Eye className="h-4 w-4" />
+						</Link>
+					</div>
 				</div>
 			</div>
 
@@ -105,6 +120,11 @@ function ProductCard({ currency, product }: { currency: string; product: Product
 				<p className="pt-0.5 text-base text-foreground">
 					{Utils.formatPrice(product?.price, currency)}
 				</p>
+				{!outOfStock && stock < 10 && (
+					<p className="text-xs text-muted-foreground">
+						{Utils.calculateStockAvailability(stock).label}
+					</p>
+				)}
 			</div>
 		</div>
 	)
